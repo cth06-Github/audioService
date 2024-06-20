@@ -13,7 +13,7 @@ export default function Login() {
   const INCORRECT = 0; // wrong username or password filled in
   const CORRECT = 1; // correct details
 
-  const router = useRouter()
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginStatus, updateLoginStatus] = useState(null); // is it a good idea to use null?

@@ -4,10 +4,15 @@
 //import Link from 'next/link';
 import styles from "./upload.module.css"; 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+//import RecorderApp from '../components/record.js';
+import AudioRecorder from '../components/recordaudio.js'
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import LogoutIcon from '@mui/icons-material/Logout';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 export default function Upload() {
+  const router = useRouter();
   const [theFile, chooseFile] = useState(null); // good to use null?
   const [isFileUploaded, updateUploadStatus] = useState(false);
 
@@ -59,27 +64,30 @@ export default function Upload() {
   // to check what are the possible audio files extension
   return ( // don't want main.....styles.main or styles.description
     <div className={styles.main}>
-        <header style ={{display:"flex", flexDirection:"row", justifyContent: "space-between"}}>
+        <header className={styles.header}>
           <h1>Transcribe now!</h1>
-          <button><LogoutIcon/>Logout</button>
+          <button onClick={() => router.push('/login')}><LogoutIcon/>Logout</button>
         </header>
         <p>Either record or upload existing audio!</p>
+
+
         <div className={styles.serviceBox}>
             <div className={styles.serviceStream}> 
                 <h2>Record</h2>
+                <AudioRecorder></AudioRecorder>
             </div>
+
             <div className={styles.serviceFiles}> 
                 <h2>Upload</h2>
                 <p>Only Audio files</p>
-
-                <label for="getAudio">
+                <label htmlFor="getAudio">
                     <FileUploadIcon style = {{fontSize:30, color: "#434343"}}/>
                     Audio
                 </label>
                 <input 
                   id = "getAudio"
                   type ="file" 
-                  accept = ".mp3, .wav, .mid" 
+                  accept = ".mp3, .wav, .mid, .ogg" 
                   onChange={handleFileChange} 
                   style= {{display:"none"}}
                 />
@@ -89,14 +97,14 @@ export default function Upload() {
                   Confirm
                 </button>}
                 
-                {isFileUploaded && <p><small>File Sent!</small></p>}
+                {isFileUploaded && <p style = {{alignItems: "center"}}><small><CheckCircleOutlineIcon style = {{alignItems: "center", color: "#00F01C"}}/> File Sent!</small></p>}
 
             </div>
             
         </div>
 
         <footer>
-            <p>to insert footer? <br></br>logout icon button to be at top right corner</p>
+            <p>to insert footer?</p>
         </footer> 
     </div>
   );
