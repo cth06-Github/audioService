@@ -74,7 +74,7 @@ export default function Upload() {
         <div className={styles.serviceBox}>
             <div className={styles.serviceStream}> 
                 <h2>Record</h2>
-                <AudioRecorder></AudioRecorder>
+                <AudioRecorder mimeType = "audio/webm"></AudioRecorder>
             </div>
 
             <div className={styles.serviceFiles}> 
