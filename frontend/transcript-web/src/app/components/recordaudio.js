@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./record.module.css"; 
 import MicIcon from '@mui/icons-material/Mic';
 import StopCircleOutlinedIcon from '@mui/icons-material/StopCircleOutlined';
@@ -6,12 +6,18 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 
 const AudioRecorder = ({mimeType}) => {
-	// Initialising variables & status code
+	// Initialising variables & status code //
 
+	// Time
+	const [time, updateTiming] = useState(0); 
+    const [running, setRunning] = useState(false); 
+    const intervalRef = useRef(null); 
+    const startTimeRef = useRef(0); 
+
+	// Recording
 	const INACTIVE = 0; // no recording taking place
 	const ACTIVE = 1; // recording in progress
 	const PAUSE = 2; // recording paused
-
 
 	const [permission, setPermission] = useState(false);
 	const mediaRecorder = useRef(null); // THIS ONE
@@ -24,7 +30,43 @@ const AudioRecorder = ({mimeType}) => {
 	console.log("initial stream: " + stream); 
 	console.log("initial audioChunks: " + audioChunks); 
 	console.log("initial audio(url): " + audio); 
+	console.log("intervalRef GLOBAL: " + intervalRef.current);
 
+
+	// Functions //
+	// Time
+	const startTiming = () => {	// Date.now(): miliseoncds elapsed since epoch (1 Jan 1970, UTC 0000h)
+		startTimeRef.current = Date.now() - 10; // assumes 10 ms lag time? Should check code run time. Reference Time when timing started.
+        intervalRef.current = setInterval(() => { 
+            updateTiming(Math.floor((Date.now() - startTimeRef.current) / 1000) + time);  // divide by 1000 for ms to second
+        	}, 1000); // Math.floor(): round down
+
+		console.log("intervalRef in Function: " + intervalRef.current);
+
+        setRunning(true); 
+	}
+
+	const pauseTiming = () => {
+		clearInterval(intervalRef.current); // stops the function excution defined in setInterval(): setTime()
+        setRunning(false); 
+	}
+
+	const stopTiming = () => {
+		clearInterval(intervalRef.current); 
+        updateTiming(0); 
+        setRunning(false); 
+	}
+
+	const timeInHourMinSec = (timing) => {
+		const hours = Math.floor(timing / 3600);
+		const minutes = Math.floor(timing % 3600 / 60);
+		const seconds = timing % 3600 % 60; 
+		const timeInMinSec = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+		return (hours > 0) ? (hours.toString().padStart(2, '0') + ':' + timeInMinSec) : timeInMinSec;
+
+ 	}
+
+	// Recording
 	const startRecording = async () => {
 		if (recordingStatus === ACTIVE) { // pause shouldn't be part of the possible cases
 			alert("Recording in progress");
@@ -68,6 +110,9 @@ const AudioRecorder = ({mimeType}) => {
 		// start Recording
 		mediaRecorder.current.start();
 		setRecordingStatus(ACTIVE);
+
+		startTiming(); // HMM
+
 		let localAudioChunks = [];
 
 		mediaRecorder.current.ondataavailable = (event) => {
@@ -82,20 +127,23 @@ const AudioRecorder = ({mimeType}) => {
         console.log(audioChunks);
 	};
 
-	const contRecording = () => {
-		mediaRecorder.current.resume();
-		setRecordingStatus(ACTIVE);
-	}
-
 	const pauseRecording = () => {
 		mediaRecorder.current.pause();
 		setRecordingStatus(PAUSE);
+		pauseTiming();
 	};
+
+	const contRecording = () => {
+		mediaRecorder.current.resume();
+		setRecordingStatus(ACTIVE);
+		startTiming(); //contTiming
+	}
 
 	const stopRecording = () => {
 		setRecordingStatus(INACTIVE);
 		mediaRecorder.current.stop();
 
+		stopTiming();
         //console.log("audioChunks in Stop");
         //console.log(audioChunks);
 		mediaRecorder.current.onstop = () => { // never execute....hmm.... (if stop() was executed in pause...)
@@ -107,33 +155,53 @@ const AudioRecorder = ({mimeType}) => {
 		};
 	};
 
-	return (
+	useEffect(() => { 
+        if (running) { 
+            startTiming(); // startTiming();
+        } 
+        return () => { 
+            clearInterval(intervalRef.current); 
+        }; 
+    }, [running]); 
+
+	return ( // beware of repeating components just beacuse the style change...
 		<div>
 			<div className={styles.serviceRecordMain}>
 				
-				{recordingStatus !== INACTIVE ? (		
+				{recordingStatus === ACTIVE ? (		// recording status
 				<div className={styles.serviceRecordPlay}>
-					<button onClick={stopRecording} type="button">
-						<StopCircleOutlinedIcon style = {{fontSize: "9vh"}}/>
-					</button>
-					{recordingStatus === ACTIVE ? ( // recording status
-					<button onClick={pauseRecording} type="button">
+					<div style = {{display: "flex", flexDirection: "row", alignItems: "center"}}>
+						<button onClick={stopRecording} type="button" style = {{margin: "0px 2px"}}>
+							<StopCircleOutlinedIcon style = {{fontSize: "9vh", color: "red"}}/>
+						</button>
+						<p style = {{margin: "0px 2px"}}>{timeInHourMinSec(time)}</p>
+					</div>
+					<button onClick={pauseRecording} type="button" style = {{margin: "0px 2px"}}>
 						<PauseCircleOutlineIcon style = {{fontSize: "9vh"}}/>
 					</button>
-					) : ( // Pause Status
-					<button onClick={contRecording} type="button">
-						<PlayCircleOutlineIcon style = {{fontSize: "9vh"}}/>
-					</button>
-					) }
-				</div> 
-				) : 
+				</div>
+					) : 
+					
+					recordingStatus === PAUSE ? ( 	// pause status
+					<div className={styles.serviceRecordPlay}>
+					<div style = {{display: "flex", flexDirection: "row", alignItems: "center"}}>	
+						<button onClick={stopRecording} type="button" style = {{margin: "0px 2px"}}>
+							<StopCircleOutlinedIcon style = {{fontSize: "9vh", color: "black"}}/>
+						</button>
+						<p style = {{margin: "0px 2px"}}>{timeInHourMinSec(time)}</p>
+					</div>
 
+					<button onClick={contRecording} type="button" style = {{margin: "0px 2px"}}>
+					<PlayCircleOutlineIcon style = {{fontSize: "9vh"}}/>
+					</button>
+					</div>
+					) : ( 
 				<div className={styles.serviceRecordMic}>
 					<button onClick={startRecording}>
 						<MicIcon style = {{fontSize: "6.5vh", alignItems: "center", color: "black"}}/>
 					</button>
 				</div>
-				}
+				)}
 				
 				{audio && recordingStatus === INACTIVE ? (
 					<div className={styles.serviceRecordAudio}>
