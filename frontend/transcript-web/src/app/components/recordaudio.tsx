@@ -27,8 +27,8 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => { //FC is fu
 
 	const [permission, setPermission] = useState<boolean>(false);
 	const [recordingStatus, setRecordingStatus] = useState<number>(INACTIVE);
-	const [stream, setStream] = useState<MediaStream>(new MediaStream()); // to CONSOLE.LOG later
-	const mediaRecorder = useRef<MediaRecorder>(new MediaRecorder(stream)); // HMM will this work?
+	const [stream, setStream] = useState<MediaStream | null>(null); 
+	const mediaRecorder = useRef<MediaRecorder | null>(null); 
 	const [audioChunks, setAudioChunks] = useState<any[]>([]); // an array to store parts of the generated recording... ANY okay?
 	const [audio, setAudio] = useState<string>("");
 
@@ -81,7 +81,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => { //FC is fu
 
 		// Ask for Permission
 		let hasPermissionAsked: boolean = false;
-		let localStream: MediaStream = stream;
+		let localStream: MediaStream | null = stream;
 
 		if (!permission) { // no permission granted
 			if ("MediaRecorder" in window) { // window object. Check if browser supports MediaRecorder. If yes, we access this MediaRecorder API (to eventually access microphone)
@@ -108,8 +108,8 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => { //FC is fu
 		console.log("stream in Start Record function: " + stream);
 		console.log("localStream in Start Record function: " + localStream);
 		
-
-		const streamToUse: MediaStream = hasPermissionAsked ? localStream : stream;
+		if (!localStream) {return;}
+		const streamToUse: MediaStream = localStream;
 		const media = new MediaRecorder(streamToUse, {mimeType : mimeTypeUsed}); //creates a new MediaRecorder object that will record a specified MediaStream
 		mediaRecorder.current = media;
 
@@ -134,18 +134,21 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => { //FC is fu
 	};
 
 	const pauseRecording = () => {
+		if (!mediaRecorder.current) {return;}
 		mediaRecorder.current.pause();
 		setRecordingStatus(PAUSE);
 		pauseTiming();
 	};
 
 	const contRecording = () => {
+		if (!mediaRecorder.current) {return;}
 		mediaRecorder.current.resume();
 		setRecordingStatus(ACTIVE);
 		startTiming(); //contTiming
 	}
 
 	const stopRecording = () => {
+		if (!mediaRecorder.current) {return;}
 		setRecordingStatus(INACTIVE);
 		mediaRecorder.current.stop();
 

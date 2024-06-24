@@ -51,6 +51,24 @@
   height: 57vh;
 }
 
+.serviceFilesEnd { /*total copy from login css*/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(252, 252, 252);
+  padding: 5px 20px;
+  width: 31vw;
+  height: 57vh;
+}
+
+.serviceFiles button {
+  background-color: rgb(255, 255, 255);
+  border: 0px;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+}
+
 .serviceFiles label {
   display: flex;
   flex-direction : row;
@@ -71,7 +89,7 @@
   box-shadow: 0px 1px 1px 2px rgb(114, 114, 114);
 }
 
-.serviceFiles button {
+.serviceFilesEnd button, .serviceFilesEnd label {
   padding: 10px;
   border-radius: 10px;
   margin-top: 9px;
@@ -81,23 +99,38 @@
   cursor: pointer; /*from cursor arrow to cursor finger*/
   background-color: #c1e9f5;
   width: 39%; /*100%; <-- hmm why does it not stretch anymore?*/
+  height: 30%; /*force fit number...*/
   font-size: 16px;
   text-align: center;
+  align-items: center;
   font-weight: bold;
+  box-shadow: 0px 0px 0px 0px rgb(255, 255, 255);
 }
+
 
 .serviceFiles label:hover {
   transform: translateY(1.5px);
   box-shadow: 0px 0px 0px 0px rgb(255, 255, 255);
 }
 
-.serviceFiles button:hover {
+.serviceFilesEnd button:hover, .serviceFilesEnd label:hover {
+  transform: translateY(0px);
   background-color: #9fdef1;
 }
 
-.serviceFiles label:active, .serviceFiles button:active {
+.serviceFiles button:hover {
+  opacity: 0.5
+}
+
+.serviceFiles label:active {
   opacity: 0.5; /*a cheat way instead of using background-color. Otherwise need to separate*/
 }
+
+.serviceFiles button:active  {
+  opacity: 1; /*a cheat way instead of using background-color. Otherwise need to separate*/
+}
+
+
 
 /*
 .serviceFiles button:hover { 
@@ -107,8 +140,8 @@
 }*/
 
 .serviceFiles small {
-  margin-top: 3px;
-  margin-bottom: 5px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 
