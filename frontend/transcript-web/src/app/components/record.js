@@ -1,3 +1,6 @@
+/*Please IGNORE Everything below*/
+
+/*
 import "./record.module.css";
 
 import { useEffect } from 'react';
@@ -12,6 +15,7 @@ const RecorderApp = () => {
     // You can also handle cases where stateIndex is '', indicating no mediaDevices support
   }, [stateIndex]);*/
 
+  /*
   const renderControls = () => {
     switch (stateIndex) {
       case 0: // Initial state
@@ -45,7 +49,7 @@ const RecorderApp = () => {
 
   return (
     <div>
-      <div className="display"></div> {/* Placeholder for display messages */}
+      <div className="display"></div> {/* Placeholder for display messages }
       <div className="controllers">
         {renderControls()}
       </div>
@@ -53,7 +57,7 @@ const RecorderApp = () => {
   );
 };
 
-export default RecorderApp;
+export default RecorderApp;*/
 
 
 

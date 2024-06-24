@@ -4,6 +4,7 @@ import MicIcon from '@mui/icons-material/Mic';
 import StopCircleOutlinedIcon from '@mui/icons-material/StopCircleOutlined';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
+import DownloadIcon from '@mui/icons-material/Download';
 
 const AudioRecorder = ({mimeType}) => {
 	// Initialising variables & status code //
@@ -208,7 +209,7 @@ const AudioRecorder = ({mimeType}) => {
 						<audio src={audio} controls></audio>
 
 						<a download href={audio}>
-							Download
+							<DownloadIcon />
 						</a>
 
 					</div>
