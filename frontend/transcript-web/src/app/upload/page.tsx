@@ -22,6 +22,9 @@ export default function Upload() {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => { // to check the type later
       // Update the state with the selected file
+
+      // Reselect same file hmm
+
       if (!event.target.files) {return;} // AMAZING....
       chooseFile(event.target.files[0]); // TO CHECK WHAT IS EVENT.TARGET.FILES[0]...APA ARRAY?
       console.log("file file uploaded:");
@@ -30,6 +33,7 @@ export default function Upload() {
 
   const deleteFile = () => {
     chooseFile(null);
+    // need to think of a way to clear the input event listner...
   }
 
   const uploadFunction = async () => {
