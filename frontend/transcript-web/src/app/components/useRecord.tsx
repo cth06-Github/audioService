@@ -1,4 +1,7 @@
-"use client"; 
+/*Please IGNORE Everything below*/
+
+
+/*"use client"; 
 
 import { useState, useEffect } from 'react';
 
@@ -77,4 +80,4 @@ const useRecorder = () => {
   return { stateIndex, record, stopRecording, downloadAudio, audioURL };
 };
 
-export default useRecorder;
+export default useRecorder;*/

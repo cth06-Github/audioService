@@ -12,7 +12,7 @@ export const metadata = {
   description: "HTX",
 };*/
 
-export default function RootLayout({ children }) {
+export default function RootLayout({children} : Readonly<{children: React.ReactNode;}>) {// what type is this?
   return (
     <html lang="en">
       <body className={openSans.className}>

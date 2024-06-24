@@ -6,26 +6,31 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 import DownloadIcon from '@mui/icons-material/Download';
 
-const AudioRecorder = ({mimeType}) => {
+interface AudioProps {
+	downloadType: string
+}
+
+const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => { //FC is functional component
 	// Initialising variables & status code //
 
 	// Time
 	const [time, updateTiming] = useState(0); 
     const [running, setRunning] = useState(false); 
-    const intervalRef = useRef(null); 
+    const intervalRef = useRef<any | null>(null); // lazy....because use any...
     const startTimeRef = useRef(0); 
 
 	// Recording
-	const INACTIVE = 0; // no recording taking place
-	const ACTIVE = 1; // recording in progress
-	const PAUSE = 2; // recording paused
+	const INACTIVE: number = 0; // no recording taking place
+	const ACTIVE: number = 1; // recording in progress
+	const PAUSE: number = 2; // recording paused
+	const mimeTypeUsed: string = "audio/webm"
 
-	const [permission, setPermission] = useState(false);
-	const mediaRecorder = useRef(null); // THIS ONE
-	const [recordingStatus, setRecordingStatus] = useState(0);
-	const [stream, setStream] = useState(null);
-	const [audioChunks, setAudioChunks] = useState([]); // an array to store parts of the generated recording
-	const [audio, setAudio] = useState(null);
+	const [permission, setPermission] = useState<boolean>(false);
+	const [recordingStatus, setRecordingStatus] = useState<number>(INACTIVE);
+	const [stream, setStream] = useState<MediaStream>(new MediaStream()); // to CONSOLE.LOG later
+	const mediaRecorder = useRef<MediaRecorder>(new MediaRecorder(stream)); // HMM will this work?
+	const [audioChunks, setAudioChunks] = useState<any[]>([]); // an array to store parts of the generated recording... ANY okay?
+	const [audio, setAudio] = useState<string>("");
 
 	// no more getMicPermission
 	console.log("initial stream: " + stream); 
@@ -58,7 +63,7 @@ const AudioRecorder = ({mimeType}) => {
         setRunning(false); 
 	}
 
-	const timeInHourMinSec = (timing) => {
+	const timeInHourMinSec = (timing: number) => {
 		const hours = Math.floor(timing / 3600);
 		const minutes = Math.floor(timing % 3600 / 60);
 		const seconds = timing % 3600 % 60; 
@@ -75,8 +80,8 @@ const AudioRecorder = ({mimeType}) => {
 		}
 
 		// Ask for Permission
-		let hasPermissionAsked = false;
-		let localStream = null;
+		let hasPermissionAsked: boolean = false;
+		let localStream: MediaStream = stream;
 
 		if (!permission) { // no permission granted
 			if ("MediaRecorder" in window) { // window object. Check if browser supports MediaRecorder. If yes, we access this MediaRecorder API (to eventually access microphone)
@@ -91,7 +96,7 @@ const AudioRecorder = ({mimeType}) => {
 
 					hasPermissionAsked = true;
 		
-				} catch (err) { // executed if user block the microphone
+				} catch (err: any) { // executed if user block the microphone // catch must be of type any or unknown. What's the Diff?
 					alert(err.message + "\nTo record, localhost requires access to microphone."); // display text in a dialog box that pops up on the screen
 					return;
 				}
@@ -104,8 +109,8 @@ const AudioRecorder = ({mimeType}) => {
 		console.log("localStream in Start Record function: " + localStream);
 		
 
-		const streamToUse = hasPermissionAsked ? localStream : stream;
-		const media = new MediaRecorder(streamToUse, { type: mimeType }); //creates a new MediaRecorder object that will record a specified MediaStream
+		const streamToUse: MediaStream = hasPermissionAsked ? localStream : stream;
+		const media = new MediaRecorder(streamToUse, {mimeType : mimeTypeUsed}); //creates a new MediaRecorder object that will record a specified MediaStream
 		mediaRecorder.current = media;
 
 		// start Recording
@@ -114,9 +119,9 @@ const AudioRecorder = ({mimeType}) => {
 
 		startTiming(); // HMM
 
-		let localAudioChunks = [];
+		let localAudioChunks: any[] = [];
 
-		mediaRecorder.current.ondataavailable = (event) => {
+		mediaRecorder.current.ondataavailable = (event: any) => {
 			if (typeof event.data === "undefined") return;
 			if (event.data.size === 0) return;
 			localAudioChunks.push(event.data);
@@ -148,7 +153,7 @@ const AudioRecorder = ({mimeType}) => {
         //console.log("audioChunks in Stop");
         //console.log(audioChunks);
 		mediaRecorder.current.onstop = () => { // never execute....hmm.... (if stop() was executed in pause...)
-			const audioBlob = new Blob(audioChunks, { type: mimeType });
+			const audioBlob = new Blob(audioChunks, { type: props.downloadType }); // changed for TS
 			//console.log("audioBlob created: " + audioBlob);
             const audioUrl = URL.createObjectURL(audioBlob);
 			setAudio(audioUrl);
@@ -207,10 +212,12 @@ const AudioRecorder = ({mimeType}) => {
 				{audio && recordingStatus === INACTIVE ? (
 					<div className={styles.serviceRecordAudio}>
 						<audio src={audio} controls></audio>
-
-						<a download href={audio}>
-							<DownloadIcon />
-						</a>
+						
+						<button>
+							<a download href={audio}>
+								<DownloadIcon style = {{fontSize: "6.5vh", color: "#000000", alignItems: "center"}}/>
+							</a>
+						</button>
 
 					</div>
 				) : null}

@@ -6,19 +6,21 @@ import styles from "./upload.module.css";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 //import RecorderApp from '../components/record.js';
-import AudioRecorder from '../components/recordaudio.js'
+import AudioRecorder from '../components/recordaudio.tsx'
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import LogoutIcon from '@mui/icons-material/Logout';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 export default function Upload() {
   const router = useRouter();
-  const [theFile, chooseFile] = useState(null); // good to use null?
-  const [isFileUploaded, updateUploadStatus] = useState(false);
+  const [theFile, chooseFile] = useState<File | null>(null); // good to use null?
+  const [isFileUploaded, updateUploadStatus] = useState<boolean>(false);
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => { // to check the type later
       // Update the state with the selected file
-      chooseFile(event.target.files[0]); // TO CHECK WHAT IS EVENT.TARGET.FILES[0]...APA ARRAY?
+      if (!event.target.files) return; // AMAZING....
+      chooseFile(event!.target.files[0]); // TO CHECK WHAT IS EVENT.TARGET.FILES[0]...APA ARRAY?
+      console.log("file file uploaded:");
       console.log(theFile);
   };
 
@@ -54,10 +56,10 @@ export default function Upload() {
 
     };
 
-    const truncateName = (fileName) => {
-      const length = fileName.length;
-      const frontPart = fileName.substring(0, 20);
-      const backPart = fileName.substring(length - 8, length)
+    const truncateName = (fileName: string) => {
+      const length = fileName.length; // type-inferred
+      const frontPart = fileName.substring(0, 20); // type-inferred
+      const backPart = fileName.substring(length - 8, length); // type-inferred
       return frontPart + "..." + backPart;
     }
   
@@ -74,12 +76,12 @@ export default function Upload() {
         <div className={styles.serviceBox}>
             <div className={styles.serviceStream}> 
                 <h2>Record</h2>
-                <AudioRecorder mimeType = "audio/webm"></AudioRecorder>
+                <AudioRecorder downloadType = "audio/mpeg"></AudioRecorder>
             </div>
 
             <div className={styles.serviceFiles}> 
                 <h2>Upload</h2>
-                <p>Only Audio files</p>
+                <p>1 file only</p>
                 <label htmlFor="getAudio">
                     <FileUploadIcon style = {{fontSize:30, color: "#434343"}}/>
                     Audio
@@ -97,7 +99,14 @@ export default function Upload() {
                   Confirm
                 </button>}
                 
-                {isFileUploaded && <p style = {{alignItems: "center"}}><small><CheckCircleOutlineIcon style = {{alignItems: "center", color: "#00F01C"}}/> File Sent!</small></p>}
+                {isFileUploaded && 
+                  <p style = {{alignItems: "center"}}>
+                  <small>
+                  <CheckCircleOutlineIcon style = {{alignItems: "center", color: "#00F01C"}}/> 
+                    File Sent!
+                  </small>
+                  </p>
+                }
 
             </div>
             

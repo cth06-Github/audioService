@@ -56,3 +56,21 @@
     /*background-color: #ff6464;*/
     transform: scale(1.05);
   }
+
+  .serviceRecordAudio button {
+    border: 0px;
+    background-color: white;
+  }
+
+  .serviceRecordAudio a {
+    opacity: 0.5;
+  }
+
+  
+  .serviceRecordAudio button:active {
+    opacity: 0.5;
+  }
+
+  .serviceRecordAudio a:hover {
+    opacity: 1;
+  }

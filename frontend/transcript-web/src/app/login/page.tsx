@@ -9,14 +9,14 @@ import { useState } from 'react';
 // <Link href="/Upload"> Login </Link> KEEP IN VIEW.
 
 export default function Login() {
-  const INCOMPLETE = -1; // incomplete username or password
-  const INCORRECT = 0; // wrong username or password filled in
-  const CORRECT = 1; // correct details
+  const INCOMPLETE: number = -1; // incomplete username or password
+  const INCORRECT: number = 0; // wrong username or password filled in
+  const CORRECT:number = 1; // correct details
 
   const router = useRouter();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginStatus, updateLoginStatus] = useState(null); // is it a good idea to use null?
+  const [username, setUsername] = useState<string>(''); // no <string> mention = type-inferred as string
+  const [password, setPassword] = useState<string>('');
+  const [loginStatus, updateLoginStatus] = useState<number | null>(null); // is it a good idea to use null?
 
   /* WAIT NO NEED CODE ALSO CAN REGISTER ENTER BUTTON?
   const handleKeyPress = (event) => {
