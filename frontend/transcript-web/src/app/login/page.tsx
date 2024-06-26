@@ -2,22 +2,25 @@
 "use client"; 
 
 // import Image from "next/image";
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'
+import { useAuth, AuthProvider } from '../context/authcontext'
 import styles from './login.module.css'; 
-import { useState } from 'react';
 
 // <Link href="/Upload"> Login </Link> KEEP IN VIEW.
 
 export default function Login() {
   const INCOMPLETE: number = -1; // incomplete username or password
   const INCORRECT: number = 0; // wrong username or password filled in
-  const CORRECT:number = 1; // correct details
+  const CORRECT: number = 1; // correct details
 
+  //const {authStatus, updateAuthStatus, AUTHENTICATED, INVALID} = useAuth();
+  //console.log(authStatus, updateAuthStatus, AUTHENTICATED, INVALID)
   const router = useRouter();
   const [username, setUsername] = useState<string>(''); // no <string> mention = type-inferred as string
   const [password, setPassword] = useState<string>('');
   const [loginStatus, updateLoginStatus] = useState<number | null>(null); // is it a good idea to use null?
-
+    
   /* WAIT NO NEED CODE ALSO CAN REGISTER ENTER BUTTON?
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -30,6 +33,7 @@ export default function Login() {
       console.log("can");
       updateLoginStatus(CORRECT);
       router.push('/upload')
+      updateAuthStatus(AUTHENTICATED);
     } 
     else if (username && password) { // Incorrect login attempt
       updateLoginStatus(INCORRECT);
@@ -41,6 +45,12 @@ export default function Login() {
     
   };
 
+  /* IF LOGIN STATUS IS TRUE, then users should be directed to upload page*/
+  /*useEffect(() => {
+    if (authStatus == AUTHENTICATED) { // semantically wise it is a bit off...loggED in implies login status is correct
+        router.push("/upload")
+    }
+  }, [])*/
 
   return ( // don't want main.....styles.main or styles.description
     <div className={styles.main}>
@@ -85,5 +95,6 @@ export default function Login() {
         </div>
       
     </div>
+
   );
 }

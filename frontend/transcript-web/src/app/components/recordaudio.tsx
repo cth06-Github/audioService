@@ -33,10 +33,10 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => { //FC is fu
 	const [audio, setAudio] = useState<string>("");
 
 	// no more getMicPermission
-	console.log("initial stream: " + stream); 
+	/*console.log("initial stream: " + stream); 
 	console.log("initial audioChunks: " + audioChunks); 
 	console.log("initial audio(url): " + audio); 
-	console.log("intervalRef GLOBAL: " + intervalRef.current);
+	console.log("intervalRef GLOBAL: " + intervalRef.current);*/
 
 
 	// Functions //

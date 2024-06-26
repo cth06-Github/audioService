@@ -3,36 +3,41 @@
 //import Image from "next/image";
 //import Link from 'next/link';
 import styles from "./upload.module.css"; 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { useRouter, redirect } from 'next/navigation';
+import {useAuth} from '../context/authcontext';
 //import RecorderApp from '../components/record.js';
-import AudioRecorder from '../components/recordaudio.tsx'
+import AudioRecorder from '../components/recordaudio'
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import LogoutIcon from '@mui/icons-material/Logout';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
-import LoadingSign from '../components/loading.tsx'
-
+import LoadingSign from '../components/loading';
 
 export default function Upload() {
   const router = useRouter();
   const [theFile, chooseFile] = useState<File | null>(null); // good to use null?
   const [isFileUploaded, updateUploadStatus] = useState<boolean>(false);
   const [progress, setProgress] = useState(10);
-
+  const fileInputRef = useRef(null); // type-inferred
+  //const {authStatus, updateAuthStatus, AUTHENTICATED, INVALID} = useAuth();
+  //console.log(authStatus, updateAuthStatus, AUTHENTICATED, INVALID)
+   
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => { // to check the type later
-      // Update the state with the selected file
-
-      // Reselect same file hmm
-
+      // Update the state with the selected file;; Reselect same file hmm
       if (!event.target.files) {return;} // AMAZING....
       chooseFile(event.target.files[0]); // TO CHECK WHAT IS EVENT.TARGET.FILES[0]...APA ARRAY?
       console.log("file file uploaded:");
       console.log(theFile);
+      //event.target.files[0] = null; // this does not work friend...
+      console.log("event.target.files null null uploaded:");
+      console.log(event.target.files);
   };
 
   const deleteFile = () => {
     chooseFile(null);
+    if (!fileInputRef.current) {return;}
+    fileInputRef.current = null;
     // need to think of a way to clear the input event listner...
   }
 
@@ -40,7 +45,7 @@ export default function Upload() {
         console.log("exec, the file uploaded is: ");
         console.log(theFile);
         updateUploadStatus(true); // update inputValue variable with event.target.value
-        // NEVER event.preventDefault(); 
+        // event.preventDefault(); <-- does not work in NextJS 
 
         // Implement if got backend
         /*try { //THIS IS GETTING VERY WEIRD...
@@ -75,7 +80,10 @@ export default function Upload() {
       return frontPart + "..." + backPart;
     }
 
-
+const logout = () => {
+  router.push('/login');
+  //updateAuthStatus(INVALID);
+}
 
 useEffect(() => {
     const timer = setInterval(() => {
@@ -85,12 +93,22 @@ useEffect(() => {
       clearInterval(timer);
     };
   });
-  
+
+
+  /*
+  useLayoutEffect(() => { // problem: FOUC
+    const isAuth = isAuthenticated;
+    if(!isAuth){
+      redirect("/login")
+    }
+  }, [])
+  */
+
   return ( // don't want main.....styles.main or styles.description
     <div className={styles.main}>
         <header className={styles.header}>
           <h1>Transcribe now!</h1>
-          <button onClick={() => router.push('/login')}><LogoutIcon/>Logout</button>
+          <button onClick={logout}><LogoutIcon/>Logout</button>
         </header>
         <p>Either record or upload existing audio!</p>
 
@@ -114,6 +132,7 @@ useEffect(() => {
                   accept = "audio/*, .mp4" 
                   onChange={handleFileChange} 
                   style= {{display:"none"}}
+                  ref={fileInputRef}
                 />            
                 {theFile ? 
                   <p><small>{truncateName(theFile.name)}   
@@ -126,13 +145,7 @@ useEffect(() => {
                   <button onClick={uploadFunction}>Confirm</button>
         
                   <label htmlFor="getAudio">Reselect</label>
-                  <input 
-                      id = "getAudio"
-                      type ="file" 
-                      accept = "audio/*, .mp4" 
-                      onChange={handleFileChange} 
-                      style= {{display:"none"}}
-                  />
+
                   
                 </div>
                 }
