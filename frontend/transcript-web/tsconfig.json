@@ -31,7 +31,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/components/useRecord.js"  ],
+, "src/app/bin-folder/useRecord.js"  ],
   "exclude": [
     "node_modules"
   ]

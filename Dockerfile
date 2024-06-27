@@ -16,6 +16,7 @@ RUN npm install @mui/material
 RUN npm install @emotion/react
 RUN npm install @mui/icons-material
 RUN npm install @emotion/styled
+RUN npm install jose
 
 # Copy the rest of the application code to the working directory
 COPY ./frontend/transcript-web /app
