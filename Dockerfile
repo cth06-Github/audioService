@@ -1,25 +1,22 @@
 # Use an official Node.js runtime as a parent image
-FROM node:18
+FROM node:18 as build
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
-COPY ./frontend/transcript-web/package*.json ./
-# COPY ./fastfront2/package.json /app/package.json
-# COPY ./fastfront2/package-lock.json /app/package-lock.json
+COPY ./frontend/package*.json ./
 
 # Install dependencies
-RUN npm install
-RUN npm install @mui/material
-RUN npm install @emotion/react
-RUN npm install @mui/icons-material
-RUN npm install @emotion/styled
-RUN npm install jose
+RUN npm install && \
+    npm install @mui/material @emotion/react @mui/icons-material @emotion/styled jose
 
 # Copy the rest of the application code to the working directory
-COPY ./frontend/transcript-web /app
+COPY ./frontend /app
+
+# Re-build
+FROM node:18-alpine
+COPY --from=build /app /
 
 # Expose port 3000
 EXPOSE 3000

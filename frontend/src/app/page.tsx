@@ -2,11 +2,12 @@
 //import { useAuthContext, AuthProvider } from './context/authcontext'
 //import Login from './login/page'
 //import Upload from './upload/page'
-import { useRouter, redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 
 export default function Page() {
-  useRouter().push('/login');
+  const router = useRouter();
+  router.push('/login');
 }
 
 /*
