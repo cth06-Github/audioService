@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import styles from './upload.module.css';
 import FileUploadIcon from '@mui/icons-material/FileUpload';

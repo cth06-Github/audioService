@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
 import styles from "./record.module.css"; 
 import MicIcon from '@mui/icons-material/Mic';
