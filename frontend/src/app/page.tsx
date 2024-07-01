@@ -1,4 +1,4 @@
-"use client"
+//"use client"
 //import { useAuthContext, AuthProvider } from './context/authcontext'
 //import Login from './login/page'
 //import Upload from './upload/page'
