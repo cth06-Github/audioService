@@ -4,20 +4,18 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import {database} from './database-mock';
-import { useState } from 'react';
 import { redirect } from 'next/navigation';
-import { useAuthContext } from './context/authcontext' 
 import { EMPTY, INVALID, VALID } from './constants';
 
 
-const secretKey = "secret";
+const secretKey = "secret"; // bad idea? 
 const key = new TextEncoder().encode(secretKey);
 
-export async function encrypt(payload: any) {
+export async function encrypt(payload: any) { // payload: part of transmitted data that is the actual intended message.
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("30 sec from now")
+    .setExpirationTime("24 hour from now")
     .sign(key);
 }
 
@@ -31,13 +29,12 @@ export async function decrypt(input: string): Promise<any> {
 
 function verify(userInput: string, passwordInput: string) {
   const filtered = database.filter(accounts => accounts.username === userInput && accounts.password === passwordInput)
-  console.log(filtered);
   const authStatus: number = filtered.length !== 0 ? VALID : INVALID;
-  console.log(authStatus)
   return authStatus;
 }
 
 export async function authenticate(_currentState: number | null,  formData: FormData) {
+  // User Verification
   const userInput = formData.get("username")?.toString();
   const passwordInput = formData.get("password")?.toString();
   if ((!userInput) || (!passwordInput)) {
@@ -45,26 +42,27 @@ export async function authenticate(_currentState: number | null,  formData: Form
   }
   const isAuthenticated = verify(userInput, passwordInput);
 
-  // If authenticated, set cookies??
+  // If authenticated, set cookies
   if (isAuthenticated === VALID) {
     const user = { username: userInput, password: passwordInput};
     console.log(user);
 
     // Create the session
-    const expires = new Date(Date.now() + 30 * 1000);
-    const session = await encrypt({ user, expires });
+    const ONEDAY = 24 * 60 * 60 * 1000; // 24h in miliseconds 
+    const expireTime = new Date(Date.now() + ONEDAY); // set for one day
+    const session = await encrypt({ user, expireTime });
 
-    // Save the session in a cookie
-    cookies().set("session", session, { expires, httpOnly: true }); // can also have max age...check the cookies documentation?
-    redirect("/upload"); // change to "upload" when done
+    // Save the session in a cookie. [login details: persistent cookie?]
+    cookies().set("session", session, { expires: expireTime, httpOnly: true, secure: true}); 
+    redirect("/upload"); 
   }
+
   return isAuthenticated;
 }
 
-export async function logout1() {
-  // Destroy the session
-  cookies().set("session", "", { expires: new Date(0) });
-  //redirect('/login');
+export async function logout() { // Destroy the session
+  cookies().delete("session"); // cookies().set("session", "", { expires: new Date(0) });
+  redirect('/login');   
 }
 
 export async function getSession() { // similar to nextJS example (in app/page.tsx)

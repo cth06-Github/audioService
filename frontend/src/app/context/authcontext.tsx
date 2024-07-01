@@ -1,4 +1,5 @@
-/*probably won't be using this*/
+/*can ignore below, no components are using this context*/
+/*probably won't be using this in the future. */
 
 "use client"; // hmm
 

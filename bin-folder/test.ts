@@ -1,8 +1,9 @@
+/*
 'use server'
 import { redirect } from 'next/navigation';
 //import { login } from "../lib.ts";
-import {database} from '../database-mock';
-import { EMPTY, INVALID, VALID } from '../constants';
+import {database} from '../frontend/src/app/database-mock';
+import { EMPTY, INVALID, VALID } from '../frontend/src/app/constants';
 
 
 export async function submitForm(formData: any) { // should not be any...
@@ -37,6 +38,6 @@ export async function authenticate(_currentState: unknown, formData: FormData) {
 
     return isAuthenticated;
 }
-
+*/
 
   

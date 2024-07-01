@@ -1,95 +1,82 @@
+"use client"; // inform nextJS this is client component; in order to import useState... 
+
+// import Image from "next/image";
 import styles from './login.module.css'; 
-import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { useAuthContext } from '../context/authcontext' 
+import {useFormState } from 'react-dom';
+import { authenticate } from "../lib.ts";
+import { EMPTY, INVALID, VALID } from '../constants.ts';
 
 export default function Login() { 
-    const INCOMPLETE: number = -1; // incomplete username or password
-    const INCORRECT: number = 0; // wrong username or password filled in
-    const CORRECT: number = 1; // correct details
-  
-    const router = useRouter();
-    const [username, setUsername] = useState<string>(''); // no <string> mention = type-inferred as string
-    const [password, setPassword] = useState<string>('');
-    const [loginStatus, updateLoginStatus] = useState<number | null>(null); // is it a good idea to use null?
-    const {authStatus, updateAuthStatus, AUTHENTICATED, INVALID} = useAuthContext();
-    console.log(authStatus, AUTHENTICATED, INVALID)
-
-    /* WAIT NO NEED CODE ALSO CAN REGISTER ENTER BUTTON?
-    const handleKeyPress = (event) => {
-      if (event.key === 'Enter') {
-        handleLogin();
-      }
-    };*/
- 
-    const handleLogin = () => {
-      if (username === 'admin' && password === 'admin') { // placeholder code
-        console.log("can");
-        updateLoginStatus(CORRECT);
-        updateAuthStatus(AUTHENTICATED);
-        router.push('/upload')
-        //console.log(INVALID);
-        //console.log(AUTHENTICATED);
-        //console.log(authStatus);
-        
-      } 
-      else if (username && password) { // Incorrect login attempt
-        updateLoginStatus(INCORRECT);
-        console.log('Incorrect login attempt');
-      }
-      else if (!username || !password) { // Missing fields
-        updateLoginStatus(INCOMPLETE);
-      }
-      
-    };
-  
-    /* IF LOGIN STATUS IS TRUE, then users should be directed to upload page*/
-    /*useEffect(() => {
-      if (authStatus === AUTHENTICATED) { // semantically wise it is a bit off...loggED in implies login status is correct
-          router.push("/upload")
-      }
-    })*/ // won't work complete as entering url = refreshing the connection and the authStatus just disappears. 
-  
-    console.log("my auth" + authStatus);
+  const [loginStatus, formAction] = useFormState(authenticate, null); // update state based on the result of a form action.
   
     return ( 
-          <div className={styles.loginForm}>
-            <h2>Login</h2>
-            <div className={styles.loginBox}>
-              <label htmlFor="username">Username:</label>
-              <input type="text" 
-                id="username" 
-                name="username" 
-                placeholder="Enter your Username"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)} 
-                required
-              />
-  
-              <label htmlFor="password">Password:</label>
-              <input type="password"
-                id="password" 
-                name="password"
-                placeholder="Enter your Password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)} 
-                required
-              />
-              <div className={styles.error}>
-                {loginStatus == INCORRECT ? (
-                  <p>Incorrect Username or Password.</p>
-                ) : loginStatus == INCOMPLETE ? (
-                  <p>Please fill in your Username or Password.</p>
-                ) : (<></>)
-                }
-              </div>
-            </div>
-  
-            <div className={styles.loginButton}>
-              <button type="submit" onClick={handleLogin}>
-              Login
-              </button>
-            </div>
-          </div>      
+      <div className={styles.loginForm}>
+        <h2>Login</h2>
+        <form action={formAction}>
+        <div className={styles.loginBox}>
+          <label htmlFor="username">Username:</label>
+          <input type="text" 
+            id="username" 
+            name="username" 
+            placeholder="Enter your Username" 
+          />
+
+          <label htmlFor="password">Password:</label>
+          <input type="password"
+            id="password" 
+            name="password"
+            placeholder="Enter your Password"
+          />
+          </div>
+          <div className={styles.error}>{loginStatus !== VALID && <p>{decode(loginStatus)}</p>}</div>
+        <div className={styles.loginButton}>
+          <button type="submit">
+            Login
+          </button>
+        </div>
+        </form>
+      </div>       
     );
   }
+
+  function decode(loginStatus: number | null) {
+    if (loginStatus === INVALID) { return "Incorrect Username and Password."; }
+    else if (loginStatus === EMPTY) { return "Please fill in your Username or Password."; }
+  }
+
+  /*
+  "use client"; // inform nextJS this is client component; in order to import useState... 
+
+// import Image from "next/image";
+import styles from './login.module.css'; 
+import { useRef, useEffect } from 'react' 
+import {useFormState } from 'react-dom';
+import { authenticate } from "../lib.ts";
+import { EMPTY, INVALID, VALID } from '../constants';
+import { useRouter, redirect } from 'next/navigation';
+import { getSession, hasAuthCookies } from "../lib.ts";
+
+//import Login from './login';
+//import { AuthProvider } from '../context/authcontext'
+
+export default function LoginPage() { // to add ASYNC? but warning -- cannot for client components
+ // const session = await getSession();
+  //const router = useRouter();
+  //const [username, setUsername] = useState<string>(''); // no <string> mention = type-inferred as string
+  //const [password, setPassword] = useState<string>('');
+
+  const [loginStatus, formAction] = useFormState(authenticate, null); // update state based on the result of a form action.
+     // [   state,   formAction] = useFormState(function, initialState, permalink?); 
+     // The form state is the value returned by the action when the form was last submitted. If the form has not yet been submitted, it is the initial state that you pass.
+  
+  const hasCookies = useRef<boolean>(); // almost but GOT PROBLEM.
+  const router = useRouter();
+     //const huh = getSession();
+  //console.log(huh);
+  //hasAuthCookies().then(value => { hasCookies.current = value; }); // initial render got error
+
+  /*
+  useEffect(() => {
+    hasAuthCookies().then(value => { hasCookies.current = value; }); // initial render got error, but put in useEffect ok. HMMM
+    if (hasCookies.current == true) { router.push("/upload"); }
+  })*/
