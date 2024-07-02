@@ -14,7 +14,7 @@ RUN npm install && \
 # Copy the rest of the application code to the working directory
 COPY ./frontend /app
 
-# Re-build
+# Re-build (multi-stage build)
 FROM node:18-alpine
 COPY --from=build /app /
 

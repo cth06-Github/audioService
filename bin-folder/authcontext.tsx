@@ -1,5 +1,4 @@
-/*can ignore below, no components are using this context*/
-/*probably won't be using this in the future. */
+/*
 
 "use client"; // hmm
 
@@ -23,16 +22,18 @@ export const AuthProvider: React.FC<any> = ({children}) => { // not sure what ty
         <AuthContext.Provider value={{authStatus, updateAuthStatus, INVALID, AUTHENTICATED}}>
             {children}
         </AuthContext.Provider>)
-}
+} */
 
-/* Trick to catch errors? */
+
+/*
+// Trick to catch errors? //
 export const useAuthContext = () => {
     const localAuthContext = useContext(AuthContext);
     if (localAuthContext === undefined) {
       throw new Error('useAuthContext must be inside an AuthProvider');
     }
     return localAuthContext; // return useContext(AuthContext)
-};
+}; */
 
 
 /*
