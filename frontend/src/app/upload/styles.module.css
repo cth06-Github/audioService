@@ -1,0 +1,174 @@
+.top button {
+  position: absolute;
+  padding: 5px;
+  right: 4vw;
+  top: 40px;
+}
+
+.serviceBox {
+  padding: 5px 20px;
+  width: 85vw;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 1px dotted;
+}
+
+.serviceStream,
+.serviceFiles {
+  /*total copy from login css*/
+  padding: 5px 20px;
+  width: 32vw;
+  height: 57vh;
+  justify-content: left;
+  background-color: var(--component-background);
+  border: 3px solid;
+  border-radius: 10px;
+  border-color: var(--component-foreground);
+}
+
+.serviceFilesEnd {
+  /*total copy from login css... actually a lot of repeats*/
+  background-color: var(--component-background);
+  padding: 5px 20px;
+  width: 31vw;
+  height: 57vh;
+}
+
+.serviceFiles button {
+  /*align and justify center*/
+  background-color: var(--component-background);
+  border: 0px;
+  padding: 0px;
+}
+
+.serviceFiles label,
+.serviceFilesEnd button,
+.serviceFilesEnd label {
+  padding: 10px;
+  align-items: center; /*align in y-direction, opposite to globals.css div*/
+  color: rgb(0, 0, 0);
+  font-size: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.serviceFiles label {
+  margin-top: 15px;
+  margin-bottom: 2px;
+  width: 40%; /*100%; <-- hmm why does it not stretch anymore?*/
+  display: flex; /*must put hmm*/
+  flex-direction: row;
+  justify-content: center; /*align in x-direction*/
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  border: 1px solid;
+  box-shadow: 0px 1px 1px 2px rgb(114, 114, 114);
+  cursor: pointer; /*from cursor arrow to cursor finger*/
+}
+
+.serviceFilesEnd button,
+.serviceFilesEnd label {
+  margin-top: 9px;
+  margin-bottom: 2px;
+  border-radius: 10px;
+  width: 39%; /*100%; <-- hmm why does it not stretch anymore?*/
+  height: 30%; /*force fit number*/
+  border: none;
+  cursor: pointer; /*from cursor arrow to cursor finger*/
+  background-color: #c1e9f5;
+  font-size: 16px;
+  box-shadow: 0px 0px 0px 0px var(--component-background);
+}
+
+.serviceFiles label:hover {
+  transform: translateY(1.5px);
+  box-shadow: 0px 0px 0px 0px var(--component-background);
+}
+
+.serviceFilesEnd button:hover,
+.serviceFilesEnd label:hover {
+  transform: translateY(0px);
+  background-color: #9fdef1;
+}
+
+.serviceFiles label:active,
+.serviceFiles button:hover {
+  opacity: 0.5; /*alternative to background-color change, if not, separate*/
+}
+
+.serviceFiles button:active {
+  opacity: 1; /*alternative to background-color change, if not, separate*/
+}
+
+.serviceFiles small {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.serviceRecordMain {
+  margin-top: 7%;
+  height: 40vh;
+  width: 60vh;
+  justify-content: start; /*make the mic div go up */
+  border: 1px dotted;
+}
+
+.serviceRecordMic,
+.serviceRecordPlay,
+.serviceRecordAudio {
+  margin-bottom: 5%;
+  height: 40%;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-evenly; /*align in x-direction*/
+  border: 1px dotted;
+}
+
+.serviceRecordMic button,
+.serviceRecordPlay button {
+  /*potential repeat from serviceFiles .label*/
+  padding: 10px;
+  cursor: pointer; /*from cursor arrow to cursor finger*/
+  display: flex;
+  flex-direction: row;
+  align-items: center; /*align in y-direction*/
+  justify-content: center; /*align in x-direction*/
+  border-radius: 50%;
+}
+
+.serviceRecordMic button {
+  /*potential repeat from serviceFiles .label*/
+  height: 12vh;
+  width: 12vh; /*CANNOT DO CALCULATION??*/ /*100%; <-- hmm why does it not stretch anymore?*/
+  border: 1px solid;
+  color: rgb(105, 104, 104);
+  background-color: #ff0000;
+  box-shadow: 0px 0px 0px 1.1vh rgb(255, 255, 255) inset;
+  /*^format h-offset v-offset blur spread color |inset|initial|inherit;*/
+}
+
+.serviceRecordPlay button {
+  height: 8vh;
+  width: 8vh; /*CANNOT DO CALCULATION??*/ /*100%; <-- hmm why does it not stretch anymore?*/
+  border: none;
+}
+
+.serviceRecordMic button:hover {
+  /*background-color: #ff6464;*/
+  transform: scale(1.05);
+}
+
+.serviceRecordAudio button {
+  border: 0px;
+  background-color: white; /*var(--component-background);*/
+}
+
+.serviceRecordMic button:active,
+.serviceRecordAudio button:active,
+.serviceRecordAudio a {
+  opacity: 0.5;
+}
+
+.serviceRecordAudio a:hover {
+  opacity: 1;
+}

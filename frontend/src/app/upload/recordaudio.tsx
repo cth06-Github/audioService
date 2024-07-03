@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import styles from "./record.module.css";
+import styles from "./styles.module.css";
 import MicIcon from "@mui/icons-material/Mic";
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
@@ -182,97 +182,93 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
 
   return (
     // beware of repeating components just beacuse the style change...
-    <div>
-      <div className={styles.serviceRecordMain}>
-        {recordingStatus === ACTIVE ? ( // recording status
-          <div className={styles.serviceRecordPlay}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <button
-                onClick={stopRecording}
-                type="button"
-                style={{ margin: "0px 2px" }}
-              >
-                <StopCircleOutlinedIcon
-                  style={{ fontSize: "9vh", color: "red" }}
-                />
-              </button>
-              <p style={{ margin: "0px 2px" }}>{timeInHourMinSec(time)}</p>
-            </div>
+    <div className={styles.serviceRecordMain}>
+      {recordingStatus === ACTIVE ? ( // recording status
+        <div className={styles.serviceRecordPlay}>
+          <div
+            style={{
+              flexDirection: "row",
+            }}
+          >
             <button
-              onClick={pauseRecording}
+              onClick={stopRecording}
               type="button"
               style={{ margin: "0px 2px" }}
             >
-              <PauseCircleOutlineIcon style={{ fontSize: "9vh" }} />
-            </button>
-          </div>
-        ) : recordingStatus === PAUSE ? ( // pause status
-          <div className={styles.serviceRecordPlay}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <button
-                onClick={stopRecording}
-                type="button"
-                style={{ margin: "0px 2px" }}
-              >
-                <StopCircleOutlinedIcon
-                  style={{ fontSize: "9vh", color: "black" }}
-                />
-              </button>
-              <p style={{ margin: "0px 2px" }}>{timeInHourMinSec(time)}</p>
-            </div>
-
-            <button
-              onClick={contRecording}
-              type="button"
-              style={{ margin: "0px 2px" }}
-            >
-              <PlayCircleOutlineIcon style={{ fontSize: "9vh" }} />
-            </button>
-          </div>
-        ) : (
-          <div className={styles.serviceRecordMic}>
-            <button onClick={startRecording}>
-              <MicIcon
-                style={{
-                  fontSize: "6.5vh",
-                  alignItems: "center",
-                  color: "black",
-                }}
+              <StopCircleOutlinedIcon
+                style={{ fontSize: "9vh", color: "red" }}
               />
             </button>
+            <p style={{ margin: "0px 2px" }}>{timeInHourMinSec(time)}</p>
           </div>
-        )}
-
-        {audio && recordingStatus === INACTIVE ? (
-          <div className={styles.serviceRecordAudio}>
-            <audio src={audio} controls></audio>
-
-            <button>
-              <a download href={audio}>
-                <DownloadIcon
-                  style={{
-                    fontSize: "6.5vh",
-                    color: "#000000",
-                    alignItems: "center",
-                  }}
-                />
-              </a>
+          <button
+            onClick={pauseRecording}
+            type="button"
+            style={{ margin: "0px 2px" }}
+          >
+            <PauseCircleOutlineIcon style={{ fontSize: "9vh" }} />
+          </button>
+        </div>
+      ) : recordingStatus === PAUSE ? ( // pause status
+        <div className={styles.serviceRecordPlay}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <button
+              onClick={stopRecording}
+              type="button"
+              style={{ margin: "0px 2px" }}
+            >
+              <StopCircleOutlinedIcon
+                style={{ fontSize: "9vh"}}
+              />
             </button>
+            <p style={{ margin: "0px 2px" }}>{timeInHourMinSec(time)}</p>
           </div>
-        ) : null}
-      </div>
+
+          <button
+            onClick={contRecording}
+            type="button"
+            style={{ margin: "0px 2px" }}
+          >
+            <PlayCircleOutlineIcon style={{ fontSize: "9vh" }} />
+          </button>
+        </div>
+      ) : (
+        <div className={styles.serviceRecordMic}>
+          <button onClick={startRecording}>
+            <MicIcon
+              style={{
+                fontSize: "6.5vh",
+                alignItems: "center",
+                color: "black",
+              }}
+            />
+          </button>
+        </div>
+      )}
+
+      {audio && recordingStatus === INACTIVE ? (
+        <div className={styles.serviceRecordAudio}>
+          <audio src={audio} controls></audio>
+
+          <button>
+            <a download href={audio}>
+              <DownloadIcon
+                style={{
+                  fontSize: "6.5vh",
+                  color: "#000000",
+                  alignItems: "center",
+                }}
+              />
+            </a>
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 };

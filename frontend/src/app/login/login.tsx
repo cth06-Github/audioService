@@ -1,6 +1,6 @@
 "use client"; // client component
 
-import styles from "./login.module.css";
+import styles from "./styles.module.css";
 import { useFormState } from "react-dom";
 import { authenticate } from "../lib.ts";
 
@@ -12,7 +12,7 @@ export default function Login() {
       <h2>Login</h2>
       <form action={formAction}>
         <div className={styles.loginBox}>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="username">Username</label>
           <input
             type="text"
             id="username"
@@ -20,7 +20,7 @@ export default function Login() {
             placeholder="Enter your Username"
           />
 
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"

@@ -8,9 +8,8 @@ WORKDIR /app
 COPY ./frontend/package*.json ./
 
 # Install dependencies
-RUN npm install && \
-    npm install @mui/material @emotion/react @mui/icons-material @emotion/styled jose
-
+RUN npm install
+    
 # Copy the rest of the application code to the working directory
 COPY ./frontend /app
 

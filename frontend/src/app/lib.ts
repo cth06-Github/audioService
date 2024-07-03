@@ -24,7 +24,6 @@ export async function authenticate(
     cookieSetter({ username: userInput }); // set cookies only if authenticated
     redirect("/upload");
   } else {
-    // (authStatus === INVALID)
     return "Incorrect Username and Password.";
   }
 }

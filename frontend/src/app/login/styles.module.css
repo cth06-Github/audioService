@@ -1,0 +1,39 @@
+.loginForm {
+  padding: 5px 20px;
+  background-color: var(--component-background);
+  border: 3px solid;
+  border-color: var(--component-foreground);
+  border-radius: 10px; /*var(--default-border-radius); <--- hmm why cannot*/
+}
+
+.loginBox, .error {
+  align-items: stretch; /*also helps in stretching the input box*/
+  width: 40vw;
+}
+
+.loginBox input {
+  height: 30px;
+  margin-bottom: 1em;
+}
+
+.loginBox label, .loginButton button {
+  font-weight: bold;
+}
+
+.loginButton button {
+  margin: 15px 0px; /*top right bottom left; a b a b */
+  padding: 10px;
+  width: 100%; /*100% of the width of parent element?*/
+  background-color: #64e1f7;
+  border: none;
+  border-radius: 10px; /*var(--default-border-radius); <--- hmm why cannot*/
+  color: var(--component-foreground); /*must have*/
+  font-size: var(--default-font-size);
+  text-align: center;
+  cursor: pointer; /*from cursor arrow to cursor finger*/
+}
+
+.error p {
+  color: rgb(255, 0, 0); /*dark & light theme also can?*/
+  font-size: 16px;
+}

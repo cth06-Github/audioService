@@ -616,3 +616,9 @@ a {
   }
 }
 */
+
+
+// css styles for Upload //
+/* .top button:
+  border-radius: 5%;
+  border: 1px solid;*/ /*removing this otherwise need to configure :active CSS*/
