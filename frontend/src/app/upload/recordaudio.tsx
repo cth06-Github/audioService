@@ -81,11 +81,11 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     }
 
     // Ask for Permission
-    let hasPermissionAsked: boolean = false;
     let localStream: MediaStream | null = stream;
-
-    if (!permission) {
-      // no permission granted
+    if (
+      !mediaRecorder.current ||
+      mediaRecorder.current.stream.active == false
+    ) {
       if ("MediaRecorder" in window) {
         // window object. Check if browser supports MediaRecorder. If yes, we access this MediaRecorder API (to eventually access microphone)
         try {
@@ -96,8 +96,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
           setPermission(true);
           setStream(mediaStream); // stream state variable = microphone obtained?
           localStream = mediaStream;
-
-          hasPermissionAsked = true;
+          //hasPermissionAsked = true;
         } catch (err: any) {
           // executed if user block the microphone // catch must be of type any or unknown.
           alert(
@@ -115,14 +114,17 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       return;
     } // don't bother executing the rest of the code which aims to start the mic
 
-    // PROBLEM: WHAT IF PERMISSION SUDDENTLY GOT REVOKED? NEED TO ASK PERMISSION AGAIN if need to start Record again. setPermission() isn't triggered during sudden revoke.
-    // to edit code later //
-
     const streamToUse: MediaStream = localStream;
     const media = new MediaRecorder(streamToUse, { mimeType: mimeTypeUsed }); //creates a new MediaRecorder object that will record a specified MediaStream
     mediaRecorder.current = media;
 
     // start Recording
+    if (
+      !mediaRecorder.current ||
+      mediaRecorder.current.stream.active == false
+    ) {
+      return;
+    }
     mediaRecorder.current.start();
     setRecordingStatus(ACTIVE);
     startTiming();
@@ -138,7 +140,13 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   };
 
   const pauseRecording = () => {
-    if (!mediaRecorder.current) {
+    if (
+      !mediaRecorder.current ||
+      mediaRecorder.current.stream.active == false
+    ) {
+      alert(
+        "Fail to pause as microphone access is blocked. Parts of recording may be missing"
+      );
       return;
     }
     mediaRecorder.current.pause();
@@ -147,7 +155,11 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   };
 
   const contRecording = () => {
-    if (!mediaRecorder.current) {
+    if (
+      !mediaRecorder.current ||
+      mediaRecorder.current.stream.active == false
+    ) {
+      alert("Please allow microphone access before continuing");
       return;
     }
     mediaRecorder.current.resume();
@@ -158,6 +170,11 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const stopRecording = () => {
     if (!mediaRecorder.current) {
       return;
+    }
+    if (mediaRecorder.current.stream.active == false) {
+      alert(
+        "Microphone access was blocked at some point. Parts of recording may be missing."
+      );
     }
     setRecordingStatus(INACTIVE);
     mediaRecorder.current.stop();
@@ -223,9 +240,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
               type="button"
               style={{ margin: "0px 2px" }}
             >
-              <StopCircleOutlinedIcon
-                style={{ fontSize: "9vh"}}
-              />
+              <StopCircleOutlinedIcon style={{ fontSize: "9vh" }} />
             </button>
             <p style={{ margin: "0px 2px" }}>{timeInHourMinSec(time)}</p>
           </div>
