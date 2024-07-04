@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import styles from "./styles.module.css";
+import styles from "../styles.module.css";
 import MicIcon from "@mui/icons-material/Mic";
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";

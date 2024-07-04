@@ -1,0 +1,35 @@
+.top button {
+  position: absolute;
+  padding: 5px;
+  right: 4vw;
+  top: 40px;
+}
+
+.serviceBox {
+  padding: 5px 20px;
+  width: 85vw;
+  height: 70vh;
+  flex-direction: row;
+  align-items: start;
+  justify-content: space-between;
+  /*border: 1px dotted;*/
+}
+
+.serviceRecord,
+.serviceFiles {
+  padding: 5px 20px;
+  width: 32vw;
+  height: 85%;
+  justify-content: left; /*vertically top*/
+  background-color: var(--component-background);
+  border: 3px solid;
+  border-radius: 10px;
+  border-color: var(--component-foreground);
+}
+
+/*
+@media (prefers-color-scheme: dark) {
+  .<selector> <tag> {
+  }
+
+}*/

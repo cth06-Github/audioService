@@ -22,7 +22,7 @@ export async function authenticate(
 
   if (authStatus === VALID) {
     cookieSetter({ username: userInput }); // set cookies only if authenticated
-    redirect("/upload");
+    redirect("/home");
   } else {
     return "Incorrect Username and Password.";
   }
