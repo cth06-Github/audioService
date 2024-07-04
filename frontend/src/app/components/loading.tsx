@@ -25,11 +25,10 @@ export default function CircularProgressWithLabel(
       >
         <Typography
           variant="caption"
-          component="div"
-          color="text.secondary"
+          component="div" 
         >{`${Math.round(props.value)}%`}</Typography>
       </Box>
     </Box>
   );
 }
- // somewhere need to change the colour the number.
+ // colour = "text.secondary" in <Typography> tag

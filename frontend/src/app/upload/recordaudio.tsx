@@ -182,7 +182,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
 
   return (
     // beware of repeating components just beacuse the style change...
-    <div className={styles.serviceRecordMain}>
+    <div className={styles.serviceRecordContent}>
       {recordingStatus === ACTIVE ? ( // recording status
         <div className={styles.serviceRecordPlay}>
           <div
@@ -261,7 +261,6 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
               <DownloadIcon
                 style={{
                   fontSize: "6.5vh",
-                  color: "#000000",
                   alignItems: "center",
                 }}
               />

@@ -37,3 +37,13 @@
   color: rgb(255, 0, 0); /*dark & light theme also can?*/
   font-size: 16px;
 }
+
+@media (prefers-color-scheme: dark) {
+  .loginBox input::placeholder {
+    color:#eff0f0;
+  }
+
+  .loginButton button {
+    background-color:#03b9da;
+  }
+}

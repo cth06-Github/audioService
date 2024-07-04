@@ -15,16 +15,22 @@ export default async function UploadPage() {
       </header>
 
       <div className={styles.serviceBox}>
-        <div className={styles.serviceStream}>
-          <h2>Record</h2>
+
+        <div className={styles.serviceRecord}>
+          <hgroup>
+            <h2>Record</h2>
+          </hgroup>
           <AudioRecorder downloadType="audio/mpeg"></AudioRecorder>
         </div>
 
         <div className={styles.serviceFiles}>
-          <h2>Upload</h2>
-          <p>1 file only</p>
+          <hgroup>
+            <h2>Upload</h2>
+            <p>1 file only</p>
+          </hgroup>
           <UploadFile></UploadFile>
         </div>
+
       </div>
 
       <footer>

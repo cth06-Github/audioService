@@ -58,9 +58,10 @@ export default function UploadFile() {
   });
 
   return (
-    <>
+    <div className={styles.serviceFilesContent}>
+      <div className={styles.serviceFilesUpload}>
       <label htmlFor="getAudio">
-        <FileUploadIcon style={{ fontSize: 30, color: "#434343" }} />
+        <FileUploadIcon style={{ fontSize: 30 }} />
         Audio
       </label>
       <input
@@ -85,27 +86,32 @@ export default function UploadFile() {
           <small>No file chosen</small>
         </p>
       )}
+</div>
 
-      {theFile && !isFileUploaded && (
-        <div className={styles.serviceFilesEnd}>
-          <button onClick={uploadFunction}>Confirm</button>
-          <label htmlFor="getAudio">Reselect</label>
-        </div>
-      )}
-      {isFileUploaded && (
-        <p style={{ alignItems: "center" }}>
-          {progress != 100 ? (
-            <LoadingSign value={progress} />
-          ) : (
-            <small>
-              <CheckCircleOutlineIcon
-                style={{ alignItems: "center", color: "#00F01C" }}
-              />
-              File Sent!
-            </small>
-          )}
-        </p>
-      )}
-    </>
+      
+        {theFile && !isFileUploaded && (
+          <div className={styles.serviceFilesEnd}>
+            <button onClick={uploadFunction}>Confirm</button>
+            <label htmlFor="getAudio">Reselect</label>
+            </div>
+        )}
+        {isFileUploaded && (
+          <div className={styles.serviceFilesEnd}>
+          <p style={{ alignItems: "center" }}>
+            {progress != 100 ? (
+              <LoadingSign value={progress} />
+            ) : (
+              <small>
+                <CheckCircleOutlineIcon
+                  style={{ alignItems: "center", color: "#00F01C" }}
+                />
+                File Sent!
+              </small>
+            )}
+          </p>
+          </div>
+        )}
+      </div>
+    
   );
 }

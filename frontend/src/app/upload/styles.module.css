@@ -8,54 +8,81 @@
 .serviceBox {
   padding: 5px 20px;
   width: 85vw;
+  height: 70vh;
   flex-direction: row;
+  align-items: start;
   justify-content: space-between;
-  border: 1px dotted;
+  /*border: 1px dotted;*/
 }
 
-.serviceStream,
+.serviceRecord,
 .serviceFiles {
-  /*total copy from login css*/
   padding: 5px 20px;
   width: 32vw;
-  height: 57vh;
-  justify-content: left;
+  height: 85%;
+  justify-content: left; /*vertically top*/
   background-color: var(--component-background);
   border: 3px solid;
   border-radius: 10px;
   border-color: var(--component-foreground);
 }
 
+.serviceRecordContent,
+.serviceFilesContent {
+  height: 100%;
+  width: 100%;
+  justify-content: start; /*make the mic div go up */
+  /*border: 1px dotted; 
+  border-color: rgb(247, 9, 9);*/
+}
+
+.serviceRecordMic,
+.serviceRecordPlay,
+.serviceRecordAudio,
+.serviceFilesUpload,
 .serviceFilesEnd {
-  /*total copy from login css... actually a lot of repeats*/
-  background-color: var(--component-background);
-  padding: 5px 20px;
-  width: 31vw;
-  height: 57vh;
+  padding-top: 5px;
+  height: 50%; /*no greater effect on the upload div, don't know why*/
+  width: 100%;
+  justify-content: start; /*y-direction for upload, x-direction for record*/
+}
+
+.serviceRecordMic,
+.serviceRecordPlay,
+.serviceRecordAudio {
+  flex-direction: row;
+  justify-content: space-evenly; /*align in x-direction for record*/
+  align-items: start; /*y-direction for record*/
+}
+
+.serviceRecordMic,
+.serviceRecordPlay,
+.serviceFilesUpload {
+  border: 1px dotted;
 }
 
 .serviceFiles button {
-  /*align and justify center*/
+  /*referring to the dustbin delete icon*/
   background-color: var(--component-background);
-  border: 0px;
   padding: 0px;
+  border: none;
 }
 
-.serviceFiles label,
+.serviceFilesUpload label,
 .serviceFilesEnd button,
 .serviceFilesEnd label {
   padding: 10px;
   align-items: center; /*align in y-direction, opposite to globals.css div*/
-  color: rgb(0, 0, 0);
+  color: var(--component-foreground);
   font-size: 16px;
   text-align: center;
   font-weight: bold;
 }
 
-.serviceFiles label {
-  margin-top: 15px;
+.serviceFilesUpload label {
   margin-bottom: 2px;
-  width: 40%; /*100%; <-- hmm why does it not stretch anymore?*/
+  width: 40%;
+  max-width: 200px;
   display: flex; /*must put hmm*/
   flex-direction: row;
   justify-content: center; /*align in x-direction*/
@@ -63,72 +90,23 @@
   border-radius: 5px;
   border: 1px solid;
   box-shadow: 0px 1px 1px 2px rgb(114, 114, 114);
-  cursor: pointer; /*from cursor arrow to cursor finger*/
 }
 
 .serviceFilesEnd button,
 .serviceFilesEnd label {
-  margin-top: 9px;
-  margin-bottom: 2px;
+  margin-bottom: 10px;
   border-radius: 10px;
   width: 39%; /*100%; <-- hmm why does it not stretch anymore?*/
-  height: 30%; /*force fit number*/
+  max-width: 200px;
+  max-height: 100px; /*force fit number*/
   border: none;
-  cursor: pointer; /*from cursor arrow to cursor finger*/
   background-color: #c1e9f5;
-  font-size: 16px;
-  box-shadow: 0px 0px 0px 0px var(--component-background);
-}
-
-.serviceFiles label:hover {
-  transform: translateY(1.5px);
-  box-shadow: 0px 0px 0px 0px var(--component-background);
-}
-
-.serviceFilesEnd button:hover,
-.serviceFilesEnd label:hover {
-  transform: translateY(0px);
-  background-color: #9fdef1;
-}
-
-.serviceFiles label:active,
-.serviceFiles button:hover {
-  opacity: 0.5; /*alternative to background-color change, if not, separate*/
-}
-
-.serviceFiles button:active {
-  opacity: 1; /*alternative to background-color change, if not, separate*/
-}
-
-.serviceFiles small {
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-
-.serviceRecordMain {
-  margin-top: 7%;
-  height: 40vh;
-  width: 60vh;
-  justify-content: start; /*make the mic div go up */
-  border: 1px dotted;
-}
-
-.serviceRecordMic,
-.serviceRecordPlay,
-.serviceRecordAudio {
-  margin-bottom: 5%;
-  height: 40%;
-  width: 100%;
-  flex-direction: row;
-  justify-content: space-evenly; /*align in x-direction*/
-  border: 1px dotted;
+  color: var(--component-foreground);
 }
 
 .serviceRecordMic button,
 .serviceRecordPlay button {
-  /*potential repeat from serviceFiles .label*/
   padding: 10px;
-  cursor: pointer; /*from cursor arrow to cursor finger*/
   display: flex;
   flex-direction: row;
   align-items: center; /*align in y-direction*/
@@ -160,15 +138,42 @@
 
 .serviceRecordAudio button {
   border: 0px;
-  background-color: white; /*var(--component-background);*/
+  background-color: var(--component-background);
 }
 
 .serviceRecordMic button:active,
 .serviceRecordAudio button:active,
-.serviceRecordAudio a {
-  opacity: 0.5;
+.serviceRecordAudio a,
+.serviceFilesUpload label:active,
+.serviceFilesUpload button:hover {
+  opacity: 0.7;
 }
 
-.serviceRecordAudio a:hover {
-  opacity: 1;
+.serviceRecordAudio a:hover,
+.serviceFiles button:active {
+  opacity: 1; /*alternative to background-color change, if not, separate*/
+}
+
+.serviceFilesUpload label:hover {
+  transform: translateY(1.5px);
+  box-shadow: 0px 0px 0px 0px var(--component-background);
+  cursor: pointer;
+}
+
+.serviceFilesEnd button:hover,
+.serviceFilesEnd label:hover {
+  background-color: #9fdef1;
+  cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+  .serviceFilesUpload label {
+    background-color: #666666;
+    box-shadow: 0px 1px 1px 2px rgb(219, 216, 216);
+  }
+
+  .serviceFilesEnd button,
+  .serviceFilesEnd label {
+    background-color:#03b9da;
+  }
 }
