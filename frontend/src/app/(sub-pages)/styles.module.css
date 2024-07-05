@@ -1,21 +1,14 @@
-.serviceBox {
-  padding: 5px 20px;
-  width: 85vw;
-  height: 70vh;
-  flex-direction: row;
-  align-items: start;
-  justify-content: space-between;
-  /*border: 1px dotted;*/
-}
-
 .serviceRecord,
 .serviceFiles {
   padding: 5px 20px;
   width: 32vw;
-  height: 85%;
+  height: auto;
   justify-content: left; /*vertically top*/
-  background-color: var(--component-background);
-  border: 3px solid;
+}
+
+.serviceFiles {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid;
   border-radius: 10px;
   border-color: var(--component-foreground);
 }
@@ -35,9 +28,13 @@
 .serviceFilesUpload,
 .serviceFilesEnd {
   padding-top: 5px;
-  height: 50%; /*no greater effect on the upload div, don't know why*/
+  height: auto; /*no greater effect on the upload div, don't know why*/
   width: 100%;
   justify-content: start; /*y-direction for upload, x-direction for record*/
+}
+
+.serviceFilesEnd {
+  margin-bottom: 6px;
 }
 
 .serviceRecordMic,
@@ -49,14 +46,13 @@
 }
 
 .serviceRecordMic,
-.serviceRecordPlay,
-.serviceFilesUpload {
+.serviceRecordPlay {
   border: 1px dotted;
 }
 
 .serviceFiles button {
   /*referring to the dustbin delete icon*/
-  background-color: var(--component-background);
+  background-color: none;
   padding: 0px;
   border: none;
 }
@@ -157,6 +153,14 @@
 .serviceFilesEnd label:hover {
   background-color: #9fdef1;
   cursor: pointer;
+}
+
+.transcribe {
+  width: 100vw; /*otherwise the width of div vbox is very small*/ /*how come 100% only works for upload*/
+  padding: 1vw 10vw;
+  flex-direction: column;
+  align-items: flex-start;
+  /*background-color: rgba(255, 255, 255, 0.2);*/
 }
 
 @media (prefers-color-scheme: dark) {

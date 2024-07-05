@@ -5,16 +5,21 @@ import styles from "../styles.module.css";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
-import LoadingSign from "../../(components)/loading";
+import CircularProgress from "@mui/material/CircularProgress";
+import { dummyText1 } from "@/app/constants";
 
 export default function UploadFile() {
-  const [theFile, chooseFile] = useState<File | null>(null); // good to use null?
-  const [isFileUploaded, updateUploadStatus] = useState<boolean>(false);
-  const [progress, setProgress] = useState(10);
+  const [selectedFile, chooseFile] = useState<File | null>(null); // good to use null?
+  const [isFileSent, setSentStatus] = useState<boolean>(false);
+  const [isTranscribeDone, setTranscribeDone] = useState<boolean>(false); // change to true to try out something
+  const [transcribedText, setTranscribedText] = useState<string>("");
+  const [transcribedFile, setTranscribedFile] = useState<string>("");
+  const [showComplete, setComplete] = useState<boolean>(false);
   const fileInputRef = useRef(null); // type-inferred
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Reselect same file issue
+    setComplete(false);
     if (!event.target.files) {
       return;
     }
@@ -31,87 +36,135 @@ export default function UploadFile() {
   };
 
   const uploadFunction = async () => {
-    updateUploadStatus(true); // update inputValue variable with event.target.value
-    // insert backend code (future)//
+    setSentStatus(true); // update inputValue variable with event.target.value
+    setTranscribeDone(false); // always clear the transcribe done status prior to sending to backend [Will imm. update?]
+    setTranscribedFile("");
+    // insert backend code (future). For now://
+    console.log("Backend Transcription in progress");
     setTimeout(() => {
+      let backStage = dummyText1; // backstage will receive the value return by the backend service?
+      setTranscribedText(backStage);
+      setTranscribeDone(true);
+      if (!selectedFile) {
+        throw "Error: selected file is null";
+      }
+      setTranscribedFile(selectedFile.name);
       chooseFile(null);
-      updateUploadStatus(false);
-    }, 7000); // 7 seconds
+      setSentStatus(false);
+      setComplete(true);
+      setTimeout(() => {
+        setComplete(false);
+      }, 4000);
+    }, 5000); // 5 seconds
   };
 
   const truncateName = (fileName: string) => {
-    const length = fileName.length; // type-inferred
-    const frontPart = fileName.substring(0, 20); // type-inferred
-    const backPart = fileName.substring(length - 8, length); // type-inferred
+    // truncate only if >41 characters
+    const length: number = fileName.length;
+    if (fileName.length < 42) {
+      return fileName;
+    }
+    const frontPart = fileName.substring(0, 30); // 30 characters
+    const backPart = fileName.substring(length - 8, length); // 8 characters
     return frontPart + "..." + backPart;
   };
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= 100 ? 0 : prevProgress + 10
-      );
-    }, 1000);
-    return () => {
-      clearInterval(timer);
-    };
-  });
+  return ( // hard code the height of division (not ideal)
+    <>
+      <div style={{ height: "16em", justifyContent: "flex-start" }}>
+        <div className={styles.serviceFiles}>
+          <hgroup>
+            <h2>Select files</h2>
+            <p>Choose 1 file only</p>
+          </hgroup>
+          <div className={styles.serviceFilesContent}>
+            <div className={styles.serviceFilesUpload}>
+              <label htmlFor="getAudio">
+                <FileUploadIcon style={{ fontSize: 30 }} />
+                Audio
+              </label>
+              <input
+                id="getAudio"
+                type="file"
+                accept="audio/*, .mp4"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+                ref={fileInputRef}
+              />
 
-  return (
-    <div className={styles.serviceFilesContent}>
-      <div className={styles.serviceFilesUpload}>
-      <label htmlFor="getAudio">
-        <FileUploadIcon style={{ fontSize: 30 }} />
-        Audio
-      </label>
-      <input
-        id="getAudio"
-        type="file"
-        accept="audio/*, .mp4"
-        onChange={handleFileChange}
-        style={{ display: "none" }}
-        ref={fileInputRef}
-      />
-      {theFile ? (
-        <p>
-          <small>
-            {truncateName(theFile.name)}
-            <button onClick={deleteFile}>
-              <DeleteIcon style={{ color: "#789DE5" }} />
-            </button>
-          </small>
-        </p>
-      ) : (
-        <p>
-          <small>No file chosen</small>
-        </p>
-      )}
-</div>
-
-      
-        {theFile && !isFileUploaded && (
-          <div className={styles.serviceFilesEnd}>
-            <button onClick={uploadFunction}>Confirm</button>
-            <label htmlFor="getAudio">Reselect</label>
+              {selectedFile ? (
+                <div style={{ height: "5vh" }}>
+                  <p>
+                    <small style={{ display: "flex", alignItems: "center" }}>
+                      {truncateName(selectedFile.name)}
+                      {!isFileSent && (
+                        <button onClick={deleteFile}>
+                          <DeleteIcon style={{ color: "#789DE5" }} />
+                        </button>
+                      )}
+                    </small>
+                  </p>
+                </div>
+              ) : (
+                !showComplete && (
+                  <div style={{ height: "5vh" }}>
+                    <p>
+                      <small>No file chosen</small>
+                    </p>
+                  </div>
+                )
+              )}
             </div>
-        )}
-        {isFileUploaded && (
-          <div className={styles.serviceFilesEnd}>
-          <p style={{ alignItems: "center" }}>
-            {progress != 100 ? (
-              <LoadingSign value={progress} />
-            ) : (
-              <small>
-                <CheckCircleOutlineIcon
-                  style={{ alignItems: "center", color: "#00F01C" }}
-                />
-                File Sent!
-              </small>
+
+            {selectedFile && !isFileSent && (
+              <div className={styles.serviceFilesEnd}>
+                <button onClick={uploadFunction}>Confirm</button>
+                <label htmlFor="getAudio">Reselect</label>
+              </div>
             )}
-          </p>
+            {(isFileSent || isTranscribeDone) && (
+              <div className={styles.serviceFilesEnd}>
+                {!isTranscribeDone ? (
+                  <p
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span>
+                      <CircularProgress />
+                    </span>
+                    Transcribing...
+                  </p>
+                ) : ((showComplete) &&
+                  <p style={{ display: "flex", alignItems: "center" }}>
+                    <CheckCircleOutlineIcon style={{ color: "#00F01C" }} />
+                    Complete!
+                  </p>
+                )}
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
-    
+      <br></br>
+      <hr style={{ border: "1px dashed", color: "black", width: "80%" }}></hr>
+      <div className={styles.transcribe}>
+        {transcribedFile ? (
+          <h4>
+            Transcribed Text -{" "}
+            <small>
+              <small>{`${transcribedFile}`}</small>
+            </small>
+          </h4>
+        ) : (
+          <h4>Transcribed Text</h4>
+        )}
+        <p>
+          {isTranscribeDone ? transcribedText : "No file has been transcribed"}
+        </p>
+      </div>
+    </>
   );
 }

@@ -7,6 +7,8 @@ import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import DownloadIcon from "@mui/icons-material/Download";
+import { dummyText1 } from "@/app/constants";
+
 
 interface AudioProps {
   downloadType: string;
@@ -28,12 +30,12 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const PAUSE: number = 2; // recording paused
   const mimeTypeUsed: string = "audio/webm";
 
-  const [permission, setPermission] = useState<boolean>(false);
   const [recordingStatus, setRecordingStatus] = useState<number>(INACTIVE);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const [audioChunks, setAudioChunks] = useState<any[]>([]); // array to store parts of the generated recording
   const [audio, setAudio] = useState<string>("");
+  const [transcribedText, setTranscribedText] = useState<string>("");
 
   // Functions //
   // Time
@@ -93,7 +95,6 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
             audio: true,
             video: false,
           }); // returns a promise that resolves successfully if the user permits access to the media.
-          setPermission(true);
           setStream(mediaStream); // stream state variable = microphone obtained?
           localStream = mediaStream;
           //hasPermissionAsked = true;
@@ -134,7 +135,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     mediaRecorder.current.ondataavailable = (event: any) => {
       if (typeof event.data === "undefined") return;
       if (event.data.size === 0) return;
-      localAudioChunks.push(event.data);
+      localAudioChunks.push(event.data); // to replace code to send to backend; real-time send back or finish recording then send back?
     };
     setAudioChunks(localAudioChunks);
   };
@@ -162,7 +163,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       alert("Please allow microphone access before continuing");
       return;
     }
-    mediaRecorder.current.resume();
+    mediaRecorder.current.resume(); // how come continue no need audioChunks array...
     setRecordingStatus(ACTIVE);
     startTiming();
   };
@@ -184,6 +185,8 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       const audioBlob = new Blob(audioChunks, { type: props.downloadType });
       const audioUrl = URL.createObjectURL(audioBlob);
       setAudio(audioUrl);
+      let backStage = dummyText1;
+      setTranscribedText(dummyText1);
       setAudioChunks([]);
     };
   };
@@ -283,8 +286,18 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
           </button>
         </div>
       ) : null}
+      <br></br>
+      <hr style={{ border: "1px dashed", color: "black", width: "80vw" }}></hr>
+      <div className={styles.transcribe}>
+          <h4>
+            Transcribed Text:
+          </h4>
+        <p>
+          {audio ? transcribedText : "No file has been transcribed"}
+        </p>
+      </div>
     </div>
   );
 };
-
+// WHY HORIZONTAL LINE HERE NEED TO USE VW AND NOT %?? (same as the .transcribe div)
 export default AudioRecorder;

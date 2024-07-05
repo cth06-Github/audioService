@@ -23,7 +23,8 @@ header {
 }
 
 hgroup {
-  height: 20%;
+  margin-bottom: 1.5vh;
+  height: auto;
   justify-content: start;
 }
 
@@ -35,6 +36,10 @@ h1 { /*reserved for header title*/
 h3 {
   font-size: 1.7em;
   font-weight: normal; /*not "none"*/
+}
+
+h4 {
+  font-size: 1.5em;
 }
 
 button {

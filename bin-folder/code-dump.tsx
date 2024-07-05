@@ -17,6 +17,18 @@ export async function middleware(request: NextRequest) {
 }
 */
 
+// uploadFile.tsx // (for loading progres useEffect)
+/*useEffect(() => {
+  const timer = setInterval(() => {
+    setProgress((prevProgress) =>
+      prevProgress >= 100 ? 0 : prevProgress + 10
+    );
+  }, 1000);
+  return () => {
+    clearInterval(timer);
+  };
+});*/
+
 // lib.ts //
 /*export async function decrypt(input: string): Promise<any> { // input: JSON Web Token value (encoded)
   const { payload } = await jwtVerify(input, key, { // Key to verify the JWT with
