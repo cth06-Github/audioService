@@ -11,25 +11,51 @@
   height: 70vh;
   flex-direction: row;
   align-items: start;
-  justify-content: space-between;
+  justify-content: space-around;
   /*border: 1px dotted;*/
 }
 
-.serviceRecord,
-.serviceFiles {
+.serviceButton {
   padding: 5px 20px;
   width: 32vw;
   height: 85%;
   justify-content: left; /*vertically top*/
-  background-color: var(--component-background);
+  background: linear-gradient( /*linear-gradient(angle, color-stop1, color-stop2);*/
+      145deg,
+      rgba(161, 219, 247, 0),  
+      rgba(161, 219, 247, 0),  
+      rgba(161, 219, 247, 0.2), 
+      rgba(161, 219, 247, 0.5), 
+      rgba(161, 219, 247), 
+      rgb(161, 219, 247)
+    );     
   border: 3px solid;
   border-radius: 10px;
   border-color: var(--component-foreground);
 }
 
-/*
-@media (prefers-color-scheme: dark) {
-  .<selector> <tag> {
-  }
 
-}*/
+.serviceButton:hover {
+  opacity: 0.7;
+}
+
+.serviceButton:active {
+  opacity: 1; /*alternative to background-color change, if not, separate*/
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .serviceButton {
+  background: linear-gradient( /*linear-gradient(angle, color-stop1, color-stop2);*/
+      145deg,
+      rgba(94, 36, 8, 0),  
+      rgba(94, 36, 8, 0),  
+      rgba(94, 36, 8, 0.2), 
+      rgba(94, 36, 8, 0.5), 
+      rgba(94, 36, 8), 
+      rgb(94, 36, 8) /*sounds like a bad idea to just opp.*/
+    );     
+  border-color: var(--component-foreground);
+}
+
+}

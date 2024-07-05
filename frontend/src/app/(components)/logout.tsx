@@ -1,4 +1,4 @@
-"use client";
+"use client"; // must for interactivitiy (onClick)
 import LogoutIcon from "@mui/icons-material/Logout";
 import { logout } from "../lib";
 

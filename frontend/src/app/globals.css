@@ -36,6 +36,10 @@ button {
   cursor: pointer;
 }
 
+p {
+  font-size: 1.7em;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
