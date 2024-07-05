@@ -1,6 +1,5 @@
 import styles from "../styles.module.css";
-import Logout from "../../(components)/logout";
-import AudioRecorder from "../record/recordaudio";
+import Header from "../../(components)/header";
 import UploadFile from "./uploadfile";
 
 // include back button (components)
@@ -10,16 +9,13 @@ import UploadFile from "./uploadfile";
 // aiyah just put the transcribed test down below. DON't animate the step-by-step. The "transcribing..." & file name on the select files only finish when the output finish UNLESS got time and want to break it up
 export default async function UploadPage() {
   return (
-    <div className={styles.main}>
-      <header>
-        <div className={styles.top}>
-          <h1>Upload</h1>
-          <Logout />
-        </div>
-        <p>Transcribe existing audio</p>
-      </header>
-
-        <div className={styles.serviceFiles}>
+    <div>
+      <Header
+      heading = "Upload"
+      description = "Transcribe existing audio"
+      hasHome = {true}
+      />
+       <div className={styles.serviceFiles}>
           <hgroup>
             <h2>Select files</h2>
             <p>1 file only</p>

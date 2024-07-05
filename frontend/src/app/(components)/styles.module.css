@@ -1,0 +1,24 @@
+.top button {
+    position: absolute;
+    padding: 5px;
+    top: 40px;    
+  }
+
+.login button {
+    right: 7vw;
+}
+
+.home button {
+    left: 13vw;
+    background-color: none;
+    border: 1px solid;
+    border-radius: 50%;
+}
+
+.home button:hover {
+    opacity: 0.5;
+ }
+  
+.home button:active {
+    opacity: 1; /*alternative to background-color change, if not, separate*/
+}

@@ -1,5 +1,5 @@
 import styles from "../styles.module.css";
-import Logout from "../../(components)/logout";
+import Header from "../../(components)/header";
 import AudioRecorder from "./recordaudio";
 
 // include back button (components) and all the header stuff said in HomePage
@@ -9,14 +9,11 @@ import AudioRecorder from "./recordaudio";
 export default async function RecordPage() {
   return (
     <div className={styles.main}>
-      <header>
-        <div className={styles.top}>
-          <h1>Record</h1>
-          <Logout />
-        </div>
-        <p>Real-time Transcription</p>
-      </header>
-
+      <Header
+      heading = "Record"
+      description = "Real-time Transcription"
+      hasHome = {true}
+      />
         <div className={styles.serviceRecord}>
           <AudioRecorder downloadType="audio/mpeg"></AudioRecorder>
         </div>

@@ -32,12 +32,13 @@ h1 { /*reserved for header title*/
   font-weight: bold;
 }
 
-button {
-  cursor: pointer;
+h3 {
+  font-size: 1.7em;
+  font-weight: normal; /*not "none"*/
 }
 
-p {
-  font-size: 1.7em;
+button {
+  cursor: pointer;
 }
 
 @media (prefers-color-scheme: dark) {
