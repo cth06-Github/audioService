@@ -35,7 +35,16 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const [audioChunks, setAudioChunks] = useState<any[]>([]); // array to store parts of the generated recording
   const [audio, setAudio] = useState<string>("");
-  const [transcribedText, setTranscribedText] = useState<string>("");
+  const transcribedContiText = useRef<String>("");
+
+  // Simulation purpose // 
+  function stringify(audioChunks: any[]) {
+    let toReturn: string = "";
+    for (let i = 0; i < audioChunks.length; i++) {
+      toReturn += `Blob${i} `;
+    } 
+    return toReturn;
+  }
 
   // Functions //
   // Time
@@ -120,22 +129,20 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     mediaRecorder.current = media;
 
     // start Recording
-    if (
-      !mediaRecorder.current ||
-      mediaRecorder.current.stream.active == false
-    ) {
-      return;
-    }
-    mediaRecorder.current.start();
+    transcribedContiText.current = "";
+    mediaRecorder.current.start(1000); //every 1s, .ondataavailale Event is fired
     setRecordingStatus(ACTIVE);
     startTiming();
 
     let localAudioChunks: any[] = [];
 
     mediaRecorder.current.ondataavailable = (event: any) => {
+      console.log("ondataavailable run")
       if (typeof event.data === "undefined") return;
       if (event.data.size === 0) return;
       localAudioChunks.push(event.data); // to replace code to send to backend; real-time send back or finish recording then send back?
+      transcribedContiText.current = stringify(localAudioChunks);
+      console.log("TTT " + transcribedContiText.current); 
     };
     setAudioChunks(localAudioChunks);
   };
@@ -182,11 +189,11 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
 
     stopTiming();
     mediaRecorder.current.onstop = () => {
+      console.log(audioChunks);
       const audioBlob = new Blob(audioChunks, { type: props.downloadType });
       const audioUrl = URL.createObjectURL(audioBlob);
       setAudio(audioUrl);
-      let backStage = dummyText1;
-      setTranscribedText(dummyText1);
+      transcribedContiText.current = transcribedContiText.current + dummyText1;
       setAudioChunks([]);
     };
   };
@@ -202,7 +209,8 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
 
   return (
     // beware of repeating components just beacuse the style change...
-    <div className={styles.serviceRecordContent}>
+    <div className={styles.serviceRecord}>
+      <div className={styles.serviceRecordContent}>
       {recordingStatus === ACTIVE ? ( // recording status
         <div className={styles.serviceRecordPlay}>
           <div
@@ -286,18 +294,18 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
           </button>
         </div>
       ) : null}
+      </div>
       <br></br>
-      <hr style={{ border: "1px dashed", color: "black", width: "80vw" }}></hr>
+      <hr ></hr>
       <div className={styles.transcribe}>
           <h4>
             Transcribed Text:
           </h4>
         <p>
-          {audio ? transcribedText : "No file has been transcribed"}
+          {transcribedContiText.current ? transcribedContiText.current : "No Text Transcribed"}
         </p>
       </div>
     </div>
   );
 };
-// WHY HORIZONTAL LINE HERE NEED TO USE VW AND NOT %?? (same as the .transcribe div)
 export default AudioRecorder;

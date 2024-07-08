@@ -8,15 +8,14 @@ import AudioRecorder from "./recordaudio";
 // transcription text shown should be able to show and populate the entire site and you know, push the footer down
 export default async function RecordPage() {
   return (
-    <div className={styles.main}>
+    <div>
       <Header
       heading = "Record"
       description = "Real-time Transcription"
       hasHome = {true}
       />
-        <div className={styles.serviceRecord}>
+        
           <AudioRecorder downloadType="audio/mpeg"></AudioRecorder>
-        </div>
 
         <div>
             <p>transcrbed text down there</p>

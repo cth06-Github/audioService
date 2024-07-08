@@ -46,6 +46,12 @@ button {
   cursor: pointer;
 }
 
+hr {
+  border: 1px dashed;
+  color: rgb(var(--foreground-rgb));
+  width: 80vw; /*80% does not work for record*/
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;

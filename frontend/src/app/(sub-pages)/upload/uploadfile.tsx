@@ -149,7 +149,7 @@ export default function UploadFile() {
         </div>
       </div>
       <br></br>
-      <hr style={{ border: "1px dashed", color: "black", width: "80%" }}></hr>
+      <hr></hr>
       <div className={styles.transcribe}>
         {transcribedFile ? (
           <h4>

@@ -6,6 +6,7 @@
   justify-content: left; /*vertically top*/
 }
 
+
 .serviceFiles {
   background-color: rgba(255, 255, 255, 0.2);
   border: 2px solid;
@@ -13,7 +14,14 @@
   border-color: var(--component-foreground);
 }
 
-.serviceRecordContent,
+.serviceRecordContent {
+  height: 30vh;
+  width: 100%;
+  justify-content: start; /*make the mic div go up */
+  /*border: 1px dotted; 
+  border-color: rgb(247, 9, 9);*/
+}
+
 .serviceFilesContent {
   height: 100%;
   width: 100%;
@@ -22,37 +30,48 @@
   border-color: rgb(247, 9, 9);*/
 }
 
+
 .serviceRecordMic,
 .serviceRecordPlay,
 .serviceRecordAudio,
 .serviceFilesUpload,
 .serviceFilesEnd {
-  padding-top: 5px;
+  padding: 5px 0px;
   height: auto; /*no greater effect on the upload div, don't know why*/
   width: 100%;
-  justify-content: start; /*y-direction for upload, x-direction for record*/
+  justify-content: center; /*y-direction for upload, x-direction for record*/
 }
+
+.serviceRecordMic,
+.serviceRecordPlay {
+  height: 50%;
+  flex-direction: row;
+  justify-content: space-evenly; /*align in x-direction for record*/
+  /*border: 1px solid;*/
+}
+
+
+.serviceRecordAudio {
+  height: 50%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.serviceRecordAudio audio {
+  padding: 2px; /*to centralise...*/
+  height: 10vh;
+  /*border: 1px solid;*/
+}
+
 
 .serviceFilesEnd {
   margin-bottom: 6px;
 }
 
-.serviceRecordMic,
-.serviceRecordPlay,
-.serviceRecordAudio {
-  flex-direction: row;
-  justify-content: space-evenly; /*align in x-direction for record*/
-  align-items: start; /*y-direction for record*/
-}
-
-.serviceRecordMic,
-.serviceRecordPlay {
-  border: 1px dotted;
-}
-
-.serviceFiles button {
+.serviceFiles button, .serviceRecordAudio button {
   /*referring to the dustbin delete icon*/
-  background-color: none;
+  background-color: transparent; /*not none*/
   padding: 0px;
   border: none;
 }
@@ -123,11 +142,6 @@
 .serviceRecordMic button:hover {
   /*background-color: #ff6464;*/
   transform: scale(1.05);
-}
-
-.serviceRecordAudio button {
-  border: 0px;
-  background-color: var(--component-background);
 }
 
 .serviceRecordMic button:active,
