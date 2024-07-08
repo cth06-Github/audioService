@@ -11,6 +11,7 @@ export function middleware(request: NextRequest) {
   }
 
   // User is logged in but access login page without logging out --> redirect to /upload
+  
   if (pathname === "/login" && request.cookies.get("session")) { /// nened to change
     return NextResponse.redirect(new URL("/home", request.url));
   }

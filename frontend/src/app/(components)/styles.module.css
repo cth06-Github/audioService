@@ -15,6 +15,12 @@
     border-radius: 50%;
 }
 
+.home p {
+    position: absolute;
+    left: 23vw;
+    top: 55px; 
+}
+
 .home button:hover {
     opacity: 0.5;
  }

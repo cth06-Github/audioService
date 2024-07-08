@@ -1,13 +1,16 @@
-import styles from "./styles.module.css";
+"use client"
 import Login from "./login";
+import { useRouter } from "next/navigation";
 
-export default async function LoginPage() {
+export default function LoginPage() {
+
+  const router = useRouter();
   return (
     <div>
       <header>
         <h1>Transcription Service</h1>
       </header>
-      <Login></Login>
+      <Login/>
     </div>
   );
 }

@@ -1,4 +1,75 @@
 /* POTENTIALLY NEED IT */
+
+//login.tsx// --- ATTEMPTS of useContext
+/*const [usernameInput, setUsernameInput] = useState<string>("");
+//const {username, setUsername} = useUserContext();
+console.log(usernameInput)
+
+const handler = (event: any) => {
+ // setUsername(event.target.value)
+  setUsernameInput(event.target.value)
+}*/
+
+/*interface UserType {
+  username: string;
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
+
+      const [username, setUsername] = useState<string>(""); // actually can Boolean
+
+}*/
+/* no footer       <footer>
+        <p>to insert footer?</p>
+      </footer>*/
+
+
+// authcontext.tsx //
+/*
+// Trick to catch errors? //
+export const useAuthContext = () => {
+    const localAuthContext = useContext(AuthContext);
+    if (localAuthContext === undefined) {
+      throw new Error('useAuthContext must be inside an AuthProvider');
+    }
+    return localAuthContext; // return useContext(AuthContext)
+}; */
+/*"use client"; // hmm
+
+import { useState, createContext, useContext } from 'react';
+
+interface ContextAuthType {
+    authStatus: number;
+    updateAuthStatus: React.Dispatch<React.SetStateAction<number>>;
+    INVALID: number;
+    AUTHENTICATED: number;
+}
+  
+const AuthContext = createContext<ContextAuthType | undefined>(undefined);
+
+export const AuthProvider: React.FC<any> = ({children}) => { // not sure what type
+    const INVALID: number = 0; // wrong username or password filled in
+    const AUTHENTICATED: number = 1; // correct details
+    const [authStatus, updateAuthStatus] = useState<number>(INVALID); // actually can Boolean
+  
+    return (
+        <AuthContext.Provider value={{authStatus, updateAuthStatus, INVALID, AUTHENTICATED}}>
+            {children}
+        </AuthContext.Provider>)
+} */
+
+
+/*
+const value = { // global. Store in Object
+    authStatus,
+    updateAuthStatus,
+    AUTHENTICATED,
+    INVALID,
+    }
+
+export function useAuth() { // hook?
+    return useContext(AuthContext);
+}
+*/
+
 // layout.tsx // 
 /*
 export const metadata = {
