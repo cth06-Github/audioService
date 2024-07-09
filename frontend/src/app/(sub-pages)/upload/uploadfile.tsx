@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import styles from "../styles.module.css";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import DeleteIcon from "@mui/icons-material/Delete";
 import CircularProgress from "@mui/material/CircularProgress";
 import { dummyText1 } from "@/app/constants";
+import TranscriptBox from "@/app/(components)/transcript-box";
+import { Delete } from "@/app/(components)/button-common";
+
 
 export default function UploadFile() {
   const [selectedFile, chooseFile] = useState<File | null>(null); // good to use null?
@@ -71,7 +73,7 @@ export default function UploadFile() {
 
   return ( // hard code the height of division (not ideal)
     <>
-      <div style={{ height: "16em", justifyContent: "flex-start" }}>
+      <div>
         <div className={styles.serviceFiles}>
           <hgroup>
             <h2>Select files</h2>
@@ -98,9 +100,7 @@ export default function UploadFile() {
                     <small style={{ display: "flex", alignItems: "center" }}>
                       {truncateName(selectedFile.name)}
                       {!isFileSent && (
-                        <button onClick={deleteFile}>
-                          <DeleteIcon style={{ color: "#789DE5" }} />
-                        </button>
+                        <Delete onClick={deleteFile}/>
                       )}
                     </small>
                   </p>
@@ -149,22 +149,7 @@ export default function UploadFile() {
         </div>
       </div>
       <br></br>
-      <hr></hr>
-      <div className={styles.transcribe}>
-        {transcribedFile ? (
-          <h4>
-            Transcribed Text -{" "}
-            <small>
-              <small>{`${transcribedFile}`}</small>
-            </small>
-          </h4>
-        ) : (
-          <h4>Transcribed Text</h4>
-        )}
-        <p>
-          {isTranscribeDone ? transcribedText : "No file has been transcribed"}
-        </p>
-      </div>
+      <TranscriptBox transcript = {transcribedText} withInfo = {transcribedFile} deleteFunc={() => {setTranscribedText(""); setTranscribedFile("")}}/>
     </>
   );
 }

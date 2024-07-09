@@ -1,7 +1,8 @@
+/* Headers-related components */
 .top button {
     position: absolute;
     padding: 5px;
-    top: 40px;    
+    top: 35px;    
   }
 
 .login button {
@@ -18,7 +19,7 @@
 .home p {
     position: absolute;
     left: 23vw;
-    top: 55px; 
+    top: 50px; 
 }
 
 .home button:hover {
@@ -28,3 +29,16 @@
 .home button:active {
     opacity: 1; /*alternative to background-color change, if not, separate*/
 }
+
+/*Trancribe Box Component*/
+.transcribe {
+    width: 80vw; /*otherwise the width of div vbox is very small*/ /*how come 100% only works for upload*/
+    height: 40vh;
+    padding: 1vh 1vw;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border: 1px dashed;
+    overflow-y: auto;
+    /*background-color: rgba(255, 255, 255, 0.2);*/
+  }

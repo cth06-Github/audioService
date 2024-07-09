@@ -8,6 +8,7 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import DownloadIcon from "@mui/icons-material/Download";
 import { dummyText1 } from "@/app/constants";
+import TranscriptBox from "@/app/(components)/transcript-box";
 
 
 interface AudioProps {
@@ -35,7 +36,8 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const [audioChunks, setAudioChunks] = useState<any[]>([]); // array to store parts of the generated recording
   const [audio, setAudio] = useState<string>("");
-  const transcribedContiText = useRef<String>("");
+  const transcribedContiText = useRef<string>("");
+  const [finalTranscribedText, setFinalTranscribedText] = useState<string>("");
 
   // Simulation purpose // 
   function stringify(audioChunks: any[]) {
@@ -143,6 +145,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       localAudioChunks.push(event.data); // to replace code to send to backend; real-time send back or finish recording then send back?
       transcribedContiText.current = stringify(localAudioChunks);
       console.log("TTT " + transcribedContiText.current); 
+      setFinalTranscribedText(transcribedContiText.current);
     };
     setAudioChunks(localAudioChunks);
   };
@@ -195,6 +198,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       setAudio(audioUrl);
       transcribedContiText.current = transcribedContiText.current + dummyText1;
       setAudioChunks([]);
+      setFinalTranscribedText(transcribedContiText.current);
     };
   };
 
@@ -206,6 +210,15 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       clearInterval(intervalRef.current);
     };
   }, [running]);
+
+const deleteTranscript = () => {
+  if (recordingStatus !== INACTIVE) {
+    alert("Recording in progress. Please stop recording before deleting transcription");
+    return;
+  }
+  transcribedContiText.current = "";
+  setFinalTranscribedText("");
+}
 
   return (
     // beware of repeating components just beacuse the style change...
@@ -296,7 +309,14 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       ) : null}
       </div>
       <br></br>
-      <hr ></hr>
+      <TranscriptBox transcript = {finalTranscribedText} deleteFunc={deleteTranscript} />
+
+    </div>
+  );
+};
+export default AudioRecorder;
+
+/*
       <div className={styles.transcribe}>
           <h4>
             Transcribed Text:
@@ -304,8 +324,4 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
         <p>
           {transcribedContiText.current ? transcribedContiText.current : "No Text Transcribed"}
         </p>
-      </div>
-    </div>
-  );
-};
-export default AudioRecorder;
+      </div>*/

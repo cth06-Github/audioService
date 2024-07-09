@@ -18,8 +18,8 @@ div, header, hgroup { /*main div; only 1 header*/
 }
 
 header { 
-  padding: 1em;
-  height: 25vh;
+  padding: 10px;
+  height: 20vh;
 }
 
 hgroup {
@@ -46,11 +46,12 @@ button {
   cursor: pointer;
 }
 
+/*
 hr {
   border: 1px dashed;
   color: rgb(var(--foreground-rgb));
-  width: 80vw; /*80% does not work for record*/
-}
+  width: 80vw; /*80% does not work for record
+}*/
 
 @media (prefers-color-scheme: dark) {
   :root {

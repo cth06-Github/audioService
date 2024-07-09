@@ -8,17 +8,16 @@
 .serviceBox {
   padding: 5px 20px;
   width: 85vw;
-  height: 70vh;
+  height: 80vh;
   flex-direction: row;
-  align-items: start;
+  align-items: center;
   justify-content: space-around;
-  /*border: 1px dotted;*/
 }
 
 .serviceButton {
   padding: 5px 20px;
   width: 32vw;
-  height: 85%;
+  height: 60vh;
   justify-content: left; /*vertically top*/
   background: linear-gradient(
     /*linear-gradient(angle, color-stop1, color-stop2);*/ 145deg,
