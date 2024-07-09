@@ -13,7 +13,12 @@ export async function middleware(request: NextRequest) {
 
     try {
       // force generate cookie. Not sure if...there's a certain format for JWT hackers can emulate.
-      await getSession();
+      const session = await getSession();
+      if (!session) {
+        return new Response("Session Expired. Error 401: Unauthorized Access", {
+          status: 401,
+        });
+      }
     } catch {
       return new Response("Error 401: Unauthorized Access", { status: 401 });
     }
@@ -22,7 +27,13 @@ export async function middleware(request: NextRequest) {
   // User is logged in but access login page without logging out --> redirect to /home
   try {
     if (pathname === "/login" && request.cookies.get("session")) {
-      await getSession(); // if can, means valid user // WAIT NO IT CANNOT READ NULL VALUES.
+      const session = await getSession(); // if can, means valid user
+      if (!session) {
+        return new Response(
+          "Session Expired. Delete cookies and login the proper way. Error 401: Unauthorized Access",
+          { status: 401 }
+        );
+      }
       return NextResponse.redirect(new URL("/home", request.url));
     }
   } catch {

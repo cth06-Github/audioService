@@ -8,13 +8,13 @@ export default async function UploadPage() {
   return (
     <div>
       <Header
-      heading = "Upload"
-      description = "Transcribe existing audio"
-      hasHome = {true}
-      user = {value}
+        heading="Upload"
+        description="Transcribe existing audio"
+        hasHome={true}
+        user={value}
       />
-          <UploadFile></UploadFile>
-          <br></br>
+      <UploadFile></UploadFile>
+      <br></br>
     </div>
   );
 }

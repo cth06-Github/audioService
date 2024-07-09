@@ -5,7 +5,6 @@ import { INVALID, VALID } from "./constants";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { NextResponse, NextRequest } from "next/server";
 
 const secretKey = "secret"; // should we try environment variables?
 const key = new TextEncoder().encode(secretKey); // encode() ---> ASCII codepoint
@@ -68,23 +67,25 @@ export async function logout() {
   redirect("/login");
 }
 
-
-export async function decrypt(input: string): Promise<any> { // input: JSON Web Token value (encoded)
-  const { payload } = await jwtVerify(input, key, { // Key to verify the JWT with
+export async function decrypt(input: string): Promise<any> {
+  // input: JSON Web Token value (encoded)
+  const { payload } = await jwtVerify(input, key, {
+    // Key to verify the JWT with
     algorithms: ["HS256"],
   });
-  console.log(payload)
+  console.log(payload);
   return payload; // payload of JWT...that means username info also?
 }
 
-  
-export async function getSession() { // similar to nextJS example (in app/page.tsx)
-    const session = cookies().get("session")?.value;
-    if (!session) return null;
-    return await decrypt(session); // why need to decrypt?
+export async function getSession() {
+  // similar to nextJS example (in app/page.tsx)
+  const session = cookies().get("session")?.value;
+  if (!session) return null;
+  return await decrypt(session); // why need to decrypt?
 }
 
-export async function getUsername() { // similar to nextJS example (in app/page.tsx)
+export async function getUsername() {
+  // similar to nextJS example (in app/page.tsx)
   const decrypted = await getSession();
   return decrypted.user.username;
 }

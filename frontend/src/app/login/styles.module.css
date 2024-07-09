@@ -6,7 +6,8 @@
   border-radius: 10px; /*var(--default-border-radius); <--- hmm why cannot*/
 }
 
-.loginBox, .error {
+.loginBox,
+.error {
   align-items: stretch; /*also helps in stretching the input box*/
   width: 40vw;
 }
@@ -16,7 +17,8 @@
   margin-bottom: 1em;
 }
 
-.loginBox label, .loginButton button {
+.loginBox label,
+.loginButton button {
   font-weight: bold;
 }
 
@@ -40,10 +42,10 @@
 
 @media (prefers-color-scheme: dark) {
   .loginBox input::placeholder {
-    color:#eff0f0;
+    color: #eff0f0;
   }
 
   .loginButton button {
-    background-color:#03b9da;
+    background-color: #03b9da;
   }
 }
