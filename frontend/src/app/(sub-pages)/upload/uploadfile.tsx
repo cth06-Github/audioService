@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import styles from "../styles.module.css";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -17,32 +17,39 @@ export default function UploadFile() {
   const [transcribedText, setTranscribedText] = useState<string>("");
   const [transcribedFile, setTranscribedFile] = useState<string>("");
   const [showComplete, setComplete] = useState<boolean>(false);
-  const fileInputRef = useRef(null); // type-inferred
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Reselect same file issue
-    setComplete(false);
+    setComplete(false); // completion logo
+    console.log(event.target.files)
     if (!event.target.files) {
       return;
     }
     chooseFile(event.target.files[0]);
+    
   };
 
+  console.log("hmm")
+  console.log(selectedFile)
+
   const deleteFile = () => {
-    // need to think of a way to clear the input event listner...
+    const input = document.getElementById('getAudio') as HTMLInputElement // type assertion. if there is error, probably the id value of the input tag is written wrongly
+    input.value = ""; // input.files will become FileList {length: 0}
     chooseFile(null);
-    if (!fileInputRef.current) {
-      return;
-    }
-    fileInputRef.current = null;
+    console.log(input.files)
   };
 
   const uploadFunction = async () => {
-    setSentStatus(true); // update inputValue variable with event.target.value
     setTranscribeDone(false); // always clear the transcribe done status prior to sending to backend [Will imm. update?]
     setTranscribedFile("");
+
     // insert backend code (future). For now://
-    console.log("Backend Transcription in progress");
+    console.log("Send file to backend for transcription"); 
+    setSentStatus(true); // when done sending to backend 
+    const input = document.getElementById('getAudio') as HTMLInputElement // type assertion. if there is error, probably the id value of the input tag is written wrongly
+    input.value = "";  
+    
+    console.log("Backend Transcription in progress"); 
     setTimeout(() => {
       let backStage = dummyText1; // backstage will receive the value return by the backend service?
       setTranscribedText(backStage);
@@ -91,7 +98,6 @@ export default function UploadFile() {
                 accept="audio/*, .mp4"
                 onChange={handleFileChange}
                 style={{ display: "none" }}
-                ref={fileInputRef}
               />
 
               {selectedFile ? (

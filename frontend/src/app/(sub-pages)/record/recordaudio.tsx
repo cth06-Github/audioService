@@ -132,6 +132,12 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
 
     // start Recording
     transcribedContiText.current = "";
+
+    if (finalTranscribedText) {
+      alert("Previous Transcribed text will be cleared");
+      setFinalTranscribedText(""); //hmmm
+    }
+    
     mediaRecorder.current.start(1000); //every 1s, .ondataavailale Event is fired
     setRecordingStatus(ACTIVE);
     startTiming();
