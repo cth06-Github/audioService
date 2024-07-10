@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { getSession } from "./app/lib.ts";
+import { getSession } from "./app/lib-authen.ts";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

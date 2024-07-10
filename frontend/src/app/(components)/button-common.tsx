@@ -1,7 +1,7 @@
 "use client"; // must for interactivitiy (onClick)
 import LogoutIcon from "@mui/icons-material/Logout";
 import DeleteIcon from "@mui/icons-material/DeleteForever";
-import { logout } from "../lib";
+import { logout } from "../lib-authen";
 import { useRouter } from "next/navigation";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 

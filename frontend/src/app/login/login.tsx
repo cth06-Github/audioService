@@ -4,7 +4,7 @@ import styles from "./styles.module.css";
 import { useFormState } from "react-dom";
 //import { useUserContext, UserContext2 } from "../(context)/usercontext";
 import { useState } from "react";
-import { authenticate } from "../lib.ts";
+import { authenticate } from "../lib-authen.ts";
 
 
 export default function Login() {
