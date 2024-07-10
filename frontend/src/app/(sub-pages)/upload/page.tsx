@@ -1,6 +1,6 @@
 //import styles from "../styles.module.css";
-import Header from "../../(components)/header";
-import UploadFile from "./uploadfile";
+import Header from "../../(components)/header.tsx";
+import UploadFile from "./uploadfile.tsx";
 import { getUsername } from "../../lib.ts";
 
 export default async function UploadPage() {

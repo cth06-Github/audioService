@@ -316,12 +316,3 @@ const deleteTranscript = () => {
 };
 export default AudioRecorder;
 
-/*
-      <div className={styles.transcribe}>
-          <h4>
-            Transcribed Text:
-          </h4>
-        <p>
-          {transcribedContiText.current ? transcribedContiText.current : "No Text Transcribed"}
-        </p>
-      </div>*/
