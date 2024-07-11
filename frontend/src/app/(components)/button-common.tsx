@@ -5,20 +5,29 @@ import { logout } from "../lib-authen";
 import { useRouter } from "next/navigation";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 
-export function Logout() {
+
+interface CriteriaProps {
+  criteriaMet?: boolean;
+}
+
+export const Logout: React.FC<CriteriaProps>  = ({
+  criteriaMet = true,
+}: CriteriaProps): JSX.Element => {
   return (
-    <button onClick={() => logout()}>
+    <button onClick={() => {if (criteriaMet) {logout()}}}>
       <LogoutIcon />
       Logout
     </button>
   );
 }
 
-export function HomeButton() {
+export const HomeButton: React.FC<CriteriaProps>  = ({
+  criteriaMet = true,
+}: CriteriaProps): JSX.Element => {
   // consider displaying it as a back button instead
   const router = useRouter();
   return (
-    <button onClick={() => router.push("/home")}>
+    <button onClick={() => {if (criteriaMet) {router.push("/home")}}}>
       <HomeRoundedIcon style={{ fontSize: "40px" }} />
     </button>
   );

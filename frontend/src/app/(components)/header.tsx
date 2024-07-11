@@ -8,25 +8,32 @@ interface HeaderProps {
   description: string;
   hasHome: boolean;
   user: string;
+  criteriaMet?: boolean
 }
 
 // toogle not to have the home button
-const Header: React.FC<HeaderProps> = (props): JSX.Element => {
+export const Header: React.FC<HeaderProps>  = ({
+  heading, 
+  description,
+  hasHome,
+  user,
+  criteriaMet = true,
+}: HeaderProps): JSX.Element => {
   return (
     <div className={styles.top}>
       <header>
         <span className={styles.home}>
-          {props.hasHome && <HomeButton />}
+          {hasHome && <HomeButton criteriaMet = {criteriaMet}/>}
           <p style={{ display: "flex", alignItems: "center" }}>
             <PersonIcon />
-            {props.user}
+            {user}
           </p>
         </span>
-        <h1>{props.heading}</h1>
+        <h1>{heading}</h1>
         <span className={styles.login}>
-          <Logout />
+          <Logout criteriaMet = {criteriaMet}/>
         </span>
-        <h3>{props.description}</h3>
+        <h3>{description}</h3>
       </header>
     </div>
   );
