@@ -1,6 +1,6 @@
 // DIDN'T WORK....I DON'T KNOW WHY //
-
-/*"use client"; // hmm
+/*
+"use client"; // hmm
 import { createContext, useContext, useState } from 'react';
 
 interface UserType {
@@ -8,7 +8,7 @@ interface UserType {
     setUsername: React.Dispatch<React.SetStateAction<string>>;
 } 
 
-//export const UserContext2 = createContext<string | undefined>(undefined);
+export const UserContext2 = createContext<string | undefined>("000");
 
 
 const UserContext = createContext<UserType | undefined>(undefined);
@@ -22,7 +22,7 @@ export const UserProvider: React.FC<any> = ({children}) => { // not sure what ty
 } 
 
 export const useUserContext = () => {
-    const localUserContext = useContext(UserContext);
+    const localUserContext = useContext(UserContext2);
     if (localUserContext === undefined) {
       throw new Error('useContext must be inside a Provider');
     }

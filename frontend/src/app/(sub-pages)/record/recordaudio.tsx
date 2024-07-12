@@ -9,10 +9,13 @@ import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import DownloadIcon from "@mui/icons-material/Download";
 import { dummyText1 } from "@/app/constants";
 import TranscriptBox from "@/app/(components)/transcript-box";
-import PopUp from "@/app/(components)/pop-up";
+import { logout, toHome } from "@/app/lib-authen";
+import { SectionPopUpProps } from "@/app/(components)/(dialogs)/pop-up-section";
+
 
 interface AudioProps {
   downloadType: string;
+  username: string;
 }
 
 const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
@@ -29,6 +32,9 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const PAUSE: number = 2; // recording paused
   const mimeTypeUsed: string = "audio/webm";
 
+  const HOME = "home"
+  const LOGOUT = "logout"
+
   const [recordingStatus, setRecordingStatus] = useState<number>(INACTIVE);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
@@ -37,17 +43,49 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   //const transcribedContiText = useRef<string>("");
   const [finalTranscribedText, setFinalTranscribedText] = useState<string>("");
 
-  const [popUpOpenState, setOpen] = useState<boolean>(false);
+  const [micPopUp, setMicPopUp] = useState<boolean>(false);
+  const [NavPopUp, setNavPopUp] = useState<boolean>(false);
+  const headerButtonPressed = useRef<string | undefined>(); 
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClosePopUp = () => { // should separate into different handlers?
+    setMicPopUp(false);
+    setNavPopUp(false);
   };
 
-  const handleAgree = () => {
-    console.log("clicked yes");
-    setOpen(false); // state should be updated fast enough for startRecording to seem to happen concurrent rather than before
+  const handleAgreeMicPopUp = () => {
+    console.log("clicked yes, clear text");
+    setFinalTranscribedText(""); 
+    setMicPopUp(false); 
     startRecording();
   };
+
+  // hmm can we combine such thta it's in the logout and home button that contains this info on which server action to choose (CS2030 style)
+  const handleAgreeNavPopUp = () => {
+    console.log("clicked yes, navigate");
+    stopRecording();
+    setMicPopUp(false);
+    if (headerButtonPressed.current === HOME) { toHome() }
+    else if (headerButtonPressed.current === LOGOUT) { logout() }
+  }
+
+  const pressHome = () => {
+    if (recordingStatus !== INACTIVE) {
+      headerButtonPressed.current = HOME;
+      console.log(headerButtonPressed)
+      setNavPopUp(true);
+    }
+    else toHome(); // you can have server actions in event handlers.
+  }
+
+  // are both considered repeats?
+  
+  const pressLogout = () => { 
+    if (recordingStatus !== INACTIVE) {
+      headerButtonPressed.current = LOGOUT;
+      setNavPopUp(true);
+    }
+    else logout(); // you can have server actions in event handlers.
+  }
 
   // Time
   const startTiming = () => {
@@ -149,6 +187,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   };
 
   const pressMic = async () => {
+    console.log("how many times it ran")
     const checkpoint1 = await micCheck(); // must await here, otherwise returns promise execution not finish
     if (!checkpoint1) {
       return;
@@ -156,17 +195,37 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     if (!finalTranscribedText) {
       startRecording();
     } else {
-      setOpen(true);
+      console.log("why did it come here")
+      setMicPopUp(true);
     }
     // NEED TO RECTIFY THE NOT-IN-SYNC TIMER AND POPUP??
   };
+
+  const pressStop = () => {
+    stopRecording();
+    saveAudio();
+  }
+
+  const saveAudio = () => {
+    if (!mediaRecorder.current) { throw "Error null strange" }  
+    mediaRecorder.current.onstop = () => {
+      console.log("it ran")
+      console.log(audioChunks);
+      const audioBlob = new Blob(audioChunks, { type: props.downloadType });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      setAudio(audioUrl);
+      //transcribedContiText.current = transcribedContiText.current + dummyText1;
+      setAudioChunks([]);
+      setFinalTranscribedText(finalTranscribedText + dummyText1);
+    };
+}
 
   const startRecording = () => {
     console.log(mediaRecorder.current);
     if (!mediaRecorder.current) {
       throw "Error";
     }
-    setFinalTranscribedText(""); //hmmm
+    
     mediaRecorder.current.start(1000); //every 1s, .ondataavailale Event is fired
     setRecordingStatus(ACTIVE);
     startTiming();
@@ -222,19 +281,9 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
         "Microphone access was blocked at some point. Parts of recording may be missing."
       );
     }
-    setRecordingStatus(INACTIVE);
     mediaRecorder.current.stop();
-
+    setRecordingStatus(INACTIVE);
     stopTiming();
-    mediaRecorder.current.onstop = () => {
-      console.log(audioChunks);
-      const audioBlob = new Blob(audioChunks, { type: props.downloadType });
-      const audioUrl = URL.createObjectURL(audioBlob);
-      setAudio(audioUrl);
-      //transcribedContiText.current = transcribedContiText.current + dummyText1;
-      setAudioChunks([]);
-      setFinalTranscribedText(finalTranscribedText + dummyText1);
-    };
   };
 
   /*
@@ -258,16 +307,18 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     setFinalTranscribedText("");
   };
 
-  return (// beware of repeating components just beacuse the style change...
+    return (// beware of repeating components just beacuse the style change...
     <>
     
-    <Header
-    heading="Record"
-    description="Real-time Transcription"
-    hasHome={true}
-    user={"WRONG" /*value*/}
-    criteriaMet={recordingStatus !== ACTIVE}
-  />
+      <Header
+      heading="Record"
+      description="Real-time Transcription"
+      hasHome={true}
+      user={props.username}
+      onClickFuncHome={pressHome}
+      onClickFuncLogout={pressLogout}
+    />
+      
     <div className={styles.serviceRecord}>
       <div className={styles.serviceRecordContent}>
         {recordingStatus === ACTIVE ? ( // recording status
@@ -306,7 +357,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
               }}
             >
               <button
-                onClick={stopRecording}
+                onClick={pressStop}
                 type="button"
                 style={{ margin: "0px 2px" }}
               >
@@ -359,15 +410,13 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
         transcript={finalTranscribedText}
         deleteFunc={deleteTranscript}
       />
-      {popUpOpenState && (
-        <PopUp
-          title="Clear Transcript?"
-          description="Existing Transcribed Text will be cleared before proceeding to record."
-          isOpen={popUpOpenState}
-          onClose={handleClose}
-          onAgree={handleAgree}
-        ></PopUp>
-      )}
+
+      <SectionPopUpProps
+      actionItems={["Recording", "recorded audio"]}
+      state = {[micPopUp, NavPopUp]}
+      onClose={handleClosePopUp}
+      onAgree={[handleAgreeMicPopUp, handleAgreeNavPopUp]}
+      />
     </div>
     </>
   );

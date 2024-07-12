@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // User is logged in but access login page without logging out --> redirect to /home
-  try {
+  /*try {
     if (pathname === "/login" && request.cookies.get("session")) {
       const session = await getSession(); // if can, means valid user
       if (!session) {
@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest) {
     }
   } catch {
     return new Response("please delete cookies and login the proper way"); //NextResponse.redirect(new URL("/login", request.url)); // redirect to itself...consequently users need to delete cookies
-  }
+  }*/
 
   return NextResponse.next(); // always written like this hmm
 }

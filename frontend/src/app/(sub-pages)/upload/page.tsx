@@ -5,15 +5,12 @@ import { getUsername } from "../../lib-authen.ts";
 
 export default async function UploadPage() {
   const value = await getUsername(); // decrypt value of cookie to get username
+
+  // probably also don't want people to leave page when file is in the middle transcribing..... 
   return (
     <div>
-      <Header
-        heading="Upload"
-        description="Transcribe existing audio"
-        hasHome={true}
-        user={value}
-      />
-      <UploadFile></UploadFile>
+      
+      <UploadFile username = {value}></UploadFile>
     </div>
   );
 }

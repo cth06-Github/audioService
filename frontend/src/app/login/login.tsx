@@ -9,8 +9,9 @@ import { authenticate } from "../lib-authen.ts";
 
 export default function Login() {
   const [errorStatus, formAction] = useFormState(authenticate, null); // update state based on the result of a form action.
-
+  //const [usernameInput, setUsername] = useState<string>(""); 
   return (  // onChange={(event) => setUsername(event.target.value) ||| <UserContext2.Provider value = {usernameInput}>
+    
       <div className={styles.loginForm}>
         <h2>Login</h2>
         <form action={formAction}>
@@ -37,6 +38,7 @@ export default function Login() {
           </div>
         </form>
       </div>
+
   );
 }
 

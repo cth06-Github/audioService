@@ -1,33 +1,33 @@
 "use client"; // must for interactivitiy (onClick)
 import LogoutIcon from "@mui/icons-material/Logout";
 import DeleteIcon from "@mui/icons-material/DeleteForever";
-import { logout } from "../lib-authen";
-import { useRouter } from "next/navigation";
+import { logout, toHome } from "../lib-authen";
+import { useRouter, redirect } from "next/navigation";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 
-
-interface CriteriaProps {
-  criteriaMet?: boolean;
+interface onClickFunc {
+  onClickFunc?: () => void;
 }
 
-export const Logout: React.FC<CriteriaProps>  = ({
-  criteriaMet = true,
-}: CriteriaProps): JSX.Element => {
+export const Logout: React.FC<onClickFunc>  = ({
+  onClickFunc = () => logout()
+}: onClickFunc): JSX.Element => {
   return (
-    <button onClick={() => {if (criteriaMet) {logout()}}}>
+    <button onClick = {onClickFunc}>
       <LogoutIcon />
       Logout
     </button>
   );
 }
-
-export const HomeButton: React.FC<CriteriaProps>  = ({
-  criteriaMet = true,
-}: CriteriaProps): JSX.Element => {
+// use client this page
+export const HomeButton: React.FC<onClickFunc>  = ({
+  onClickFunc = () => { console.log("huh"); toHome()},
+}: onClickFunc): JSX.Element => {
   // consider displaying it as a back button instead
-  const router = useRouter();
-  return (
-    <button onClick={() => {if (criteriaMet) {router.push("/home")}}}>
+  
+  return ( 
+// a bit hard if the routing for the button is just like this might want to do other function. So pass function may be better
+    <button onClick = {onClickFunc}>
       <HomeRoundedIcon style={{ fontSize: "40px" }} />
     </button>
   );

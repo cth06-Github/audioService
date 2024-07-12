@@ -89,3 +89,8 @@ export async function getUsername() {
   const decrypted = await getSession();
   return decrypted.user.username;
 }
+
+export async function toHome() {
+  console.log("run");
+  redirect("/home");
+}
