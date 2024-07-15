@@ -11,6 +11,8 @@ interface PopUpProps {
     isOpen: boolean;
     onClose: () => void;
     onAgree: () => void;
+    buttonAgree: string;
+    buttonDisagree: string;
 }
 
 const BasePopUp: React.FC<PopUpProps> = (props): JSX.Element => {
@@ -31,8 +33,8 @@ const BasePopUp: React.FC<PopUpProps> = (props): JSX.Element => {
           </DialogContentText>
         </DialogContent>
         <DialogActions style={{display: "flex", flexDirection:"row", justifyContent: "space-evenly", width: "75%"}}>
-          <Button onClick={props.onAgree} style={{fontSize:"3vh"}} >Ok</Button>
-          <Button onClick={props.onClose} style={{fontSize:"3vh"}} >Return</Button>
+          <Button onClick={props.onAgree} style={{fontSize:"3vh"}} >{props.buttonAgree}</Button>
+          <Button onClick={props.onClose} style={{fontSize:"3vh"}} >{props.buttonDisagree}</Button>
         </DialogActions>
       </Dialog>
     </>

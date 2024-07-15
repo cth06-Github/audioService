@@ -19,13 +19,13 @@ interface UploadProps {
 
 const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   const [selectedFile, chooseFile] = useState<File | null>(null); // good to use null?
-  const [isFileSent, setSentStatus] = useState<boolean>(false);
+  const [isFileSending, setSentStatus] = useState<boolean>(false); // sending rather than sent.
   const [isTranscribeDone, setTranscribeDone] = useState<boolean>(false); // change to true to try out something
   const [transcribedText, setTranscribedText] = useState<string>("");
   const [transcribedFile, setTranscribedFile] = useState<string>("");
   const [showComplete, setComplete] = useState<boolean>(false);
 
-  const [micPopUp, setMicPopUp] = useState<boolean>(false);
+  const [uploadPopUp, setUploadPopUp] = useState<boolean>(false);
   const [NavPopUp, setNavPopUp] = useState<boolean>(false);
   const headerButtonPressed = useRef<string | undefined>(); 
 
@@ -33,26 +33,26 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   const LOGOUT = "logout"
 
   const handleClosePopUp = () => { // should separate into different handlers?
-    setMicPopUp(false);
+    setUploadPopUp(false);
     setNavPopUp(false);
   };
 
   const handleAgreeMicPopUp = () => {
     console.log("clicked yes, clear text");
     setTranscribedText(""); 
-    setMicPopUp(false); 
+    setUploadPopUp(false); 
   };
 
   // hmm can we combine such thta it's in the logout and home button that contains this info on which server action to choose (CS2030 style)
   const handleAgreeNavPopUp = () => { // really repeating sial with the record component
     console.log("clicked yes, navigate");
-    setMicPopUp(false);
+    setUploadPopUp(false);
     if (headerButtonPressed.current === HOME) { toHome() }
     else if (headerButtonPressed.current === LOGOUT) { logout() }
   }
 
   const pressHome = () => {
-    if (!transcribedText) {
+    if (!transcribedText && isFileSending) {
       headerButtonPressed.current = HOME;
       console.log(headerButtonPressed)
       setNavPopUp(true);
@@ -63,7 +63,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   // are both considered repeats?
   
   const pressLogout = () => { 
-    if (!transcribedText) {
+    if (!transcribedText && isFileSending) {
       headerButtonPressed.current = LOGOUT;
       setNavPopUp(true);
     }
@@ -138,6 +138,8 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
         description="Transcribe existing audio"
         hasHome={true}
         user={props.username}
+        onClickFuncHome={pressHome}
+        onClickFuncLogout={pressLogout}
       />
       <div>
         <div className={styles.serviceFiles}>
@@ -164,7 +166,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
                   <p>
                     <small style={{ display: "flex", alignItems: "center" }}>
                       {truncateName(selectedFile.name)}
-                      {!isFileSent && (
+                      {!isFileSending && (
                         <Delete onClick={deleteFile}/>
                       )}
                     </small>
@@ -181,13 +183,13 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
               )}
             </div>
 
-            {selectedFile && !isFileSent && (
+            {selectedFile && !isFileSending && (
               <div className={styles.serviceFilesEnd}>
                 <button onClick={uploadFunction}>Confirm</button>
                 <label htmlFor="getAudio">Reselect</label>
               </div>
             )}
-            {(isFileSent || isTranscribeDone) && (
+            {(isFileSending || isTranscribeDone) && (
               <div className={styles.serviceFilesEnd}>
                 {!isTranscribeDone ? (
                   <p
@@ -217,7 +219,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
       <TranscriptBox transcript = {transcribedText} withInfo = {transcribedFile} deleteFunc={() => {setTranscribedText(""); setTranscribedFile("")}}/>
       <SectionPopUpProps
       actionItems={["Transcribing", "uploaded files"]}
-      state = {[micPopUp, NavPopUp]}
+      state = {[uploadPopUp, NavPopUp]}
       onClose={handleClosePopUp}
       onAgree={[handleAgreeMicPopUp, handleAgreeNavPopUp]}
       />

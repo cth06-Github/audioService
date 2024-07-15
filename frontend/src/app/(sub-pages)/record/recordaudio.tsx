@@ -52,11 +52,18 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     setNavPopUp(false);
   };
 
-  const handleAgreeMicPopUp = () => {
+  const handleAgreeMicPopUp = async () => {
+    const checkpoint1 = await micCheck(); // must await here, otherwise returns promise execution not finish // CATACH ERROR NEEDED halfwat?
+    if (!checkpoint1) {
+      setMicPopUp(false); // don't want it to even appear after it was set as true previously.
+      return; // really just return???
+    }
+    else {
     console.log("clicked yes, clear text");
     setFinalTranscribedText(""); 
     setMicPopUp(false); 
     startRecording();
+    }
   };
 
   // hmm can we combine such thta it's in the logout and home button that contains this info on which server action to choose (CS2030 style)
@@ -92,7 +99,11 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     // Date.now(): miliseoncds elapsed since epoch (1 Jan 1970, UTC 0000h)
     startTimeRef.current = Date.now() - 10; // Reference Time when timing started. Assumes 10 ms lag in code runtime
     intervalRef.current = setInterval(() => {
-      setTime(Math.floor((Date.now() - startTimeRef.current) / 1000) + time); // divide by 1000 for ms to second
+      if (!mediaRecorder.current ||mediaRecorder.current.stream.active == false) {
+        pauseTiming();
+        alert("Recording has stopped or paused as microphone access is blocked. Please check permission settings and restart recording");
+     } // really want to restart??
+      else {setTime(Math.floor((Date.now() - startTimeRef.current) / 1000) + time)}; // divide by 1000 for ms to second
     }, 1000); // Math.floor(): round down
     //setRunning(true);
   };
@@ -144,8 +155,9 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       } catch (err: any) {
         // executed if user block the microphone // catch must be of type any or unknown.
         alert(
-          err.message + "\nTo record, localhost requires access to microphone."
+          err.message + "\nTo record, localhost requires access to microphone. Please allow access."
         ); // display text in a dialog box that pops up on the screen
+        localStream = null; // to update the current stream "globally"
       }
     } else {
       alert("The MediaRecorder API is not supported in your browser.");
@@ -170,7 +182,8 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       mediaRecorder.current.stream.active == false
     ) {
       localStream = await getPermission(localStream);
-      console.log("wati" + localStream);
+      console.log("local stream after waiting")
+      console.log(localStream);
     }
 
     if (!localStream) {
@@ -188,9 +201,13 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
 
   const pressMic = async () => {
     console.log("how many times it ran")
-    const checkpoint1 = await micCheck(); // must await here, otherwise returns promise execution not finish
+    const checkpoint1 = await micCheck(); // must await here, otherwise returns promise execution not finish // CATACH ERROR NEEDED halfwat?
+    console.log("what checkpint")
+    console.log(checkpoint1)
+    
     if (!checkpoint1) {
-      return;
+      console.log("await check")
+      return; 
     }
     if (!finalTranscribedText) {
       startRecording();
@@ -198,7 +215,6 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       console.log("why did it come here")
       setMicPopUp(true);
     }
-    // NEED TO RECTIFY THE NOT-IN-SYNC TIMER AND POPUP??
   };
 
   const pressStop = () => {
@@ -238,7 +254,9 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       if (event.data.size === 0) return;
       localAudioChunks.push(event.data); // to replace code to send to backend; real-time send back or finish recording then send back?
       //transcribedContiText.current = stringify(localAudioChunks);
-      //console.log("TTT " + transcribedContiText.current);
+      console.log("TTT ");
+      console.log(event.data);
+      console.log(localAudioChunks)
       setFinalTranscribedText(stringify(localAudioChunks));
     };
     setAudioChunks(localAudioChunks);
@@ -299,8 +317,8 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const deleteTranscript = () => {
     if (recordingStatus !== INACTIVE) {
       alert(
-        "Recording in progress. Please stop recording before deleting transcription"
-      );
+        "Recording in progress. Please stop recording before deleting transcription" 
+      ); // when the alert is shown, recording STILL continues in the background.
       return;
     }
     //transcribedContiText.current = "";
@@ -329,7 +347,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
               }}
             >
               <button
-                onClick={stopRecording}
+                onClick={pressStop}
                 type="button"
                 style={{ margin: "0px 2px" }}
               >
