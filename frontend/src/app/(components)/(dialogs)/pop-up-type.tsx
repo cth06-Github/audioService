@@ -14,8 +14,8 @@ export const NavigatePopUp: React.FC<NavigatePopUpProps>  = (props): JSX.Element
           isOpen={props.isOpen}
           onClose={props.onClose}
           onAgree={props.onAgree}
-          buttonAgree="Ok"
-          buttonDisagree="Stay on Page"
+          buttonAgreeName="Ok"
+          buttonDisagreeName="Stay on Page"
       >
       </BasePopUp>
     );
@@ -25,6 +25,7 @@ interface ClearPopUpProps {
   isOpen: boolean;
   onClose: () => void;
   onAgree: () => void;
+  needInput?: boolean;
 }
 export const ClearPopUp: React.FC<ClearPopUpProps>  = (props): JSX.Element => {
   return (
@@ -34,8 +35,8 @@ export const ClearPopUp: React.FC<ClearPopUpProps>  = (props): JSX.Element => {
         isOpen={props.isOpen}
         onClose={props.onClose}
         onAgree={props.onAgree}
-        buttonAgree="Ok"
-        buttonDisagree="Return"
+        buttonAgreeName="Ok"
+        buttonDisagreeName="Return"
     >
     </BasePopUp>
   );

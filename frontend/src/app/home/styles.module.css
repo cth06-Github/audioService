@@ -14,11 +14,15 @@
   justify-content: space-around;
 }
 
-.serviceButton {
+.serviceButton { /*button tag*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /*vertically top*/
+  align-items: center;
   padding: 5px 20px;
   width: 32vw;
   height: 60vh;
-  justify-content: left; /*vertically top*/
+  aspect-ratio: 1 / 1;
   background: linear-gradient(
     /*linear-gradient(angle, color-stop1, color-stop2);*/ 145deg,
     rgba(161, 219, 247, 0),

@@ -17,6 +17,7 @@ export const SectionPopUpProps: React.FC<SectionPopUpProps> = (
           isOpen={props.state[0]}
           onClose={props.onClose}
           onAgree={props.onAgree[0]}
+          needInput={true}
         ></ClearPopUp>
       )}
 

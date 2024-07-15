@@ -12,6 +12,7 @@
   border: 2px solid;
   border-radius: 10px;
   border-color: var(--component-foreground);
+  
 }
 
 .serviceRecordContent {
@@ -70,36 +71,50 @@
   margin-bottom: 6px;
 }
 
-.serviceFiles button, .serviceRecordAudio button {
+
+
+.uploadButton,
+.serviceFilesEnd button,
+.serviceFilesEnd label {
+  align-items: center; /*align in y-direction, opposite to globals.css div*/
+  color: var(--component-foreground);
+  font-size: 16px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.uploadButton {
+  margin-bottom: 2px;
+  width: 40%;
+  max-width: 200px;
+  
+
+}
+
+.uploadButton label {
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  display: flex; /*must put hmm*/
+  flex-direction: row;
+  justify-content: center; /*align in x-direction*/
+  align-items: center;
+  cursor: pointer;
+  background-color: #e0e0e0; /*e0e0e0*/
+  box-shadow: 0px 1px 1px 2px rgb(114, 114, 114);
+  border-radius: 5px;
+  border: 1px solid;
+}
+
+.serviceFilesUpload button, .serviceRecordAudio button {
   /*referring to the dustbin delete icon -- NEED TO REMOVE LATER*/
   background-color: transparent; /*not none*/
   padding: 0px;
   border: none;
 }
 
-.serviceFilesUpload label,
-.serviceFilesEnd button,
-.serviceFilesEnd label {
-  padding: 10px;
-  align-items: center; /*align in y-direction, opposite to globals.css div*/
-  color: var(--component-foreground);
-  font-size: 16px;
-  text-align: center;
-  font-weight: bold;
-}
 
-.serviceFilesUpload label {
-  margin-bottom: 2px;
-  width: 40%;
-  max-width: 200px;
-  display: flex; /*must put hmm*/
-  flex-direction: row;
-  justify-content: center; /*align in x-direction*/
-  background-color: #e0e0e0;
-  border-radius: 5px;
-  border: 1px solid;
-  box-shadow: 0px 1px 1px 2px rgb(114, 114, 114);
-}
 
 .serviceFilesEnd button,
 .serviceFilesEnd label {
@@ -147,18 +162,19 @@
 
 .serviceRecordMic button:active,
 .serviceRecordAudio button:active,
-.serviceRecordAudio a,
-.serviceFilesUpload label:active,
+.serviceRecordAudio a:hover,
+.serviceFiles button:active, 
+.uploadButton label:active
+.serviceFilesUpload button:active
 .serviceFilesUpload button:hover {
   opacity: 0.5;
 }
 
-.serviceRecordAudio a:hover,
-.serviceFiles button:active {
+.serviceRecordAudio a {
   opacity: 1; /*alternative to background-color change, if not, separate*/
 }
 
-.serviceFilesUpload label:hover {
+.uploadButton:hover, .uploadButton label:hover {
   transform: translateY(1.5px);
   box-shadow: 0px 0px 0px 0px var(--component-background);
   cursor: pointer;
@@ -179,7 +195,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  .serviceFilesUpload label {
+  .serviceFilesUpload button {
     background-color: #666666;
     box-shadow: 0px 1px 1px 2px rgb(219, 216, 216);
   }

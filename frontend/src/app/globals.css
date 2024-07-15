@@ -20,6 +20,7 @@ div, header, hgroup { /*main div; only 1 header*/
 header { 
   padding: 10px;
   height: 20vh;
+  text-align: center;
 }
 
 hgroup {
@@ -29,7 +30,7 @@ hgroup {
 }
 
 h1 { /*reserved for header title*/
-  font-size: 2.5em;
+  font-size: 2.5em; /*2em*/
   font-weight: bold;
 }
 
@@ -46,12 +47,17 @@ button {
   cursor: pointer;
 }
 
-/*
-hr {
-  border: 1px dashed;
-  color: rgb(var(--foreground-rgb));
-  width: 80vw; /*80% does not work for record
-}*/
+/* Mobile */
+@media (min-width: 600px) and (max-width: 768px) { /*768px*/
+  h1 {
+    font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.2em;
+  }
+}
+
 
 @media (prefers-color-scheme: dark) {
   :root {

@@ -18,12 +18,12 @@ export default async function HomePage() {
       />
       <div className={styles.serviceBox}>
         <BigButton
-          name={<MicIcon style={{ fontSize: "40vh" }} />}
+          name={<MicIcon sx={{fontSize: { xs: 90, sm: 200, md: 300, lg: 400 } }} />}
           description="Record on the go"
           routing="/record"
         />
         <BigButton
-          name={<FileUploadIcon style={{ fontSize: "40vh" }} />}
+          name={<FileUploadIcon sx={{fontSize: { xs: 90, sm: 200, md: 300, lg: 400 } }} />}
           description="Upload existing audio"
           routing="/upload"
         />

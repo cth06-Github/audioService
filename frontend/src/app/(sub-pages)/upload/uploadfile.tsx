@@ -29,6 +29,9 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   const [NavPopUp, setNavPopUp] = useState<boolean>(false);
   const headerButtonPressed = useRef<string | undefined>(); 
 
+  const hasTranscribedTextfrmPopUp= useRef<boolean>(false); // only used for pop-up indication, confusing
+  const fileInput = useRef<any>(null);
+
   const HOME = "home"
   const LOGOUT = "logout"
 
@@ -37,10 +40,19 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
     setNavPopUp(false);
   };
 
-  const handleAgreeMicPopUp = () => {
+  const handleAgreeUploadPopUp = () => {
+    hasTranscribedTextfrmPopUp.current = true;
+    deleteTranscript();
     console.log("clicked yes, clear text");
-    setTranscribedText(""); 
+    console.log(fileInput);
+    console.log("yeehah")
+    console.log(hasTranscribedTextfrmPopUp.current);
+    if(!fileInput.current) {throw "Error input tag null??"} 
+    console.log("going to click");
+    console.log(uploadPopUp)
+    fileInput.current.click();
     setUploadPopUp(false); 
+    hasTranscribedTextfrmPopUp.current = false;
   };
 
   // hmm can we combine such thta it's in the logout and home button that contains this info on which server action to choose (CS2030 style)
@@ -92,6 +104,12 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
     console.log(input.files)
   };
 
+  const deleteTranscript = () => {
+    setTranscribedText(""); 
+    setTranscribedFile("");
+   
+  }
+
   const uploadFunction = async () => {
     setTranscribeDone(false); // always clear the transcribe done status prior to sending to backend [Will imm. update?]
     setTranscribedFile("");
@@ -131,8 +149,16 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
     return frontPart + "..." + backPart;
   };
 
+  const pressUpload = () => {
+    console.log("pressUpload")
+    if (transcribedText) { 
+      setUploadPopUp(true);
+    } 
+  };
+
   return ( // hard code the height of division (not ideal)
     <>
+    
     <Header
         heading="Upload"
         description="Transcribe existing audio"
@@ -149,25 +175,31 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
           </hgroup>
           <div className={styles.serviceFilesContent}>
             <div className={styles.serviceFilesUpload}>
+             
+             <button className={styles.uploadButton} onClick = {pressUpload} >
               <label htmlFor="getAudio">
                 <FileUploadIcon style={{ fontSize: 30 }} />
                 Audio
               </label>
+
+                
               <input
+                ref={fileInput} 
                 id="getAudio"
                 type="file"
                 accept="audio/*, .mp4"
                 onChange={handleFileChange}
+                onClick={(event) => {console.log("wwww" + uploadPopUp); if (!(!transcribedText || transcribedText && hasTranscribedTextfrmPopUp.current)) event.preventDefault()} /*gonna confusing*/}
                 style={{ display: "none" }}
               />
-
+              </button>
               {selectedFile ? (
                 <div style={{ height: "5vh" }}>
                   <p>
                     <small style={{ display: "flex", alignItems: "center" }}>
                       {truncateName(selectedFile.name)}
                       {!isFileSending && (
-                        <Delete onClick={deleteFile}/>
+                        <span><Delete onClick={deleteFile}/></span>
                       )}
                     </small>
                   </p>
@@ -216,12 +248,12 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
         </div>
       </div>
       <br></br>
-      <TranscriptBox transcript = {transcribedText} withInfo = {transcribedFile} deleteFunc={() => {setTranscribedText(""); setTranscribedFile("")}}/>
+      <TranscriptBox transcript = {transcribedText} withInfo = {transcribedFile} deleteFunc={deleteTranscript}/>
       <SectionPopUpProps
       actionItems={["Transcribing", "uploaded files"]}
       state = {[uploadPopUp, NavPopUp]}
       onClose={handleClosePopUp}
-      onAgree={[handleAgreeMicPopUp, handleAgreeNavPopUp]}
+      onAgree={[handleAgreeUploadPopUp, handleAgreeNavPopUp]}
       />
     </>
   );

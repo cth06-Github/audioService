@@ -31,8 +31,8 @@ export default function Login() {
               name="password"
               placeholder="Enter your Password"
             />
+            <span><p>{errorStatus}</p></span> {/*no span, cannot work*/}
           </div>
-          <div className={styles.error}>{<p>{errorStatus}</p>}</div>
           <div className={styles.loginButton}>
             <button type="submit">Login</button>
           </div>
