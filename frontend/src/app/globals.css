@@ -30,17 +30,27 @@ hgroup {
 }
 
 h1 { /*reserved for header title*/
-  font-size: 2.5em; /*2em*/
-  font-weight: bold;
+  font-size: 2.5rem; /*2em*/
+  font-weight: bold; 
+  margin: 0rem 3rem;
+}
+
+h2 {
+  font-size: 1.5rem;
 }
 
 h3 {
-  font-size: 1.7em;
+  font-size: 1.7rem;
   font-weight: normal; /*not "none"*/
 }
 
 h4 {
-  font-size: 1.5em;
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.3rem;
+  font-weight: normal;
 }
 
 button {
@@ -48,13 +58,23 @@ button {
 }
 
 /* Mobile */
-@media (min-width: 600px) and (max-width: 768px) { /*768px*/
+@media (max-width: 600px) { /*768px*/
   h1 {
-    font-size: 1.5em;
+    font-size: 2rem;
   }
 
   h3 {
-    font-size: 1.2em;
+    font-size: 1em;
+  }
+
+  h5 {
+    font-size: 1.1rem;
+  }
+  
+  header { 
+    padding: 10px;
+    height: 14vh;
+    justify-content: flex-end;
   }
 }
 

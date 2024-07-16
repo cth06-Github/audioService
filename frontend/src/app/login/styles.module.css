@@ -22,17 +22,17 @@
 
 .loginBox input {
   height: 30px;
-  margin-bottom: 1em;
+  margin-bottom: 0.5rem;
 }
 
 .loginBox input::placeholder {
-  font-size: 1em;
+  font-size: 0.9rem;
 }
 
 .loginBox label,
 .loginButton button {
   font-weight: bold;
-  font-size: 1em;
+  font-size: 1.1rem;
 }
 
 .loginButton button { /*can try including onkeydown animation*/
@@ -43,7 +43,7 @@
   border: none;
   border-radius: 10px; /*var(--default-border-radius); <--- hmm why cannot*/
   color: var(--component-foreground); /*must have*/
-  font-size: 1.2em;
+  font-size: 1.2rem;
   text-align: center;
   cursor: pointer; /*from cursor arrow to cursor finger*/
 }

@@ -141,7 +141,7 @@
 .serviceRecordMic button {
   /*potential repeat from serviceFiles .label*/
   height: 12vh;
-  width: 12vh; /*CANNOT DO CALCULATION??*/ /*100%; <-- hmm why does it not stretch anymore?*/
+  aspect-ratio: 1/1;
   border: 1px solid;
   color: rgb(105, 104, 104);
   background-color: #ff0000;

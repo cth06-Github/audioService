@@ -11,18 +11,21 @@
   height: 80vh;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
+  
 }
 
 .serviceButton { /*button tag*/
+  margin: 0rem 5rem;
   display: flex;
   flex-direction: column;
   justify-content: center; /*vertically top*/
   align-items: center;
   padding: 5px 20px;
   width: 32vw;
-  height: 60vh;
-  aspect-ratio: 1 / 1;
+  max-width: 30rem;
+  /*height: 60vh;*/
+  aspect-ratio: 4 / 3;
   background: linear-gradient(
     /*linear-gradient(angle, color-stop1, color-stop2);*/ 145deg,
     rgba(161, 219, 247, 0),
@@ -43,6 +46,20 @@
 
 .serviceButton:active {
   opacity: 1; /*alternative to background-color change, if not, separate*/
+}
+
+/* Mobile */
+
+@media (max-width: 600px) { /*768px*/
+  .serviceBox{
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .serviceButton{
+    width: 10rem;
+    aspect-ratio: 1 / 1;
+    margin: 1rem;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

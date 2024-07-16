@@ -16,7 +16,7 @@ const BigButton: React.FC<ButtonProps> = (props): JSX.Element => {
       onClick={() => router.push(props.routing)}
     >
       <span>{props.name}</span>
-      <h3>{props.description}</h3>
+      <h5>{props.description}</h5>
     </button>
   );
 };
