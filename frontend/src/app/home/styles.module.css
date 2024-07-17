@@ -6,11 +6,12 @@
 }
 
 .serviceBox {
+  transform: translate(0px, 3rem);
   padding: 5px 20px;
   width: 85vw;
   height: 80vh;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   
 }
@@ -52,8 +53,10 @@
 
 @media (max-width: 600px) { /*768px*/
   .serviceBox{
+    transform: translate(0px);
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
   }
   .serviceButton{
     width: 10rem;

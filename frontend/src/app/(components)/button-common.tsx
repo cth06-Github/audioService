@@ -13,7 +13,7 @@ export const Logout: React.FC<onClickFunc>  = ({
   onClickFunc = () => logout()
 }: onClickFunc): JSX.Element => {
   return (
-    <button onClick = {onClickFunc}>
+    <button onClick = {onClickFunc} style ={{padding: "4px"}}>
       <LogoutIcon />
       Logout
     </button>
@@ -27,7 +27,7 @@ export const HomeButton: React.FC<onClickFunc>  = ({
   
   return ( 
 // a bit hard if the routing for the button is just like this might want to do other function. So pass function may be better
-    <button onClick = {onClickFunc}>
+    <button onClick = {onClickFunc} style ={{padding: "4px"}}>
       <HomeRoundedIcon style={{ fontSize: "40px" }} />
     </button>
   );

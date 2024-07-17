@@ -327,7 +327,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
 
     return (// beware of repeating components just beacuse the style change...
     <>
-    
+ 
       <Header
       heading="Record"
       description="Real-time Transcription"
@@ -336,10 +336,11 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       onClickFuncHome={pressHome}
       onClickFuncLogout={pressLogout}
     />
+    
       
     <div className={styles.serviceRecord}>
       <div className={styles.serviceRecordContent}>
-        {recordingStatus === ACTIVE ? ( // recording status
+        {recordingStatus !== INACTIVE ? ( // recording or pause status
           <div className={styles.serviceRecordPlay}>
             <div
               style={{
@@ -352,45 +353,29 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
                 style={{ margin: "0px 2px" }}
               >
                 <StopCircleOutlinedIcon
-                  style={{ fontSize: "9vh", color: "red" }}
+                  style={{ fontSize: "9vh", color: `${recordingStatus === ACTIVE ? "red" : "black"}` }} /*black as pause*/
                 />
               </button>
-              <p style={{ margin: "0px 2px" }}>{timeInHourMinSec(time)}</p>
+              <p style={{fontSize: "1.3rem" }}>{timeInHourMinSec(time)}</p>
             </div>
+
+            {recordingStatus === ACTIVE ?
             <button
               onClick={pauseRecording}
               type="button"
-              style={{ margin: "0px 2px" }}
+              style={{ margin: "0px 1px" }}
             >
               <PauseCircleOutlineIcon style={{ fontSize: "9vh" }} />
-            </button>
-          </div>
-        ) : recordingStatus === PAUSE ? ( // pause status
-          <div className={styles.serviceRecordPlay}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <button
-                onClick={pressStop}
-                type="button"
-                style={{ margin: "0px 2px" }}
-              >
-                <StopCircleOutlinedIcon style={{ fontSize: "9vh" }} />
-              </button>
-              <p style={{ margin: "0px 2px" }}>{timeInHourMinSec(time)}</p>
-            </div>
-
+            </button> 
+            : /*pause status*/
             <button
-              onClick={contRecording}
-              type="button"
-              style={{ margin: "0px 2px" }}
-            >
-              <PlayCircleOutlineIcon style={{ fontSize: "9vh" }} />
-            </button>
+            onClick={contRecording}
+            type="button"
+            style={{ margin: "0px 1px" }}
+          >
+            <PlayCircleOutlineIcon style={{ fontSize: "9vh" }} />
+          </button>
+            }
           </div>
         ) : (
           <div className={styles.serviceRecordMic}>

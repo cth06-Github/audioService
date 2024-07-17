@@ -24,17 +24,17 @@ const BasePopUp: React.FC<PopUpProps> = (props): JSX.Element => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title" style={{fontSize:"4vh", fontWeight: "bold"}}>
+        <DialogTitle id="alert-dialog-title" style={{fontWeight: "bold"}} sx={{fontSize: { xs: 19, sm: 21, md: 23, lg: 25 } }}>
           {props.title}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description" style={{fontSize:"3.2vh", textAlign:"center"}} >
+          <DialogContentText id="alert-dialog-description" style={{textAlign:"center"}} sx={{fontSize: { xs: 14, sm: 16, md: 18, lg: 20 } }}>
           {props.description}
           </DialogContentText>
         </DialogContent>
         <DialogActions style={{display: "flex", flexDirection:"row", justifyContent: "space-evenly", width: "75%"}}>
-          <Button onClick={props.onAgree} style={{fontSize:"3vh"}} >{props.buttonAgreeName}</Button>
-          <Button onClick={props.onClose} style={{fontSize:"3vh"}} >{props.buttonDisagreeName}</Button>
+          <Button onClick={props.onAgree} sx={{fontSize: { xs: 12, sm: 14, md: 16, lg: 18 } }} >{props.buttonAgreeName}</Button>
+          <Button onClick={props.onClose} sx={{fontSize: { xs: 12, sm: 14, md: 16, lg: 18 } }}  >{props.buttonDisagreeName}</Button>
         </DialogActions>
       </Dialog>
     </>

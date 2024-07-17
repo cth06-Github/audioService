@@ -64,7 +64,7 @@ export const Header: React.FC<HeaderProps>  = ({
       </div>
 
       
-      <div id = "menu" className={[styles.menuOpen, "menuOpenAlt"].join(" ")}  >
+      <div className={[styles.menuOpen, "menuOpenAlt"].join(" ")}  >
        <style jsx>{`
         .menuOpenAlt {
           width: ${menu ? "90vw" : "0px"};

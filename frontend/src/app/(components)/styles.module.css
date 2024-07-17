@@ -52,7 +52,7 @@
 /*Trancribe Box Component*/
 .transcribe {
     width: 80vw; /*otherwise the width of div vbox is very small*/ /*how come 100% only works for upload*/
-    height: 40vh;
+    height: 50vh;
     padding: 1vh 1vw;
     flex-direction: column;
     justify-content: flex-start;
@@ -81,6 +81,7 @@
         justify-content: center;
         align-items: center;
         border: 1px solid;
+        z-index: 2;
     }
 
     .menuOpen {
@@ -108,8 +109,7 @@
         height: 100vh;
         width: 0vw;
         backdrop-filter: blur(5px);        
-  /*^format h-offset v-offset blur spread color |inset|initial|inherit;*/
-        
+        z-index: 1; /*just jack up number*/      
     }
 
     .menuOpen header {

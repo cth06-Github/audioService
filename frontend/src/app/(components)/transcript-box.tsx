@@ -16,13 +16,13 @@ const TranscriptBox: React.FC<TranscriptProps> = ({
   return (
     // by default, withInfo is blank
     <div className={styles.transcribe}>
-      <h4>
+      <h4 style= {{display: "flex", alignItems: "center"}}>
         Transcribed Text
         {withInfo !== "" &&
         <small>
           <small>{` -- ${withInfo}`}</small>
         </small>}
-        {transcript && <span><Delete onClick = {deleteFunc}/></span>}
+        {transcript && <Delete onClick = {deleteFunc}/>}
       </h4>
       <p>{transcript ? transcript : "No Transcribed Text shown"}</p>
     </div>
