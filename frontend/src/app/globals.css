@@ -9,7 +9,7 @@
   --default-font-size: 3vh;
 }
 
-div, header, hgroup { /*main div; only 1 header*/
+div, hgroup { /*main div; only 1 header*/
   display: flex;
   flex-direction: column;
   align-items: center; /*x-direction*/
@@ -18,6 +18,8 @@ div, header, hgroup { /*main div; only 1 header*/
 }
 
 header { 
+  display: flex;
+  flex-direction: row;
   padding: 10px;
   height: 20vh;
   text-align: center;
