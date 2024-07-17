@@ -1,9 +1,8 @@
 .serviceRecord,
 .serviceFiles {
   padding: 5px 20px;
-  width: 32vw;
   height: auto;
-  justify-content: left; /*vertically top*/
+  justify-content: flex-start; /*vertically top*/
 }
 
 .serviceRecord {
@@ -12,6 +11,7 @@
 
 
 .serviceFiles {
+  width: 23rem;
   background-color: rgba(255, 255, 255, 0.2);
   border: 2px solid;
   border-radius: 10px;

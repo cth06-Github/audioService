@@ -68,6 +68,7 @@
 @media (max-width: 800px) { /*768px*/
     .menu {
         display: flex;
+        flex-direction: row;
         justify-content: flex-start;
         padding-left: 10vw;
     }
@@ -75,13 +76,13 @@
     .menu button {
         background-color: rgba(0, 0, 0, 0.09);
         border-radius: 5px;
-        z-index: 1;
         padding: 2px;
         display: flex;
         justify-content: center;
         align-items: center;
         border: 1px solid;
         z-index: 2;
+        margin-right: 2px;
     }
 
     .menuOpen {
@@ -110,21 +111,23 @@
         width: 0vw;
         backdrop-filter: blur(5px);        
         z-index: 1; /*just jack up number*/      
+        overflow: scroll;
     }
 
     .menuOpen header {
         align-items: center;
     }
 
-    .menuOpen h6 {  
+    .menu h6 {  
         display: flex;
         padding-left: 1.5vw ;
-        align-items: center;
-        margin: 5vw; /*add some margin*/      
+        align-items: center;/*add some margin*/      
         width: 63vw;
         height: fit-content;
         background-color: rgba(227, 230, 231, 0.5);
         font-size: 1.5rem;
+        z-index: 10;
+        
     }
 
     .menuOpen button { 
@@ -134,9 +137,10 @@
         background-color: rgba(227, 230, 231, 0.5);
         text-align: left;
         padding-left: 10px;;
+        
     }
 
-    .menuOpen h6, .menuOpen button { animation: fadeIn 0.8s; }
+    .menu h6, .menuOpen button { animation: fadeIn 0.8s; }
     @keyframes fadeIn {
         0% { opacity: 0; }
         50% { opacity: 0; }

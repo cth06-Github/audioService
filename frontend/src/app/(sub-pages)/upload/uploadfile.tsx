@@ -171,7 +171,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
         <div className={styles.serviceFiles}>
           <hgroup>
             <h2>Select files</h2>
-            <p>Choose 1 file only</p>
+            <p style ={{textAlign: "center"}}>Choose 1 file only</p>
           </hgroup>
           <div className={styles.serviceFilesContent}>
             <div className={styles.serviceFilesUpload}>

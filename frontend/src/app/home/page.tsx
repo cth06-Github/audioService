@@ -12,7 +12,7 @@ export default async function HomePage() {
     <div>
       <Header
         heading="Welcome!"
-        description="Transcribe at your fingertips"
+        description="Transcribe"
         hasHome={false}
         user={value}
       />
