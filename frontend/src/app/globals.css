@@ -26,12 +26,12 @@ header {
 }
 
 hgroup {
-  margin-bottom: 1.5vh;
+  margin-bottom: 0.2rem;
   height: auto;
   justify-content: start;
 }
 
-h1, h2, h3, h4, h5 {
+h1, h2, h3, h5 {
   text-align: center;
   
 }
@@ -52,7 +52,7 @@ h3 {
 }
 
 h4 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 
 h5 {
@@ -60,12 +60,16 @@ h5 {
   font-weight: normal;
 }
 
+p {
+  font-size: 1.1rem;
+}
+
 button {
   cursor: pointer;
 }
 
-/* Mobile */
-@media (max-width: 600px) { /*768px*/
+/* Mobile */ 
+@media (max-width: 600px) { /*768px */
   h1 {
     font-size: 2rem;
   }

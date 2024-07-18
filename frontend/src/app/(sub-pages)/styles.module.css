@@ -1,6 +1,5 @@
 .serviceRecord,
 .serviceFiles {
-  padding: 5px 20px;
   height: auto;
   justify-content: flex-start; /*vertically top*/
 }
@@ -11,6 +10,7 @@
 
 
 .serviceFiles {
+  padding: 5px 20px;
   width: 23rem;
   background-color: rgba(255, 255, 255, 0.2);
   border: 2px solid;
@@ -21,7 +21,7 @@
 
 .serviceRecordContent {
   display: flex;
-  height: 23vh;
+  height: 8rem;
   width: 100%;
   justify-content: space-between; /*make the mic div go up */  
   /*border-color: rgb(247, 9, 9);*/
@@ -51,7 +51,7 @@
 .serviceRecordMic,
 .serviceRecordPlay {
  padding: 0px;
-  height: 50%;
+  height: auto;
   max-width: 250px; 
   flex-direction: row;
   /*border: 1px solid;*/
@@ -76,12 +76,6 @@
 }
 
 
-.serviceFilesEnd {
-  margin-bottom: 6px;
-}
-
-
-
 .uploadButton,
 .serviceFilesEnd button,
 .serviceFilesEnd label {
@@ -95,10 +89,7 @@
 
 .uploadButton {
   margin-bottom: 2px;
-  width: 40%;
-  max-width: 200px;
-  
-
+  width: 8rem;
 }
 
 .uploadButton label {
@@ -123,18 +114,17 @@
   border: none;
 }
 
-
-
 .serviceFilesEnd button,
 .serviceFilesEnd label {
   margin-bottom: 10px;
+  padding: 10px;
   border-radius: 10px;
-  width: 39%; /*100%; <-- hmm why does it not stretch anymore?*/
+  width: 8rem; 
   max-width: 200px;
-  max-height: 100px; /*force fit number*/
   border: none;
   background-color: #c1e9f5;
   color: var(--component-foreground);
+  height:auto;
 }
 
 .serviceRecordMic button,
@@ -149,12 +139,12 @@
 
 .serviceRecordMic button {
   /*potential repeat from serviceFiles .label*/
-  height: 12vh;
+  height: 4.5rem;
   aspect-ratio: 1/1;
   border: 1px solid;
   color: rgb(105, 104, 104);
   background-color: #ff0000;
-  box-shadow: 0px 0px 0px 1.1vh rgb(255, 255, 255) inset;
+  box-shadow: 0px 0px 0px 0.5rem rgb(255, 255, 255) inset;
   /*^format h-offset v-offset blur spread color |inset|initial|inherit;*/
 }
 
@@ -206,11 +196,10 @@
 
 /* Mobile */
 @media (max-width: 600px) { /*768px*/
-  .serviceRecordMic button, .serviceRecordPlay button {
-    /*potential repeat from serviceFiles .label*/
-    transform: scale(0.7)
+  .serviceRecordContent{
+    transform: scale(0.8);
   }
-
+  
   .serviceRecordPlay {
     max-width: 220px;
   }
@@ -220,9 +209,10 @@
      transform: scale(0.9)
   }
 
-.serviceRecordAudio button {
-    transform: scale(0.8)
+  .serviceFiles {
+    max-width: 90vw;
   }
+
 }
 
 @media (prefers-color-scheme: dark) {

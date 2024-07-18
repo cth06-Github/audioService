@@ -134,17 +134,16 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
       setComplete(true);
       setTimeout(() => {
         setComplete(false);
-      }, 4000);
+      }, 4000); // 4 seconds
     }, 5000); // 5 seconds
   };
 
-  const truncateName = (fileName: string) => {
-    // truncate only if >41 characters
+  const truncateName = (fileName: string, charLength: number) => {
     const length: number = fileName.length;
-    if (fileName.length < 42) {
+    if (fileName.length < charLength) {
       return fileName;
     }
-    const frontPart = fileName.substring(0, 30); // 30 characters
+    const frontPart = fileName.substring(0, charLength - 8); // 30 characters
     const backPart = fileName.substring(length - 8, length); // 8 characters
     return frontPart + "..." + backPart;
   };
@@ -181,7 +180,6 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
                 <FileUploadIcon style={{ fontSize: 30 }} />
                 Audio
               </label>
-
                 
               <input
                 ref={fileInput} 
@@ -193,26 +191,38 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
                 style={{ display: "none" }}
               />
               </button>
+              <div className = "fileDescribe">
+              <style jsx>{`
+                .fileDescribe {
+                    padding: 3px;
+                    height: ${!showComplete ? "2rem" : "0px"};
+                    flex-direction: row;
+                    align-items: ${selectedFile && !isFileSending ? "center" : "flex-start"}
+                  }
+              `}</style>
+              
               {selectedFile ? (
-                <div style={{ height: "5vh" }}>
-                  <p>
-                    <small style={{ display: "flex", alignItems: "center" }}>
-                      {truncateName(selectedFile.name)}
-                      {!isFileSending && (
-                        <span><Delete onClick={deleteFile}/></span>
-                      )}
+                  <>
+                  <p style = {{textAlign: "center"}}>
+                    <small style={{ display: "flex", alignItems: "center", textAlign: "center" }}>
+                      {truncateName(selectedFile.name, 20)}
+                      
                     </small>
                   </p>
-                </div>
+
+                  {!isFileSending && (
+                        <span><Delete onClick={deleteFile}/></span>
+                      )}
+               </>
               ) : (
                 !showComplete && (
-                  <div style={{ height: "5vh" }}>
                     <p>
                       <small>No file chosen</small>
                     </p>
-                  </div>
+    
                 )
               )}
+               </div>
             </div>
 
             {selectedFile && !isFileSending && (
@@ -248,7 +258,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
         </div>
       </div>
       <br></br>
-      <TranscriptBox transcript = {transcribedText} withInfo = {transcribedFile} deleteFunc={deleteTranscript}/>
+      <TranscriptBox transcript = {transcribedText} withInfo = {truncateName(transcribedFile, 25)} deleteFunc={deleteTranscript}/>
       <SectionPopUpProps
       actionItems={["Transcribing", "uploaded files"]}
       state = {[uploadPopUp, NavPopUp]}

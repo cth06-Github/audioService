@@ -24,7 +24,7 @@ export const HomeButton: React.FC<onClickFunc>  = ({
   onClickFunc = () => { console.log("huh"); toHome()},
 }: onClickFunc): JSX.Element => {
   // consider displaying it as a back button instead
-  
+  //const router = useRouter();
   return ( 
 // a bit hard if the routing for the button is just like this might want to do other function. So pass function may be better
     <button onClick = {onClickFunc} style ={{padding: "4px"}}>

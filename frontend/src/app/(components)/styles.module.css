@@ -50,15 +50,21 @@
 }
 
 /*Trancribe Box Component*/
-.transcribe {
+
+.transcribe, .transcribeBox {
     width: 80vw; /*otherwise the width of div vbox is very small*/ /*how come 100% only works for upload*/
-    height: 50vh;
+    align-items: flex-start;
+    min-width: 12rem;
+  }
+
+.transcribeBox {
+    height: 35vh; /* what is a suitable length*/
     padding: 1vh 1vw;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     border: 1px dashed;
-    overflow-y: auto;
+    overflow-y: scroll;
     /*background-color: rgba(255, 255, 255, 0.2);*/
   }
 

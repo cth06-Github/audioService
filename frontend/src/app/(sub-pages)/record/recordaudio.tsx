@@ -11,6 +11,10 @@ import { dummyText1 } from "@/app/constants";
 import TranscriptBox from "@/app/(components)/transcript-box";
 import { logout, toHome } from "@/app/lib-authen";
 import { SectionPopUpProps } from "@/app/(components)/(dialogs)/pop-up-section";
+import usePageVisibility from "./visibilityHook";
+import { useRouter} from "next/navigation";
+import { usePathname } from 'next/navigation';
+
 
 
 interface AudioProps {
@@ -47,6 +51,124 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const [NavPopUp, setNavPopUp] = useState<boolean>(false);
   const headerButtonPressed = useRef<string | undefined>(); 
 
+  
+  const isVisible = usePageVisibility();
+  useEffect(() => {
+    console.log("status" + isVisible)
+    if (isVisible) {
+      console.log("Visible, on the page")
+    } else if (isVisible === null)
+      {console.log("probs on the page...albeit can be false")} 
+    else {
+      if (recordingStatus !== INACTIVE) {
+        alert("Recording will be stopped.") //don't think pop up will work
+        stopRecording();
+      console.log("hidden 24680 was recording")
+      } else {console.log("hidden 12345 never record")}
+    }
+  }, [isVisible]);
+
+/* HOW COME THE FOLLOWING IS NOT THE EQUIVALENT...
+const [isVisible, setIsVisible] = useState<boolean | null>(null);
+  useEffect(() => { 
+    let visibility = !document.hidden;
+    setIsVisible(document.visibilityState === 'visible');
+    function handleVisibilityChange() {
+      if (!visibility) {
+        if (recordingStatus !== INACTIVE) {
+        stopRecording();
+        console.log("hidden 24680 was recording")
+        } else {console.log("hidden never record")}
+    } else {console.log("Visible, on the page")}
+  }
+    window.addEventListener('visibilitychange', handleVisibilityChange); // can document work?
+    return () => {
+      window.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isVisible]);
+  */
+
+
+useEffect(() => { // refresh...not for back button. As in back & forward yes IF PAGE ACCESSED THROUGH pure link, not router.push()
+  function beforeUnload(e: BeforeUnloadEvent) {
+
+    if (recordingStatus !== INACTIVE) {
+      //setNavPopUp(true);
+  e.preventDefault(); // but the notification isn't suitable
+  stopRecording();
+    console.log("pending is true")
+    }
+    console.log("well")
+  }
+
+  window.addEventListener('beforeunload', beforeUnload);
+
+  return () => {
+    window.removeEventListener('beforeunload', beforeUnload);
+  };
+});
+
+
+// need tp see further.
+const pathname = usePathname();
+  const [changes, setChanges] = useState(0);
+
+ useEffect(() => {
+    console.log(`Route changed to: ${pathname}`);
+    setChanges((prev) => prev + 1);
+  }, [pathname]);
+
+
+  const router = useRouter();
+ useEffect(() => {
+  const handlePopState = () => { // what event type is this?
+    console.log('Back button pressed');
+    // You can add custom logic here
+  };
+
+  // Listen for popstate events
+  window.addEventListener('popstate', handlePopState);
+
+  // Cleanup the event listener on unmount
+  return () => {
+    window.removeEventListener('popstate', handlePopState);
+  };
+}, [router]);
+
+useEffect(() => { // DOES NOT WORK
+  function hashChange() {
+    console.log("history detected")
+    }
+console.log("did we ")
+  window.addEventListener('hashchange', hashChange);
+
+  return () => {
+    window.removeEventListener('hashchange', hashChange);
+  };
+});
+
+
+  /*
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (recordingStatus !== INACTIVE ) {
+          //setNavPopUp(true);
+          console.log("qwerty")
+          stopRecording();
+        }
+      } else {
+        console.log("yeserday")
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Clean up the event listener on unmount
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [recordingStatus]);*/
+
   const handleClosePopUp = () => { // should separate into different handlers?
     setMicPopUp(false);
     setNavPopUp(false);
@@ -67,12 +189,12 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   };
 
   // hmm can we combine such thta it's in the logout and home button that contains this info on which server action to choose (CS2030 style)
-  const handleAgreeNavPopUp = () => {
-    console.log("clicked yes, navigate");
+  const handleAgreeNavPopUp = () => {    console.log("clicked yes, navigate");
     stopRecording();
-    setMicPopUp(false);
+    setNavPopUp(false);
     if (headerButtonPressed.current === HOME) { toHome() }
     else if (headerButtonPressed.current === LOGOUT) { logout() }
+    else { return; }
   }
 
   const pressHome = () => {
@@ -339,6 +461,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     
       
     <div className={styles.serviceRecord}>
+      {/*<input name = "name" id = "name"></input>*/}
       <div className={styles.serviceRecordContent}>
         {recordingStatus !== INACTIVE ? ( // recording or pause status
           <div className={styles.serviceRecordPlay}>
@@ -382,7 +505,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
             <button onClick={pressMic}>
               <MicIcon
                 style={{
-                  fontSize: "6.5vh",
+                  fontSize: "2.5rem",
                   alignItems: "center",
                   color: "black",
                 }}
@@ -408,7 +531,6 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
           </div>
         ) : null}
       </div>
-      <br></br>
       <TranscriptBox
         transcript={finalTranscribedText}
         deleteFunc={deleteTranscript}

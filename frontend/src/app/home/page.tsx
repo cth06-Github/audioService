@@ -4,6 +4,7 @@ import BigButton from "./big-button";
 import MicIcon from "@mui/icons-material/Mic";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { getUsername } from "../lib-authen.ts";
+import Link from "next/link";
 
 export default async function HomePage() {
   const value = await getUsername(); // decrypt value of cookie to get username
