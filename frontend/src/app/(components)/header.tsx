@@ -71,27 +71,27 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </header>
       </div>
-
-      <div className={[styles.menuOpen, "menuOpenAlt"].join(" ")}>
-        <style jsx>{`
-        .menuOpenAlt {
-          width: ${menu ? "90vw" : "0px"};
+     
+      <div className={`${styles.menuOpen} menuOpenAlt`}>
+        <style jsx>
+          {`.menuOpenAlt {
+          width: ${menu ? "90vw" : "0px"}; 
           padding: ${menu ? "120px 10vw" : "0px"};
-          box-shadow: ${
-            menu && "0px 0px 5px 10vw rgba(0, 0, 0, 0.5)" /*is this a good way*/
+          box-shadow: ${menu && "0px 0px 5px 10vw rgba(0, 0, 0, 0.5)"}
+          }`
           }
-      `}</style>
-
+        </style>
+        
         {menu && (
-          <>
+          <div>
             <ul>{hasHome && <HomeButton onClickFunc={onClickFuncHome} />}</ul>
             <ul>
               <span>
                 <Logout onClickFunc={onClickFuncLogout} />
               </span>
             </ul>
-          </>
-        )}
+          </div>
+      )}
       </div>
     </div>
   );

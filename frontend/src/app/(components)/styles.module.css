@@ -91,6 +91,7 @@
         margin-right: 2px;
     }
 
+    
     .menuOpen {
         transition: width 0.5s;
         position: absolute;
@@ -98,7 +99,6 @@
         top: 0px;
         bottom: 0px;
         right: 0px;
-        padding: 0px 0px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -113,15 +113,12 @@
     rgb(161, 228, 247),
     rgb(161, 219, 247)
   );
-        height: 100vh;
-        width: 0vw;
+        height: 120vh;
         backdrop-filter: blur(5px);        
         z-index: 1; /*just jack up number*/      
-        overflow: scroll;
-    }
-
-    .menuOpen header {
-        align-items: center;
+        overflow: hidden;
+        padding: 0px 0vw; 
+        width: 0vw;
     }
 
     .menu h6 {  
@@ -133,19 +130,32 @@
         background-color: rgba(227, 230, 231, 0.5);
         font-size: 1.5rem;
         z-index: 10;
+        box-shadow: 0px 0px 0px 0vw rgba(0, 0, 0, 0)
         
     }
 
     .menuOpen button { 
+        display: flex;
         border: 1px solid;
         height: 70px;
         width: 70vw;
         background-color: rgba(227, 230, 231, 0.5);
         text-align: left;
         padding-left: 10px;;
-        
+        z-index: 10;
+        align-items: center;
     }
 
+    /*
+    .menuOpen {animation: slideIn 0.5s} 
+    @keyframes slideIn {
+        0% { width: 0px; padding: 0px; box-shadow: 0px 0px 0px 0vw rgba(0, 0, 0, 0)}
+        100% { width: 90vw; padding: 120px 10vw; box-shadow: 0px 0px 5px 10vw rgba(0, 0, 0, 0.5) }
+
+    }
+*/
+
+    
     .menu h6, .menuOpen button { animation: fadeIn 0.8s; }
     @keyframes fadeIn {
         0% { opacity: 0; }

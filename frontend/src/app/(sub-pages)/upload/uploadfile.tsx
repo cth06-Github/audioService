@@ -12,7 +12,6 @@ import { SectionPopUpProps } from "@/app/(components)/(dialogs)/pop-up-section";
 import { logout, toHome } from "@/app/lib-authen";
 import Header from "@/app/(components)/header";
 
-
 interface UploadProps {
   username: string;
 }
@@ -27,15 +26,16 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
 
   const [uploadPopUp, setUploadPopUp] = useState<boolean>(false);
   const [NavPopUp, setNavPopUp] = useState<boolean>(false);
-  const headerButtonPressed = useRef<string | undefined>(); 
+  const headerButtonPressed = useRef<string | undefined>();
 
-  const hasTranscribedTextfrmPopUp= useRef<boolean>(false); // only used for pop-up indication, confusing
+  const hasTranscribedTextfrmPopUp = useRef<boolean>(false); // only used for pop-up indication, confusing
   const fileInput = useRef<any>(null);
 
-  const HOME = "home"
-  const LOGOUT = "logout"
+  const HOME = "home";
+  const LOGOUT = "logout";
 
-  const handleClosePopUp = () => { // should separate into different handlers?
+  const handleClosePopUp = () => {
+    // should separate into different handlers?
     setUploadPopUp(false);
     setNavPopUp(false);
   };
@@ -45,82 +45,83 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
     deleteTranscript();
     console.log("clicked yes, clear text");
     console.log(fileInput);
-    console.log("yeehah")
+    console.log("yeehah");
     console.log(hasTranscribedTextfrmPopUp.current);
-    if(!fileInput.current) {throw "Error input tag null??"} 
+    if (!fileInput.current) {
+      throw "Error input tag null??";
+    }
     console.log("going to click");
-    console.log(uploadPopUp)
+    console.log(uploadPopUp);
     fileInput.current.click();
-    setUploadPopUp(false); 
+    setUploadPopUp(false);
     hasTranscribedTextfrmPopUp.current = false;
   };
 
   // hmm can we combine such thta it's in the logout and home button that contains this info on which server action to choose (CS2030 style)
-  const handleAgreeNavPopUp = () => { // really repeating sial with the record component
+  const handleAgreeNavPopUp = () => {
+    // really repeating sial with the record component
     console.log("clicked yes, navigate");
     setUploadPopUp(false);
-    if (headerButtonPressed.current === HOME) { toHome() }
-    else if (headerButtonPressed.current === LOGOUT) { logout() }
-  }
+    if (headerButtonPressed.current === HOME) {
+      toHome();
+    } else if (headerButtonPressed.current === LOGOUT) {
+      logout();
+    }
+  };
 
   const pressHome = () => {
     if (!transcribedText && isFileSending) {
       headerButtonPressed.current = HOME;
-      console.log(headerButtonPressed)
+      console.log(headerButtonPressed);
       setNavPopUp(true);
-    }
-    else toHome(); // you can have server actions in event handlers.
-  }
+    } else toHome(); // you can have server actions in event handlers.
+  };
 
   // are both considered repeats?
-  
-  const pressLogout = () => { 
+
+  const pressLogout = () => {
     if (!transcribedText && isFileSending) {
       headerButtonPressed.current = LOGOUT;
       setNavPopUp(true);
-    }
-    else logout(); // you can have server actions in event handlers.
-  }
-
+    } else logout(); // you can have server actions in event handlers.
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Reselect same file issue
     setComplete(false); // completion logo
-    console.log(event.target.files)
+    console.log(event.target.files);
     if (!event.target.files) {
       return;
     }
     chooseFile(event.target.files[0]);
-    
   };
 
-  console.log("hmm")
-  console.log(selectedFile)
+  console.log("hmm");
+  console.log(selectedFile);
 
   const deleteFile = () => {
-    const input = document.getElementById('getAudio') as HTMLInputElement // type assertion. if there is error, probably the id value of the input tag is written wrongly
+    const input = document.getElementById("getAudio") as HTMLInputElement; // type assertion. if there is error, probably the id value of the input tag is written wrongly
     input.value = ""; // input.files will become FileList {length: 0}
     chooseFile(null);
-    console.log(input.files)
+    console.log(input.files);
   };
 
   const deleteTranscript = () => {
-    setTranscribedText(""); 
+    setTranscribedText("");
     setTranscribedFile("");
-   
-  }
+  };
 
   const uploadFunction = async () => {
     setTranscribeDone(false); // always clear the transcribe done status prior to sending to backend [Will imm. update?]
     setTranscribedFile("");
 
     // insert backend code (future). For now://
-    console.log("Send file to backend for transcription"); 
-    setSentStatus(true); // when done sending to backend 
-    const input = document.getElementById('getAudio') as HTMLInputElement // type assertion. if there is error, probably the id value of the input tag is written wrongly
-    input.value = "";  
-    
-    console.log("Backend Transcription in progress"); 
+    console.log("Send file to backend for transcription");
+    setSentStatus(true); // when done sending to backend
+    const input = document.getElementById("getAudio") as HTMLInputElement; // type assertion. if there is error, probably the id value of the input tag is written wrongly
+    input.value = "";
+
+    console.log("Backend Transcription in progress");
     setTimeout(() => {
       let backStage = dummyText1; // backstage will receive the value return by the backend service?
       setTranscribedText(backStage);
@@ -149,16 +150,16 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   };
 
   const pressUpload = () => {
-    console.log("pressUpload")
-    if (transcribedText) { 
+    console.log("pressUpload");
+    if (transcribedText) {
       setUploadPopUp(true);
-    } 
+    }
   };
 
-  return ( // hard code the height of division (not ideal)
+  return (
+    // hard code the height of division (not ideal)
     <>
-    
-    <Header
+      <Header
         heading="Upload"
         description="Transcribe existing audio"
         hasHome={true}
@@ -170,59 +171,78 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
         <div className={styles.serviceFiles}>
           <hgroup>
             <h2>Select files</h2>
-            <p style ={{textAlign: "center"}}>Choose 1 file only</p>
+            <p style={{ textAlign: "center" }}>Choose 1 file only</p>
           </hgroup>
           <div className={styles.serviceFilesContent}>
             <div className={styles.serviceFilesUpload}>
-             
-             <button className={styles.uploadButton} onClick = {pressUpload} >
-              <label htmlFor="getAudio">
-                <FileUploadIcon style={{ fontSize: 30 }} />
-                Audio
-              </label>
-                
-              <input
-                ref={fileInput} 
-                id="getAudio"
-                type="file"
-                accept="audio/*, .mp4"
-                onChange={handleFileChange}
-                onClick={(event) => {console.log("wwww" + uploadPopUp); if (!(!transcribedText || transcribedText && hasTranscribedTextfrmPopUp.current)) event.preventDefault()} /*gonna confusing*/}
-                style={{ display: "none" }}
-              />
+              <button className={styles.uploadButton} onClick={pressUpload}>
+                <label htmlFor="getAudio">
+                  <FileUploadIcon style={{ fontSize: 30 }} />
+                  Audio
+                </label>
+
+                <input
+                  ref={fileInput}
+                  id="getAudio"
+                  type="file"
+                  accept="audio/*, .mp4"
+                  onChange={handleFileChange}
+                  onClick={
+                    (event) => {
+                      console.log("wwww" + uploadPopUp);
+                      if (
+                        !(
+                          !transcribedText ||
+                          (transcribedText &&
+                            hasTranscribedTextfrmPopUp.current)
+                        )
+                      )
+                        event.preventDefault();
+                    } /*gonna confusing*/
+                  }
+                  style={{ display: "none" }}
+                />
               </button>
-              <div className = "fileDescribe">
-              <style jsx>{`
-                .fileDescribe {
+              <div className="fileDescribe">
+                <style jsx>{`
+                  .fileDescribe {
                     padding: 3px;
                     height: ${!showComplete ? "2rem" : "0px"};
                     flex-direction: row;
-                    align-items: ${selectedFile && !isFileSending ? "center" : "flex-start"}
+                    align-items: ${selectedFile && !isFileSending
+                      ? "center"
+                      : "flex-start"};
                   }
-              `}</style>
-              
-              {selectedFile ? (
-                  <>
-                  <p style = {{textAlign: "center"}}>
-                    <small style={{ display: "flex", alignItems: "center", textAlign: "center" }}>
-                      {truncateName(selectedFile.name, 20)}
-                      
-                    </small>
-                  </p>
+                `}</style>
 
-                  {!isFileSending && (
-                        <span><Delete onClick={deleteFile}/></span>
-                      )}
-               </>
-              ) : (
-                !showComplete && (
+                {selectedFile ? (
+                  <>
+                    <p style={{ textAlign: "center" }}>
+                      <small
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          textAlign: "center",
+                        }}
+                      >
+                        {truncateName(selectedFile.name, 20)}
+                      </small>
+                    </p>
+
+                    {!isFileSending && (
+                      <span>
+                        <Delete onClick={deleteFile} />
+                      </span>
+                    )}
+                  </>
+                ) : (
+                  !showComplete && (
                     <p>
                       <small>No file chosen</small>
                     </p>
-    
-                )
-              )}
-               </div>
+                  )
+                )}
+              </div>
             </div>
 
             {selectedFile && !isFileSending && (
@@ -246,11 +266,13 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
                     </span>
                     Transcribing...
                   </p>
-                ) : ((showComplete) &&
-                  <p style={{ display: "flex", alignItems: "center" }}>
-                    <CheckCircleOutlineIcon style={{ color: "#00F01C" }} />
-                    Complete!
-                  </p>
+                ) : (
+                  showComplete && (
+                    <p style={{ display: "flex", alignItems: "center" }}>
+                      <CheckCircleOutlineIcon style={{ color: "#00F01C" }} />
+                      Complete!
+                    </p>
+                  )
                 )}
               </div>
             )}
@@ -258,15 +280,19 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
         </div>
       </div>
       <br></br>
-      <TranscriptBox transcript = {transcribedText} withInfo = {truncateName(transcribedFile, 25)} deleteFunc={deleteTranscript}/>
+      <TranscriptBox
+        transcript={transcribedText}
+        withInfo={truncateName(transcribedFile, 25)}
+        deleteFunc={deleteTranscript}
+      />
       <SectionPopUpProps
-      actionItems={["Transcribing", "uploaded files"]}
-      state = {[uploadPopUp, NavPopUp]}
-      onClose={handleClosePopUp}
-      onAgree={[handleAgreeUploadPopUp, handleAgreeNavPopUp]}
+        actionItems={["Transcribing", "uploaded files"]}
+        state={[uploadPopUp, NavPopUp]}
+        onClose={handleClosePopUp}
+        onAgree={[handleAgreeUploadPopUp, handleAgreeNavPopUp]}
       />
     </>
   );
-}
+};
 
 export default UploadFile;

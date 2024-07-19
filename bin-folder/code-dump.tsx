@@ -1,3 +1,36 @@
+/* CSS */
+/* TRANSITION WIDTH: TRICK IS YOU CONTROL WIDTH FROM 0VW TO 90VW
+.menuOpen {
+        transition: width 0.5s;
+        position: absolute;
+        left:0px;
+        top: 0px;
+        bottom: 0px;
+        right: 0px;
+        padding: 0px 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        background-color: white;
+        background: linear-gradient( /*need to @media dark theme
+    /*linear-gradient(angle, color-stop1, color-stop2); 145deg,
+    rgb(255, 255, 255),
+    rgb(216, 215, 215),
+    rgb(147, 165, 175),
+    rgb(141, 195, 222),
+    rgb(161, 228, 247),
+    rgb(161, 219, 247)
+  );
+        height: 150vh;
+        width: 0vw;
+        backdrop-filter: blur(5px);        
+        z-index: 1; /*just jack up number    
+        overflow: hidden;
+    }
+  */
+
+
 /* POTENTIALLY NEED IT */
 
 //login.tsx// --- ATTEMPTS of useContext

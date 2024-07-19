@@ -10,7 +10,7 @@ export default async function HomePage() {
   const value = await getUsername(); // decrypt value of cookie to get username
 
   return (
-    <div>
+    <div style = {{minHeight: "100vh", justifyContent: "flex-start"}}>
       <Header
         heading="Welcome!"
         description="Transcribe"

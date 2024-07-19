@@ -1,15 +1,8 @@
-.top button {
-  position: absolute;
-  padding: 5px;
-  right: 4vw;
-  top: 40px;
-}
-
 .serviceBox {
   transform: translate(0px, 3rem);
   padding: 5px 20px;
   width: 85vw;
-  height: 80vh;
+  height: fit-content;
   flex-direction: row;
   align-items: flex-start;
   justify-content: center;

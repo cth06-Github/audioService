@@ -8,7 +8,7 @@ export default async function UploadPage() {
 
   // probably also don't want people to leave page when file is in the middle transcribing..... 
   return (
-    <div>
+    <div style = {{minHeight: "100vh", justifyContent: "flex-start"}}>
       
       <UploadFile username = {username}></UploadFile>
     </div>

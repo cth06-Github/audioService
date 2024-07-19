@@ -1,5 +1,6 @@
 :root {
   min-height: 100vh;
+  height: fit-content;
   --foreground-rgb: 0, 0, 0; /*black text*/
   --background-start-rgb: 214, 219, 220; /*greyish background*/
   --background-end-rgb: 255, 255, 255; /*white background (at the end)*/
