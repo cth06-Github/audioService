@@ -18,8 +18,8 @@ interface UploadProps {
 
 const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   const [selectedFile, chooseFile] = useState<File | null>(null); // good to use null?
-  const [isFileSending, setSentStatus] = useState<boolean>(false); // sending rather than sent.
-  const [isTranscribeDone, setTranscribeDone] = useState<boolean>(false); // change to true to try out something
+  const [isFileSending, setSentStatus] = useState<boolean>(false); 
+  const [isTranscribeDone, setTranscribeDone] = useState<boolean>(false); 
   const [transcribedText, setTranscribedText] = useState<string>("");
   const [transcribedFile, setTranscribedFile] = useState<string>("");
   const [showComplete, setComplete] = useState<boolean>(false);
@@ -28,7 +28,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   const [NavPopUp, setNavPopUp] = useState<boolean>(false);
   const headerButtonPressed = useRef<string | undefined>();
 
-  const hasTranscribedTextfrmPopUp = useRef<boolean>(false); // only used for pop-up indication, confusing
+  const hasTranscribedTextfrmPopUp = useRef<boolean>(false); // only used for pop-up indication
   const fileInput = useRef<any>(null);
 
   const HOME = "home";
@@ -42,15 +42,9 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   const handleAgreeUploadPopUp = () => {
     hasTranscribedTextfrmPopUp.current = true;
     deleteTranscript();
-    console.log("clicked yes, clear text");
-    console.log(fileInput);
-    console.log("yeehah");
-    console.log(hasTranscribedTextfrmPopUp.current);
     if (!fileInput.current) {
-      throw "Error input tag null??";
+      throw new Error("Input tag not detected");
     }
-    console.log("going to click");
-    console.log(uploadPopUp);
     fileInput.current.click();
     setUploadPopUp(false);
     hasTranscribedTextfrmPopUp.current = false;
@@ -82,11 +76,10 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
     if (!transcribedText && isFileSending) {
       headerButtonPressed.current = LOGOUT;
       setNavPopUp(true);
-    } else logout(); // you can have server actions in event handlers.
+    } else logout(); 
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Reselect same file issue
     setComplete(false); // completion logo
     console.log(event.target.files);
     if (!event.target.files) {
@@ -94,9 +87,6 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
     }
     chooseFile(event.target.files[0]);
   };
-
-  console.log("hmm");
-  console.log(selectedFile);
 
   const deleteFile = () => {
     const input = document.getElementById("getAudio") as HTMLInputElement; // type assertion. if there is error, probably the id value of the input tag is written wrongly
@@ -117,7 +107,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
     // insert backend code (future). For now://
     console.log("Send file to backend for transcription");
     setSentStatus(true); // when done sending to backend
-    const input = document.getElementById("getAudio") as HTMLInputElement; // type assertion. if there is error, probably the id value of the input tag is written wrongly
+    const input = document.getElementById("getAudio") as HTMLInputElement; // type assertion.
     input.value = "";
 
     console.log("Backend Transcription in progress");
@@ -156,7 +146,6 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   };
 
   return (
-    // hard code the height of division (not ideal)
     <>
       <Header
         heading="Upload"
@@ -188,7 +177,6 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
                   onChange={handleFileChange}
                   onClick={
                     (event) => {
-                      console.log("wwww" + uploadPopUp);
                       if (
                         !(
                           !transcribedText ||
@@ -197,7 +185,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
                         )
                       )
                         event.preventDefault();
-                    } /*gonna confusing*/
+                    } 
                   }
                   style={{ display: "none" }}
                 />

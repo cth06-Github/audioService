@@ -39,6 +39,38 @@ import Link from "next/link";
     }
   */
 
+  
+/*useEffect Help*/
+/* HOW COME THE FOLLOWING IS NOT THE EQUIVALENT...
+const [isVisible, setIsVisible] = useState<boolean | null>(null);
+  useEffect(() => { 
+    let visibility = !document.hidden;
+    setIsVisible(document.visibilityState === 'visible');
+    function handleVisibilityChange() {
+      if (!visibility) {
+        if (recordingStatus !== INACTIVE) {
+        stopRecording();
+        console.log("hidden 24680 was recording")
+        } else {console.log("hidden never record")}
+    } else {console.log("Visible, on the page")}
+  }
+    window.addEventListener('visibilitychange', handleVisibilityChange); // can document work?
+    return () => {
+      window.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [isVisible]);
+  
+    // need tp see further.
+  const pathname = usePathname();
+  const [changes, setChanges] = useState(0);
+
+  useEffect(() => {
+    console.log(`Route changed to: ${pathname}`);
+    setChanges((prev) => prev + 1);
+  }, [pathname]);
+  
+  */
+
 
 /* POTENTIALLY NEED IT */
 
