@@ -6,19 +6,19 @@
   --background-end-rgb: 255, 255, 255; /*white background (at the end)*/
   --component-foreground: rgb(0, 0, 0);
   --component-background: rgb(255, 255, 255);
-  --default-border-radius: 10px;
   --default-font-size: 3vh;
 }
 
-div, hgroup { /*main div; only 1 header*/
+div,
+hgroup {
   display: flex;
   flex-direction: column;
-  align-items: center; /*x-direction*/
-  justify-content: center; /*y-direction*/
+  align-items: center;
+  justify-content: center;
   font-size: var(--default-font-size);
 }
 
-header { 
+header {
   display: flex;
   flex-direction: row;
   height: fit-content;
@@ -32,14 +32,17 @@ hgroup {
   justify-content: start;
 }
 
-h1, h2, h3, h5 {
+h1,
+h2,
+h3,
+h5 {
   text-align: center;
-  
 }
 
-h1 { /*reserved for header title*/
-  font-size: 2.5rem; /*2em*/
-  font-weight: bold; 
+h1 {
+  /*reserved for header title*/
+  font-size: 2.5rem;
+  font-weight: bold;
   margin: 0rem 3rem;
 }
 
@@ -69,8 +72,8 @@ button {
   cursor: pointer;
 }
 
-/* Mobile */ 
-@media (max-width: 600px) { /*768px */
+/* Mobile */
+@media (max-width: 600px) {
   h1 {
     font-size: 2rem;
   }
@@ -93,18 +96,6 @@ button {
 
   p {
     font-size: 0.9rem;
-  }
-  
-}
-
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 41, 36, 35;
-    --background-end-rgb: 0, 0, 0;
-    --component-foreground: rgb(255, 255, 255);
-    --component-background: rgb(0, 0, 0);
   }
 }
 
@@ -135,8 +126,17 @@ a {
   text-decoration: none;
 }
 
+/*Dark theme*/
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
+  }
+
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 41, 36, 35;
+    --background-end-rgb: 0, 0, 0;
+    --component-foreground: rgb(255, 255, 255);
+    --component-background: rgb(0, 0, 0);
   }
 }

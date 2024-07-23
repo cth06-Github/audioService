@@ -461,7 +461,6 @@ console.log("did we ")
     
       
     <div className={styles.serviceRecord}>
-      {/*<input name = "name" id = "name"></input>*/}
       <div className={styles.serviceRecordContent}>
         {recordingStatus !== INACTIVE ? ( // recording or pause status
           <div className={styles.serviceRecordPlay}>
@@ -476,7 +475,7 @@ console.log("did we ")
                 style={{ margin: "0px 2px" }}
               >
                 <StopCircleOutlinedIcon
-                  style={{ fontSize: "9vh", color: `${recordingStatus === ACTIVE ? "red" : "black"}` }} /*black as pause*/
+                  style={{ fontSize: "9vh", color: `${recordingStatus === ACTIVE ? "red" : "inherit"}` }} /*inherit: black if in light mode, white if in dark mode*/
                 />
               </button>
               <p style={{fontSize: "1.3rem" }}>{timeInHourMinSec(time)}</p>

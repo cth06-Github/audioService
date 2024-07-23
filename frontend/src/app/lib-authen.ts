@@ -1,4 +1,4 @@
-"use server"; // server actions (the solution)
+"use server"; // server actions
 
 import { database } from "./database-mock";
 import { INVALID, VALID } from "./constants";
@@ -6,8 +6,8 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-const secretKey = "secret"; // should we try environment variables?
-const key = new TextEncoder().encode(secretKey); // encode() ---> ASCII codepoint
+const secretKey = "secret"; // environment variables? .env?
+const key = new TextEncoder().encode(secretKey); // returns Uint8Array object
 
 export async function authenticate(
   _currentState: string | null,
@@ -21,8 +21,8 @@ export async function authenticate(
   const authStatus = verify(userInput, passwordInput);
 
   if (authStatus === VALID) {
-    cookieSetter({ username: userInput }); // set cookies only if authenticated
-    redirect("/home"); // change back to home
+    cookieSetter({ username: userInput }); // create session cookies only if authenticated
+    redirect("/home");
   } else {
     return "Incorrect Username and Password.";
   }
@@ -37,21 +37,19 @@ function verify(userInput: string, passwordInput: string) {
 }
 
 async function cookieSetter(user: object) {
-  // create session cookies
   // Create the session
   const ONEDAY = 24 * 60 * 60 * 1000; // 24h in miliseconds
-  const expireTime = new Date(Date.now() + ONEDAY); // set for one day instead of "when browser is closed"
+  const expireTime = new Date(Date.now() + ONEDAY); // expiry set for 1 day instead of when browser is closed
   const session = await encrypt({ user, expireTime });
 
-  // Save the session in a cookie.
+  // Save the session in a cookie, .set(name, value, options)
   cookies().set("session", session, {
     expires: expireTime,
     httpOnly: true,
     secure: true,
-  }); // name, value, options
+  });
 }
 
-// got encrypt, but decrypt function not defined
 async function encrypt(payload: any) {
   // payload: part of transmitted data that is the actual intended message.
   return await new SignJWT(payload) // payload is JWTPayload type...
@@ -61,12 +59,6 @@ async function encrypt(payload: any) {
     .sign(key); // input key must be Uint8Array | KeyObject type; return Promise<string>
 }
 
-export async function logout() {
-  // Destroy the session
-  cookies().delete("session"); // cookies().set("session", "", { expires: new Date(0) });
-  redirect("/login");
-}
-
 export async function decrypt(input: string): Promise<any> {
   // input: JSON Web Token value (encoded)
   const { payload } = await jwtVerify(input, key, {
@@ -74,20 +66,23 @@ export async function decrypt(input: string): Promise<any> {
     algorithms: ["HS256"],
   });
   console.log(payload);
-  return payload; // payload of JWT...that means username info also?
+  return payload;
 }
 
 export async function getSession() {
-  // similar to nextJS example (in app/page.tsx)
   const session = cookies().get("session")?.value;
   if (!session) return null;
-  return await decrypt(session); // why need to decrypt?
+  return await decrypt(session);
 }
 
 export async function getUsername() {
-  // similar to nextJS example (in app/page.tsx)
   const decrypted = await getSession();
   return decrypted.user.username;
+}
+
+export async function logout() {
+  cookies().delete("session"); // Destroy the session
+  redirect("/login");
 }
 
 export async function toHome() {

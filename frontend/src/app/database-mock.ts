@@ -1,8 +1,8 @@
 export const database = [
   // assumes no encryption
   {
-    username: "Shawn Hanna",
-    password: "India",
+    username: "Christopher Boo Koh Jiang Zhuang",
+    password: "testing",
   },
   {
     username: "Fidel Hand",

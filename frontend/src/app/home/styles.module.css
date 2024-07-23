@@ -62,12 +62,12 @@
   .serviceButton {
     background: linear-gradient(
       /*linear-gradient(angle, color-stop1, color-stop2);*/ 145deg,
-      rgba(94, 36, 8, 0),
-      rgba(94, 36, 8, 0),
-      rgba(94, 36, 8, 0.2),
-      rgba(94, 36, 8, 0.5),
-      rgba(94, 36, 8),
-      rgb(94, 36, 8) /*sounds like a bad idea to just opp.*/
+      rgba(6, 105, 186, 0),
+      rgba(6, 105, 186, 0),
+      rgba(6, 105, 186, 0.2),
+      rgba(6, 105, 186, 0.5),
+      rgba(6, 105, 186),
+      rgb(6, 105, 186) /*sounds like a bad idea to just opp.*/
     );
     border-color: var(--component-foreground);
   }
