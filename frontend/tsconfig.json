@@ -31,7 +31,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/bin-folder/useRecord.js", "../bin-folder/test.ts", "../bin-folder/route.ts", "src/app/(context)/authcontext.tsx", "../bin-folder/usercontext.tsx"  ],
+, "src/app/bin-folder/useRecord.js", "../bin-folder/test.ts", "../bin-folder/route.ts", "src/app/(context)/authcontext.tsx", "../bin-folder/usercontext.tsx", "../bin-folder/timer.tsx"  ],
   "exclude": [
     "node_modules"
   ]

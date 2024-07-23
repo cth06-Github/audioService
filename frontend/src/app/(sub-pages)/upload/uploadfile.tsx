@@ -34,8 +34,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   const HOME = "home";
   const LOGOUT = "logout";
 
-  const handleClosePopUp = () => {
-    // should separate into different handlers?
+  const handleClosePopUp = () => { // should separate into different handlers?
     setUploadPopUp(false);
     setNavPopUp(false);
   };

@@ -10,7 +10,7 @@ export default function usePageVisibility() {
       setIsVisible(document.visibilityState === 'visible');
     }
 
-    window.addEventListener('visibilitychange', handleVisibilityChange); // can document work?
+    window.addEventListener('visibilitychange', handleVisibilityChange); 
     return () => {
       window.removeEventListener('visibilitychange', handleVisibilityChange);
     };
@@ -18,4 +18,3 @@ export default function usePageVisibility() {
 
   return isVisible;
 }
-

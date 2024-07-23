@@ -1,10 +1,9 @@
 "use client";
 import styles from "./styles.module.css";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 interface ButtonProps {
-  name: any; // the type of the MUI icon is a bit too long?
+  name: any;
   description: string;
   routing: string;
 }
@@ -23,8 +22,3 @@ const BigButton: React.FC<ButtonProps> = (props): JSX.Element => {
 
 export default BigButton;
 
-// onClick={() => router.push(props.routing)}
-/*
-<Link href = {props.routing}>
-</Link>
-*/

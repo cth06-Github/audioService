@@ -6,22 +6,20 @@
   flex-direction: row;
   align-items: flex-start;
   justify-content: center;
-  
 }
 
 .serviceButton { /*button tag*/
   margin: 0rem 5rem;
   display: flex;
   flex-direction: column;
-  justify-content: center; /*vertically top*/
+  justify-content: center; 
   align-items: center;
   padding: 5px 20px;
   width: 32vw;
   max-width: 30rem;
-  /*height: 60vh;*/
   aspect-ratio: 4 / 3;
   background: linear-gradient(
-    /*linear-gradient(angle, color-stop1, color-stop2);*/ 145deg,
+    145deg,
     rgba(161, 219, 247, 0),
     rgba(161, 219, 247, 0),
     rgba(161, 219, 247, 0.2),
@@ -39,12 +37,11 @@
 }
 
 .serviceButton:active {
-  opacity: 1; /*alternative to background-color change, if not, separate*/
+  opacity: 1; 
 }
 
 /* Mobile */
-
-@media (max-width: 600px) { /*768px*/
+@media (max-width: 600px) { 
   .serviceBox{
     transform: translate(0px);
     flex-direction: column;
@@ -61,13 +58,13 @@
 @media (prefers-color-scheme: dark) {
   .serviceButton {
     background: linear-gradient(
-      /*linear-gradient(angle, color-stop1, color-stop2);*/ 145deg,
+      145deg,
       rgba(6, 105, 186, 0),
       rgba(6, 105, 186, 0),
       rgba(6, 105, 186, 0.2),
       rgba(6, 105, 186, 0.5),
       rgba(6, 105, 186),
-      rgb(6, 105, 186) /*sounds like a bad idea to just opp.*/
+      rgb(6, 105, 186) 
     );
     border-color: var(--component-foreground);
   }

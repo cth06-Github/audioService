@@ -8,7 +8,6 @@
   width: 100vw;
 }
 
-
 .serviceFiles {
   padding: 5px 20px;
   width: 23rem;
@@ -16,26 +15,21 @@
   border: 2px solid;
   border-radius: 10px;
   border-color: var(--component-foreground);
-  
 }
 
 .serviceRecordContent {
   display: flex;
   height: 8rem;
   width: 100%;
-  justify-content: space-between; /*make the mic div go up */  
-  /*border-color: rgb(247, 9, 9);*/
+  justify-content: space-between; /*mic in div go up */  
 }
 
 .serviceFilesContent {
   height: 100%;
   width: 100%;
-  justify-content: start; /*make the mic div go up */
-  /*border: 1px dotted; 
-  border-color: rgb(247, 9, 9);*/
+  justify-content: start; /*mic in div go up */
   align-items: center;
 }
-
 
 .serviceRecordMic,
 .serviceRecordPlay,
@@ -43,24 +37,52 @@
 .serviceFilesUpload,
 .serviceFilesEnd {
   padding: 5px 0px;
-  height: auto; /*no greater effect on the upload div, don't know why*/
+  height: auto;
   width: 100%;
   justify-content: center; /*y-direction for upload, x-direction for record*/
 }
 
 .serviceRecordMic,
 .serviceRecordPlay {
- padding: 0px;
+  padding: 0px;
   height: auto;
   max-width: 250px; 
   flex-direction: row;
-  /*border: 1px solid;*/
 }
 
 .serviceRecordPlay {
   justify-content: space-between; /*align in x-direction for record*/
 }
 
+.serviceRecordMic button,
+.serviceRecordPlay button {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center; 
+  justify-content: center; 
+  border-radius: 50%;
+}
+
+.serviceRecordMic button {
+  height: 4.5rem;
+  aspect-ratio: 1/1;
+  border: 1px solid;
+  color: rgb(105, 104, 104);
+  background-color: #ff0000;
+  box-shadow: 0px 0px 0px 0.5rem rgb(255, 255, 255) inset;
+  /*^format h-offset v-offset blur spread color |inset|initial|inherit;*/
+}
+
+.serviceRecordPlay button {
+  height: 8vh;
+  width: 8vh; /*aspect ratio to be 1/1*/
+  border: none;
+}
+
+.serviceRecordMic button:hover {
+  transform: scale(1.05);
+}
 
 .serviceRecordAudio {
   height: 50%;
@@ -72,14 +94,19 @@
 .serviceRecordAudio audio {
  display:block;
   height: 100%;
-  /*border: 1px solid;*/
+}
+
+.serviceRecordAudio button {
+  background-color: transparent; /*not none*/
+  padding: 0px;
+  border: none;
 }
 
 
 .uploadButton,
 .serviceFilesEnd button,
 .serviceFilesEnd label {
-  align-items: center; /*align in y-direction, opposite to globals.css div*/
+  align-items: center; 
   color: var(--component-foreground);
   font-size: 16px;
   text-align: center;
@@ -96,22 +123,15 @@
   padding: 10px;
   height: 100%;
   width: 100%;
-  display: flex; /*must put hmm*/
+  display: flex; 
   flex-direction: row;
-  justify-content: center; /*align in x-direction*/
+  justify-content: center; 
   align-items: center;
   cursor: pointer;
-  background-color: #e0e0e0; /*e0e0e0*/
+  background-color: #e0e0e0; 
   box-shadow: 0px 1px 1px 2px rgb(114, 114, 114);
   border-radius: 5px;
   border: 1px solid;
-}
-
-.serviceFilesUpload button, .serviceRecordAudio button {
-  /*referring to the dustbin delete icon -- NEED TO REMOVE LATER*/
-  background-color: transparent; /*not none*/
-  padding: 0px;
-  border: none;
 }
 
 .serviceFilesEnd button,
@@ -127,37 +147,6 @@
   height:auto;
 }
 
-.serviceRecordMic button,
-.serviceRecordPlay button {
-  padding: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center; /*align in y-direction*/
-  justify-content: center; /*align in x-direction*/
-  border-radius: 50%;
-}
-
-.serviceRecordMic button {
-  /*potential repeat from serviceFiles .label*/
-  height: 4.5rem;
-  aspect-ratio: 1/1;
-  border: 1px solid;
-  color: rgb(105, 104, 104);
-  background-color: #ff0000;
-  box-shadow: 0px 0px 0px 0.5rem rgb(255, 255, 255) inset;
-  /*^format h-offset v-offset blur spread color |inset|initial|inherit;*/
-}
-
-.serviceRecordPlay button {
-  height: 8vh;
-  width: 8vh; /*CANNOT DO CALCULATION??*/ /*100%; <-- hmm why does it not stretch anymore?*/
-  border: none;
-}
-
-.serviceRecordMic button:hover {
-  /*background-color: #ff6464;*/
-  transform: scale(1.05);
-}
 
 .serviceRecordMic button:active,
 .serviceRecordAudio button:active,
@@ -186,11 +175,10 @@
 }
 
 .transcribe {
-  width: 100vw; /*otherwise the width of div vbox is very small*/ /*how come 100% only works for upload*/
+  width: 100vw; 
   padding: 1vw 10vw;
   flex-direction: column;
   align-items: flex-start;
-  /*background-color: rgba(255, 255, 255, 0.2);*/
 }
 
 

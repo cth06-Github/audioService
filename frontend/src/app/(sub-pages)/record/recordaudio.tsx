@@ -426,16 +426,6 @@ console.log("did we ")
     stopTiming();
   };
 
-  /*
-  useEffect(() => {
-    if (running) { // running
-      startTiming();
-    }
-    return () => {
-      clearInterval(intervalRef.current); //intervalRef.current
-    };
-  }, [running]);*/
-
   const deleteTranscript = () => {
     if (recordingStatus !== INACTIVE) {
       alert(

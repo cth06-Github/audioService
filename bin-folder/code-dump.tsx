@@ -1,3 +1,12 @@
+/*import Link for BigButton*/
+// onClick={() => router.push(props.routing)}
+/*
+import Link from "next/link";
+
+<Link href = {props.routing}>
+</Link>
+*/
+
 /* CSS */
 /* TRANSITION WIDTH: TRICK IS YOU CONTROL WIDTH FROM 0VW TO 90VW
 .menuOpen {

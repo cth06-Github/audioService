@@ -1,5 +1,6 @@
 import LoadingPage from "@/app/(components)/loading-page";
 
-export default function Loading() {
+// might not be instantly rendered
+export default function Loading() { 
   return <LoadingPage />;
 }
