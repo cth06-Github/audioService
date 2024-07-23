@@ -50,9 +50,8 @@
 }
 
 /*Trancribe Box Component*/
-
 .transcribe, .transcribeBox {
-    width: 80vw; /*otherwise the width of div vbox is very small*/ /*how come 100% only works for upload*/
+    width: 80vw; /*otherwise the width of div vbox is very small*/ 
     align-items: flex-start;
     min-width: 12rem;
   }
@@ -113,7 +112,7 @@
     rgb(161, 228, 247),
     rgb(161, 219, 247)
   );
-        height: 120vh;
+        height: 110vh;
         z-index: 1; /*just jack up number*/      
         overflow: hidden;
         padding: 0px 0vw; 
@@ -171,7 +170,7 @@
     .menuOpen {
     
         background: linear-gradient( 
-    /*linear-gradient(angle, color-stop1, color-stop2);*/ 145deg,
+    145deg,
     rgb(0, 0, 0),
     rgb(60, 57, 57),
     rgb(62, 76, 82),

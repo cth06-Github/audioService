@@ -3,11 +3,10 @@ import { Logout, HomeButton } from "./button-common";
 import styles from "./styles.module.css";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 interface HeaderProps {
-  heading: string; // the type of the MUI icon is a bit too long?
+  heading: string; 
   description: string;
   hasHome: boolean;
   user: string;
@@ -98,16 +97,3 @@ export const Header: React.FC<HeaderProps> = ({
 };
 
 export default Header;
-
-/*
-      <div className={styles.menuOpen}>
-        <h6>
-          <PersonIcon />
-          {user}
-        </h6>
-        {hasHome && <HomeButton onClickFunc = {onClickFuncHome}/>}
-        <span className={styles.menuOpen1}>
-          <Logout onClickFunc = {onClickFuncLogout}/>
-        </span>
-      </div>
-      */

@@ -35,29 +35,3 @@ const TranscriptBox: React.FC<TranscriptProps> = ({
 
 export default TranscriptBox;
 
-/*
-      <div className={styles.transcribe}>
-          <h4>
-            Transcribed Text:
-          </h4>
-        <p>
-          {transcribedContiText.current ? transcribedContiText.current : "No Text Transcribed"}
-        </p>
-      </div>*/
-
-/*
-    <div className={styles.transcribe}>
-        {transcribedFile ? (
-          <h4>
-            Transcribed Text -{" "}
-            <small>
-              <small>{`${transcribedFile}`}</small>
-            </small>
-          </h4>
-        ) : (
-          <h4>Transcribed Text</h4>
-        )}
-        <p>
-          {isTranscribeDone ? transcribedText : "No file has been transcribed"}
-        </p>
-      </div>*/
