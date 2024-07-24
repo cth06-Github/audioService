@@ -21,7 +21,7 @@ jobs:
         with:
           ref: refs/heads/dev           # code to be checked is from the dev branch
       - name: Show branch trigger
-        run: echo Branch that trigger event - ${{ github._ref }}
+        run: echo Branch that trigger event - ${{ github.ref }}
       - name: Installation via npm
         run: npm install
       - name: Run eslint
