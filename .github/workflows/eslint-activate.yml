@@ -1,8 +1,7 @@
 name: GitHub Actions eslint
 run-name: ${{ github.actor }} is trying out eslint check
 
-#if branches are not defined, it refers to all branches?
-on: [push, pull_request]
+on: [push, pull_request]              # list of trigger events. If branches are not stated, it refers to all branches that trigger the event
 
 jobs:
   eslint:
@@ -13,10 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: refs/heads/dev
+          ref: refs/heads/dev           # with refernece to files from the dev branch
       - name: Installation via npm
         run: npm install
+      - name: Check files
+        run: ls                         # to verify if files are obtained from dev branch
       - name: Run eslint
         run: |
-          echo running branch ${{ github.head_ref || github.ref_name }} 
+          echo running command in branch ${{ github.head_ref || github.ref_name }}
           npm run lint . --ext .js,.jsx,.ts,.tsx 
