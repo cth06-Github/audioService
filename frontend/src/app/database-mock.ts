@@ -10,7 +10,7 @@ export const database = [
   },
   {
     username: "Bessie Hickle",
-    password: "Chaina",
+    password: "ABCDEFG",
   },
   {
     username: "Adella Wunsch",
