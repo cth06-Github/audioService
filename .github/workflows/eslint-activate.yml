@@ -7,10 +7,12 @@ on: [push, pull_request]
 jobs:
   eslint:
     runs-on: ubuntu-latest
+    defaults:
+     run:
+      working-directory: ./frontend
     steps:
       - uses: actions/checkout@v4
-      - name: eslint
-        run: |
-          cd frontend
-          npm install
-          npm run lint . --ext .js,.jsx,.ts,.tsx 
+      - name: Installation via npm
+        run: npm install
+      - name: Run eslint
+        run: npm run lint . --ext .js,.jsx,.ts,.tsx 
