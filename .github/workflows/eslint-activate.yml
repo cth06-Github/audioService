@@ -3,13 +3,8 @@ run-name: ${{ github.actor }} is trying out eslint check
 
 on:              # list of trigger events. If branches are not stated, it refers to all branches that trigger the event
   push:
-    branches:
-      - 'main'
-      - 'dev'
   pull_request:
-    branches: 
-      - 'main'
-      - 'dev'
+  
 jobs:
   eslint:
     runs-on: ubuntu-latest
