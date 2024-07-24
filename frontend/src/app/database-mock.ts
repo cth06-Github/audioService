@@ -9,15 +9,15 @@ export const database = [
     password: "USA",
   },
   {
-    username: "Bessie Hickle",
+    username: "Bessie Hickle Toma",
     password: "ABCDEFG",
   },
   {
-    username: "Adella Wunsch",
+    username: "Adella Wunsch SamiCon",
     password: "Japan",
   },
   {
-    username: "admin",
-    password: "admin",
+    username: "qwerty",
+    password: "qwerty",
   },
 ];
