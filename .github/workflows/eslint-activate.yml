@@ -15,4 +15,6 @@ jobs:
       - name: Installation via npm
         run: npm install
       - name: Run eslint
-        run: npm run lint . --ext .js,.jsx,.ts,.tsx 
+        run: |
+          echo running branch ${{ github.head_ref || github.ref_name }} 
+          npm run lint . --ext .js,.jsx,.ts,.tsx 
