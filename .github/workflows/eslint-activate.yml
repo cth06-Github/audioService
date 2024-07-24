@@ -12,6 +12,8 @@ jobs:
       working-directory: ./frontend
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: refs/heads/dev
       - name: Installation via npm
         run: npm install
       - name: Run eslint
