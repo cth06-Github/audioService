@@ -12,12 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: refs/heads/dev           # with refernece to files from the dev branch
+          ref: refs/heads/dev           # code to be checked is from the dev branch
+      - name: Show branch trigger
+        run: echo Branch that trigger event - ${{ github._ref }}
       - name: Installation via npm
         run: npm install
-      - name: Check files
-        run: ls                         # to verify if files are obtained from dev branch
       - name: Run eslint
-        run: |
-          echo running command in branch ${{ github.head_ref || github.ref_name }}
-          npm run lint . --ext .js,.jsx,.ts,.tsx 
+        run: npm run lint . --ext .js,.jsx,.ts,.tsx 
