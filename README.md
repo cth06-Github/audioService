@@ -4,12 +4,12 @@
 NextJS framework with Typescript. App Router is used.
 
 ### Authentication
-Cookie-based Authentication is used. After users’ login credentials are verified, a JSON Web Token (JWT) containing the username information is created an assigned with a <b>session cookie<b> <br>  
+Cookie-based Authentication is used. After users’ login credentials are verified, a JSON Web Token (JWT) containing the username information is created an assigned with a <b>session cookie</b>. <br>  
 
 The creation of JWT is assisted by the jose package used. Links to the information about the package & functions used in the code:
 <li>About jose: https://github.com/panva/jose</li>
 <li>jwtVerify: https://github.com/panva/jose/blob/main/docs/functions/jwt_verify.jwtVerify.md</li>
-<li>signJWT: https://github.com/panva/jose/blob/HEAD/docs/classes/jwt_sign.SignJWT.md</li>
+<li>signJWT: https://github.com/panva/jose/blob/HEAD/docs/classes/jwt_sign.SignJWT.md</li> <br>
 
 JWT is created using the secret key “secret” stored in environment variables and hashed in RSA or HSA algorithm. Both JWT token and the session cookie are set to only be valid for 24h, meaning, a user will be logged in for at most 24h or when the user clicks logout, whichever is earlier. <br> 
 
