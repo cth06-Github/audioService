@@ -5,7 +5,7 @@ import styles from "../styles.module.css";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CircularProgress from "@mui/material/CircularProgress";
-import { dummyText1 } from "@/app/constants";
+import { dummyTranscription } from "@/app/mock-data";
 import TranscriptBox from "@/app/(components)/transcript-box";
 import { Delete } from "@/app/(components)/button-common";
 import { SectionPopUpProps } from "@/app/(components)/(dialogs)/pop-up-section";
@@ -54,7 +54,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   const handleAgreeNavPopUp = () => {
     // really repeating sial with the record component
     console.log("clicked yes, navigate");
-    setUploadPopUp(false);
+    setNavPopUp(false);
     if (headerButtonPressed.current === HOME) {
       toHome();
     } else if (headerButtonPressed.current === LOGOUT) {
@@ -62,22 +62,15 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
     }
   };
 
-  const pressHome = () => {
+  function pressNav(navLocation: string, navFunc: () => void) {
     if (!transcribedText && isFileSending) {
-      headerButtonPressed.current = HOME;
-      console.log(headerButtonPressed);
+      headerButtonPressed.current = navLocation;
       setNavPopUp(true);
-    } else toHome(); // you can have server actions in event handlers.
-  };
+    } else navFunc(); // you can have server actions in event handlers.
+  }
 
-  // are both considered repeats?
-
-  const pressLogout = () => {
-    if (!transcribedText && isFileSending) {
-      headerButtonPressed.current = LOGOUT;
-      setNavPopUp(true);
-    } else logout(); 
-  };
+  const pressHome = () => pressNav(HOME, toHome)
+  const pressLogout = () => pressNav(LOGOUT, logout)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setComplete(false); // completion logo
@@ -112,7 +105,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
 
     console.log("Backend Transcription in progress");
     setTimeout(() => {
-      let backStage = dummyText1; // backstage will receive the value return by the backend service?
+      let backStage = dummyTranscription; // backstage will receive the value return by the backend service?
       setTranscribedText(backStage);
       setTranscribeDone(true);
       if (!selectedFile) {

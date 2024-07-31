@@ -1,13 +1,15 @@
 "use server"; // server actions
 
-import { database } from "./database-mock";
-import { INVALID, VALID } from "./constants";
+import { database } from "./mock-data";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-const secretKey = "secret"; // environment variables? .env?
+const secretKey = "secret"; // need to put it somewhere else
 const key = new TextEncoder().encode(secretKey); // returns Uint8Array object
+
+const INVALID = 0;
+const VALID = 1;
 
 export async function authenticate(
   _currentState: string | null,
@@ -89,3 +91,4 @@ export async function toHome() {
   console.log("run");
   redirect("/home");
 }
+

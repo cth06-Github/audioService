@@ -39,10 +39,10 @@ export const Header: React.FC<HeaderProps> = ({
                 <MenuIcon></MenuIcon>
               </button>
               {menu && (
-                <h6>
+                <h3>
                   <PersonIcon />
                   {user}
-                </h6>
+                </h3>
               )}
             </span>
             <span className={styles.home}>
@@ -61,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
           <div className={styles.centerHead}>
             <h1>{heading}</h1>
-            <h3>{description}</h3>
+            <p>{description}</p>
           </div>
           <div className={styles.rightHead}>
             <span className={styles.logout}>

@@ -1,4 +1,4 @@
-.loginForm {
+.loginContainer {
   padding: 5px 20px;
   background-color: var(--component-background);
   border: 3px solid;
@@ -8,30 +8,35 @@
   justify-content: flex-start;
 }
 
-.loginBox {
+.loginForm {
   align-items: stretch; /*also helps in stretching the input box*/
+  justify-content: flex-start;
   max-width: 75vw;
   min-width: 40vw;
-  justify-content: flex-start;
   height: auto;
 }
 
-.loginBox input {
+.loginForm input {
   height: 30px;
   margin-bottom: 0.5rem;
 }
 
-.loginBox input::placeholder {
+.loginForm input::placeholder {
   font-size: 0.9rem;
 }
 
-.loginBox label,
-.loginButton button {
+.loginForm p {
+  color: rgb(255, 0, 0); /*applicable to dark and light theme*/
+  font-size: 16px;
+}
+
+.loginForm label,
+.loginButton {
   font-weight: bold;
   font-size: 1.1rem;
 }
 
-.loginButton button { 
+.loginButton { 
   margin: 15px 0px; /*top right bottom left; a b a b */
   padding: 10px;
   width: 100%; 
@@ -44,17 +49,13 @@
   cursor: pointer; /*from cursor arrow to cursor finger*/
 }
 
-.loginBox p {
-  color: rgb(255, 0, 0); /*applicable to dark and light theme*/
-  font-size: 16px;
-}
 
 @media (prefers-color-scheme: dark) {
   .loginBox input::placeholder {
     color: #eff0f0;
   }
 
-  .loginButton button {
+  .loginButton {
     background-color: #03b9da;
   }
 }

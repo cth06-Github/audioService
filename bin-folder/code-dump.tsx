@@ -1,3 +1,5 @@
+// must write ? to make it possible for the prop to be optional
+
 /*import Link for BigButton*/
 // onClick={() => router.push(props.routing)}
 /*

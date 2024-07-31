@@ -3,7 +3,7 @@ import { Delete } from "@/app/(components)/button-common";
 
 interface TranscriptProps {
   transcript: string;
-  withInfo?: string; // must write ? to make it possible for the prop to be optional
+  withInfo?: string; 
   deleteFunc: () => void
 }
 
@@ -17,13 +17,13 @@ const TranscriptBox: React.FC<TranscriptProps> = ({
     // by default, withInfo is blank
     <div className={styles.transcribe}>
       <div style={{flexDirection: "row", justifyContent:"flex-start"}}>
-    <h4 style= {{padding: " 0px 1vw"}}>
+    <h2 style= {{padding: " 0px 1vw"}}>
         Transcribed Text
         {withInfo !== "" &&
         <small>
           <small>{` -- ${withInfo}`}</small>
         </small>}
-      </h4>
+      </h2>
       {transcript && <Delete onClick = {deleteFunc}/>}
       </div>
     <div className={styles.transcribeBox}>

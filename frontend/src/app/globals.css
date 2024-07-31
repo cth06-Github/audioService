@@ -1,9 +1,9 @@
 :root {
   min-height: 100vh;
   height: fit-content;
-  --foreground-rgb: 0, 0, 0; /*black text*/
-  --background-start-rgb: 214, 219, 220; /*greyish background*/
-  --background-end-rgb: 255, 255, 255; /*white background (at the end)*/
+  --foreground-rgb: rgb(0, 0, 0); /*black*/
+  --background-start-rgb: rgb(214, 219, 220); /*greyish*/
+  --background-end-rgb: rgb(255, 255, 255); /*white*/
   --component-foreground: rgb(0, 0, 0);
   --component-background: rgb(255, 255, 255);
   --default-font-size: 3vh;
@@ -18,6 +18,12 @@ hgroup {
   font-size: var(--default-font-size);
 }
 
+hgroup { /*only used in Upload*/
+  margin-bottom: 0.2rem;
+  height: auto;
+  justify-content: start;
+}
+
 header {
   display: flex;
   flex-direction: row;
@@ -26,21 +32,8 @@ header {
   margin: 1rem 0rem;
 }
 
-hgroup {
-  margin-bottom: 0.2rem;
-  height: auto;
-  justify-content: start;
-}
-
-h1,
-h2,
-h3,
-h5 {
-  text-align: center;
-}
 
 h1 {
-  /*reserved for header title*/
   font-size: 2.5rem;
   font-weight: bold;
   margin: 0rem 3rem;
@@ -50,22 +43,8 @@ h2 {
   font-size: 1.5rem;
 }
 
-h3 {
-  font-size: 1.7rem;
-  font-weight: normal; /*not "none"*/
-}
-
-h4 {
-  font-size: 1.3rem;
-}
-
-h5 {
-  font-size: 1.3rem;
-  font-weight: normal;
-}
-
 p {
-  font-size: 1.1rem;
+  font-size: 1.0rem;
 }
 
 button {
@@ -80,18 +59,6 @@ button {
 
   h2 {
     font-size: 1.3rem;
-  }
-
-  h3 {
-    font-size: 1.3rem;
-  }
-
-  h4 {
-    font-size: 1.2rem;
-  }
-
-  h5 {
-    font-size: 1.1rem;
   }
 
   p {
@@ -112,13 +79,13 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: var(--foreground-rgb);
   background: linear-gradient(
       to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
+      var(--background-end-rgb)
     )
-    rgb(var(--background-start-rgb));
+    var(--background-start-rgb);
 }
 
 a {

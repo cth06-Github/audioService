@@ -7,7 +7,7 @@ import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import DownloadIcon from "@mui/icons-material/Download";
-import { dummyText1 } from "@/app/constants";
+import { dummyTranscription } from "@/app/mock-data";
 import TranscriptBox from "@/app/(components)/transcript-box";
 import { logout, toHome } from "@/app/lib-authen";
 import { SectionPopUpProps } from "@/app/(components)/(dialogs)/pop-up-section";
@@ -149,22 +149,15 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     }
   };
 
-  const pressHome = () => {
+  function pressNav(navLocation: string, navFunc: () => void) {
     if (recordingStatus !== INACTIVE) {
-      headerButtonPressed.current = HOME;
-      console.log(headerButtonPressed);
+      headerButtonPressed.current = navLocation;
       setNavPopUp(true);
-    } else toHome(); // you can have server actions in event handlers.
-  };
+    } else navFunc();
+  }
 
-  // are both considered repeats?
-
-  const pressLogout = () => {
-    if (recordingStatus !== INACTIVE) {
-      headerButtonPressed.current = LOGOUT;
-      setNavPopUp(true);
-    } else logout(); // you can have server actions in event handlers.
-  };
+  const pressHome = () => pressNav(HOME, toHome)
+  const pressLogout = () => pressNav(LOGOUT, logout)
 
   // Time
   const startTiming = () => {
@@ -303,7 +296,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       const audioUrl = URL.createObjectURL(audioBlob);
       setAudio(audioUrl);
       setAudioChunks([]);
-      setFinalTranscribedText(finalTranscribedText + dummyText1);
+      setFinalTranscribedText(finalTranscribedText + dummyTranscription);
     };
   };
 

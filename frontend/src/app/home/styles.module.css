@@ -1,4 +1,4 @@
-.serviceBox {
+.servicePart {
   transform: translate(0px, 3rem);
   padding: 5px 20px;
   width: 85vw;
@@ -8,12 +8,12 @@
   justify-content: center;
 }
 
-.serviceButton { /*button tag*/
-  margin: 0rem 5rem;
+.serviceButton { /*Link component*/
   display: flex;
   flex-direction: column;
   justify-content: center; 
   align-items: center;
+  margin: 0rem 5rem;
   padding: 5px 20px;
   width: 32vw;
   max-width: 30rem;
@@ -30,6 +30,11 @@
   border: 3px solid;
   border-radius: 10px;
   border-color: var(--component-foreground);
+}
+
+.serviceButton p {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
 }
 
 .serviceButton:hover {
@@ -53,6 +58,11 @@
     aspect-ratio: 1 / 1;
     margin: 1rem;
   }
+
+  .serviceButton p {
+    font-size: 1.1rem;
+  }
+
 }
 
 @media (prefers-color-scheme: dark) {

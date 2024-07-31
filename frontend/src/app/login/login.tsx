@@ -8,10 +8,10 @@ export default function Login() {
   const [errorStatus, formAction] = useFormState(authenticate, null); // update state based on the result of a form action.
 
   return (
-    <div className={styles.loginForm}>
+    <div className={styles.loginContainer}>
       <h2>Login</h2>
       <form action={formAction}>
-        <div className={styles.loginBox}>
+        <div className={styles.loginForm}>
           <label htmlFor="username">Username</label>
           <input
             type="text"
@@ -31,9 +31,9 @@ export default function Login() {
             <p>{errorStatus}</p>
           </span>
         </div>
-        <div className={styles.loginButton}>
-          <button type="submit">Login</button>
-        </div>
+        <button className={styles.loginButton} type="submit">
+          Login
+        </button>
       </form>
     </div>
   );

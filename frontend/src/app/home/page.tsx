@@ -4,7 +4,6 @@ import BigButton from "./big-button";
 import MicIcon from "@mui/icons-material/Mic";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { getUsername } from "../lib-authen.ts";
-import Link from "next/link";
 
 export default async function HomePage() {
   const value = await getUsername(); // decrypt value of cookie to get username
@@ -17,7 +16,7 @@ export default async function HomePage() {
         hasHome={false}
         user={value}
       />
-      <div className={styles.serviceBox}>
+      <div className={styles.servicePart}>
         <BigButton
           name={<MicIcon sx={{fontSize: { xs: 90, sm: 100, md: 150, lg: 200 } }} />}
           description="Record on the go"
