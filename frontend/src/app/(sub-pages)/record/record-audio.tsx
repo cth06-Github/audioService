@@ -16,10 +16,7 @@ import usePageVisibility from "./visibility-hook";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
-import { usePopup } from '../dialog(nav)-logic'
-// import { NavigatePopUp } from "@/app/(components)/(dialogs)/pop-up-type";
-// import { PopupProvider } from './pop-up-context'
-//import { Popup, PopupTrigger } from './pop-up-compTest'
+import { useNavDialog } from '../dialog(nav)-logic'
 
 interface AudioProps {
   downloadType: string;
@@ -38,20 +35,20 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const PAUSE: number = 2; // recording paused
   const mimeTypeUsed: string = "audio/webm";
 
-  const HOME = "home";
-  const LOGOUT = "logout";
-
-  const [recordingStatus, setRecordingStatus] = useState<number>(INACTIVE);
-  const [stream, setStream] = useState<MediaStream | null>(null);
+  
   const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null); // store microphone connection
+  const [recordingStatus, setRecordingStatus] = useState<number>(INACTIVE);
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]); // array to store parts of the generated recording
   const [audio, setAudio] = useState<string>("");
-  const [finalTranscribedText, setFinalTranscribedText] = useState<string>("");
+  const [transcribedText, setTranscribedText] = useState<string>("");
 
-  const [micPopUp, setMicPopUp] = useState<boolean>(false);
-  // const [NavPopUp, setNavPopUp] = useState<boolean>(false);
-  //const headerButtonPressed = useRef<string | undefined>();
-  const { NavPopUp, clearPopup, handleAgreeNavPopUp, pressNav } = usePopup() // triggerPopUp() not used
+  const HOME = "home";
+  const LOGOUT = "logout";
+  const { navDialog, clearNavDialog, agreeNavDialogAction, navCheck } = useNavDialog() // triggerNavDialog not used
+  const [micDialog, setMicDialog] = useState<boolean>(false);
+  const triggerMicDialog = () => setMicDialog(true); // beautify naming
+  const clearMicDialog = () => setMicDialog(false); // beautify naming
 
   const isVisible = usePageVisibility();
   useEffect(() => {
@@ -91,15 +88,16 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   });
 
 
-  /*
+  
   const router = useRouter();
   useEffect(() => {
-    const handlePopState = () => {
+    const handlePopState = (event: any) => {
       // what event type is this?
       console.log("Back button pressed");
-      // You can add custom logic here
+      console.log(
+        `location: ${document.location}, state: ${JSON.stringify(event.state)}`,
+      );
     };
-
     // Listen for popstate events
     window.addEventListener("popstate", handlePopState);
 
@@ -107,8 +105,11 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [router]);
+  });
 
+  
+
+  /*
   useEffect(() => {
     // DOES NOT WORK
     function hashChange() {
@@ -120,55 +121,8 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     return () => {
       window.removeEventListener("hashchange", hashChange);
     };
-  });*/
-
-
-  const handleClosePopUp = () => {
-    // should separate into different handlers?
-    setMicPopUp(false);
-    clearPopup();
-  };
-
-  const handleAgreeMicPopUp = async () => {
-    const checkpoint1 = await micCheck(); 
-    if (!checkpoint1) {
-      setMicPopUp(false); // don't want it to even appear after it was set as true previously.
-      return; 
-    } else {
-      console.log("clicked yes, clear text");
-      setFinalTranscribedText("");
-      setMicPopUp(false);
-      startRecording();
-    }
-  };
-
-  // hmm can we combine such thta it's in the logout and home button that contains this info on which server action to choose (CS2030 style)
-  /*
-  const handleAgreeNavPopUp = () => {
-    console.log("clicked yes, navigate");
-    stopRecording();
-    setNavPopUp(false);
-    if (headerButtonPressed.current === HOME) {
-      toHome();
-    } else if (headerButtonPressed.current === LOGOUT) {
-      logout();
-    } else {
-      return;
-    }
-  };
-
-  function pressNav(navLocation: string, navFunc: () => void) {
-    if (recordingStatus !== INACTIVE) {
-      headerButtonPressed.current = navLocation;
-      setNavPopUp(true);
-    } else navFunc();
-  }*/
-
-  // const handleAgreeNavTest = handleAgreeNavPopUp(stopRecording) DOWN BELOW
-
-
-  const pressHome = () => pressNav(recordingStatus !== INACTIVE, HOME, toHome)
-  const pressLogout = () => pressNav(recordingStatus !== INACTIVE, LOGOUT, logout)
+  });
+*/
 
   // Time
   const startTiming = () => {
@@ -212,41 +166,27 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       : timeInMinSec;
   };
 
-  // Simulation purpose //
-  function stringify(audioChunks: any[]) {
-    let toReturn: string = "";
-    for (let i = 0; i < audioChunks.length; i++) {
-      toReturn += `Blob${i} `;
-    }
-    return toReturn;
-  }
-
-  async function getPermission(localStream: MediaStream | null) {
-    if ("MediaRecorder" in window) {
-      // window object. Check if browser supports MediaRecorder. If yes, we access this MediaRecorder API (to eventually access microphone)
-      try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-          video: false,
-        }); // returns a promise that resolves successfully if the user permits access to the media.
-        setStream(mediaStream); // stream state variable = microphone obtained?
-        localStream = mediaStream;
-        //hasPermissionAsked = true;
-      } catch (err: any) {
-        // executed if user block the microphone 
-        alert(
-          err.message +
-            "\nTo record, localhost requires access to microphone. Please allow access."
-        ); // display text in a dialog box that pops up on the screen
-        localStream = null; // to update the current stream "globally"
-      }
-    } else {
-      alert("The MediaRecorder API is not supported in your browser.");
-    }
-    return localStream;
-  }
-
   // Recording
+  const pressMic = async () => {
+    const checkpoint1 = await micCheck(); // must await here, otherwise returns promise execution not finish // CATACH ERROR NEEDED halfwat?
+    console.log("what checkpint");
+    console.log(checkpoint1);
+
+    if (!checkpoint1) {
+      return;
+    }
+    if (!transcribedText) {
+      startRecording();
+    } else {
+      triggerMicDialog();
+    }
+  };
+
+  const pressStop = () => {
+    stopRecording();
+    saveAudio();
+  };
+
   const micCheck = async () => {
     if (recordingStatus === ACTIVE) {
       // pause shouldn't be part of the possible cases
@@ -276,41 +216,32 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     return true;
   };
 
-  const pressMic = async () => {
-    const checkpoint1 = await micCheck(); // must await here, otherwise returns promise execution not finish // CATACH ERROR NEEDED halfwat?
-    console.log("what checkpint");
-    console.log(checkpoint1);
-
-    if (!checkpoint1) {
-      return;
-    }
-    if (!finalTranscribedText) {
-      startRecording();
+  async function getPermission(localStream: MediaStream | null) {
+    if ("MediaRecorder" in window) {
+      // window object. Check if browser supports MediaRecorder. If yes, we access this MediaRecorder API (to eventually access microphone)
+      try {
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+          video: false,
+        }); // returns a promise that resolves successfully if the user permits access to the media.
+        setStream(mediaStream); // stream state variable = microphone obtained?
+        localStream = mediaStream;
+        //hasPermissionAsked = true;
+      } catch (err: any) {
+        // executed if user block the microphone 
+        alert(
+          err.message +
+            "\nTo record, localhost requires access to microphone. Please allow access."
+        ); // display text in a dialog box that pops up on the screen
+        localStream = null; // to update the current stream "globally"
+      }
     } else {
-      setMicPopUp(true);
+      alert("The MediaRecorder API is not supported in your browser.");
     }
-  };
+    return localStream;
+  }
 
-  const pressStop = () => {
-    stopRecording();
-    saveAudio();
-  };
-
-  const saveAudio = () => {
-    if (!mediaRecorder.current) {
-      throw "Error null strange";
-    }
-    mediaRecorder.current.onstop = () => {
-      console.log("recording stop");
-      console.log(audioChunks);
-      const audioBlob = new Blob(audioChunks, { type: props.downloadType });
-      const audioUrl = URL.createObjectURL(audioBlob);
-      setAudio(audioUrl);
-      setAudioChunks([]);
-      setFinalTranscribedText(finalTranscribedText + dummyTranscription);
-    };
-  };
-
+  
   const startRecording = () => {
     console.log(mediaRecorder.current);
     if (!mediaRecorder.current) {
@@ -331,10 +262,19 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       console.log("TTT ");
       console.log(event.data);
       console.log(localAudioChunks);
-      setFinalTranscribedText(stringify(localAudioChunks));
+      setTranscribedText(stringify(localAudioChunks));
     };
     setAudioChunks(localAudioChunks);
   };
+
+      // Simulation purpose //
+      function stringify(audioChunks: any[]) {
+        let toReturn: string = "";
+        for (let i = 0; i < audioChunks.length; i++) {
+          toReturn += `Blob${i} `;
+        }
+        return toReturn;
+      }
 
   const pauseRecording = () => {
     if (
@@ -378,6 +318,21 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     stopTiming();
   };
 
+  const saveAudio = () => {
+    if (!mediaRecorder.current) {
+      throw "Error null strange";
+    }
+    mediaRecorder.current.onstop = () => {
+      console.log("recording stop");
+      console.log(audioChunks);
+      const audioBlob = new Blob(audioChunks, { type: props.downloadType });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      setAudio(audioUrl);
+      setAudioChunks([]);
+      setTranscribedText(transcribedText + dummyTranscription);
+    };
+  };
+
   const deleteTranscript = () => {
     if (recordingStatus !== INACTIVE) {
       alert(
@@ -385,9 +340,38 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       ); // when the alert is shown, recording STILL continues in the background.
       return;
     }
-    setFinalTranscribedText("");
+    setTranscribedText("");
   };
-  const handleAgreeNavTest = () => handleAgreeNavPopUp(stopRecording)
+  
+
+  // Dialog functions and handlers
+  const pressHome = () => {
+    console.log("PHS1101")
+    router.push("/home")
+    //history.pushState({}, '', '/home'); // added
+    //navCheck(recordingStatus !== INACTIVE, HOME, toHome)
+  }
+  const pressLogout = () => navCheck(recordingStatus !== INACTIVE, LOGOUT, logout)
+  const handleAgreeNavDialog = () => agreeNavDialogAction(stopRecording)
+
+  const handleClosePopUp = () => {
+    // should separate into different handlers?
+    clearMicDialog();
+    clearNavDialog();
+  };
+
+  const handleAgreeMicPopUp = async () => {
+    const checkpoint1 = await micCheck(); 
+    if (!checkpoint1) {
+      clearMicDialog(); // don't want it to even appear after it was set as true previously.
+      return; 
+    } else {
+      console.log("clicked yes, clear text");
+      setTranscribedText("");
+      clearMicDialog();
+      startRecording();
+    }
+  };
 
   return (
     <>
@@ -477,14 +461,14 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
           ) : null}
         </div>
         <TranscriptBox
-          transcript={finalTranscribedText}
+          transcript={transcribedText}
           deleteFunc={deleteTranscript}
         />
         <SectionPopUpProps
           actionItems={["Recording", "recorded audio"]}
-          state={[micPopUp, NavPopUp]}
+          state={[micDialog, navDialog]}
           onClose={handleClosePopUp}
-          onAgree={[handleAgreeMicPopUp, handleAgreeNavTest]}
+          onAgree={[handleAgreeMicPopUp, handleAgreeNavDialog]}
         />
 
       </div>

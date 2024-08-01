@@ -174,13 +174,6 @@
   cursor: pointer;
 }
 
-.transcribe {
-  width: 100vw; 
-  padding: 1vw 10vw;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
 
 /* Mobile */
 @media (max-width: 600px) { /*768px*/

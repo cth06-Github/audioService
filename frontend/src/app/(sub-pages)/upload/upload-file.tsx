@@ -11,6 +11,7 @@ import { Delete } from "@/app/(components)/button-common";
 import { SectionPopUpProps } from "@/app/(components)/(dialog)/dialog-all";
 import { logout, toHome } from "@/app/lib-authen";
 import Header from "@/app/(components)/header";
+import { useNavDialog } from '../dialog(nav)-logic'
 
 interface UploadProps {
   username: string;
@@ -24,53 +25,16 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   const [transcribedFile, setTranscribedFile] = useState<string>("");
   const [showComplete, setComplete] = useState<boolean>(false);
 
-  const [uploadPopUp, setUploadPopUp] = useState<boolean>(false);
-  const [NavPopUp, setNavPopUp] = useState<boolean>(false);
-  const headerButtonPressed = useRef<string | undefined>();
+  
+  const HOME = "home";
+  const LOGOUT = "logout";
+  const { navDialog, clearNavDialog, agreeNavDialogAction, navCheck } = useNavDialog() // triggerNavDialog not used
+  const [uploadDialog, setUploadDialog] = useState<boolean>(false);
+  const triggerUploadDialog = () => setUploadDialog(true); // beautify naming
+  const clearUploadDialog = () => setUploadDialog(false); // beautify naming
 
   const hasTranscribedTextfrmPopUp = useRef<boolean>(false); // only used for pop-up indication
   const fileInput = useRef<any>(null);
-
-  const HOME = "home";
-  const LOGOUT = "logout";
-
-  const handleClosePopUp = () => { // should separate into different handlers?
-    setUploadPopUp(false);
-    setNavPopUp(false);
-  };
-
-  const handleAgreeUploadPopUp = () => {
-    hasTranscribedTextfrmPopUp.current = true;
-    deleteTranscript();
-    if (!fileInput.current) {
-      throw new Error("Input tag not detected");
-    }
-    fileInput.current.click();
-    setUploadPopUp(false);
-    hasTranscribedTextfrmPopUp.current = false;
-  };
-
-  // hmm can we combine such thta it's in the logout and home button that contains this info on which server action to choose (CS2030 style)
-  const handleAgreeNavPopUp = () => {
-    // really repeating sial with the record component
-    console.log("clicked yes, navigate");
-    setNavPopUp(false);
-    if (headerButtonPressed.current === HOME) {
-      toHome();
-    } else if (headerButtonPressed.current === LOGOUT) {
-      logout();
-    }
-  };
-
-  function pressNav(navLocation: string, navFunc: () => void) {
-    if (!transcribedText && isFileSending) {
-      headerButtonPressed.current = navLocation;
-      setNavPopUp(true);
-    } else navFunc(); // you can have server actions in event handlers.
-  }
-
-  const pressHome = () => pressNav(HOME, toHome)
-  const pressLogout = () => pressNav(LOGOUT, logout)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setComplete(false); // completion logo
@@ -134,9 +98,29 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
   const pressUpload = () => {
     console.log("pressUpload");
     if (transcribedText) {
-      setUploadPopUp(true);
+      triggerUploadDialog();
     }
   };
+
+  const handleCloseDialog = () => { // should separate into different handlers?
+    clearUploadDialog();
+    clearNavDialog();
+  };
+
+  const handleAgreeUploadDialog = () => {
+    hasTranscribedTextfrmPopUp.current = true;
+    deleteTranscript();
+    if (!fileInput.current) {
+      throw new Error("Input tag not detected");
+    }
+    fileInput.current.click();
+    clearUploadDialog();
+    hasTranscribedTextfrmPopUp.current = false;
+  };
+
+  const handleAgreeNavDialog =  () => agreeNavDialogAction()
+  const pressHome = () => navCheck(!transcribedText && isFileSending, HOME, toHome)
+  const pressLogout = () => navCheck(!transcribedText && isFileSending, LOGOUT, logout)
 
   return (
     <>
@@ -267,9 +251,9 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
       />
       <SectionPopUpProps
         actionItems={["Transcribing", "uploaded files"]}
-        state={[uploadPopUp, NavPopUp]}
-        onClose={handleClosePopUp}
-        onAgree={[handleAgreeUploadPopUp, handleAgreeNavPopUp]}
+        state={[uploadDialog, navDialog]}
+        onClose={handleCloseDialog}
+        onAgree={[handleAgreeUploadDialog, handleAgreeNavDialog]}
       />
     </>
   );

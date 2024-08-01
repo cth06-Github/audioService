@@ -3,7 +3,7 @@
     width: 50vw;
 }
 
-.centerHead p {
+.centerHead p { /*Heading's description*/
     font-size: 1.7rem;
 }
 
@@ -46,7 +46,7 @@
  }
   
 .home button:active {
-    opacity: 1; /*alternative to background-color change, if not, separate*/
+    opacity: 1;
 }
 
 .logout {

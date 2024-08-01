@@ -3,30 +3,36 @@
 import React, { createContext, useState, useContext, useRef } from "react";
 import { logout, toHome } from "@/app/lib-authen";
 
-interface PopupType {
-  NavPopUp: boolean;
-  triggerPopup: () => void;
-  clearPopup: () => void;
-  handleAgreeNavPopUp: (action?: () => void) => void
-  pressNav: (condition: boolean, navLocation: string, navFunc: () => void) => void
+interface NavDialogType {
+  navDialog: boolean;
+  triggerNavDialog: () => void;
+  clearNavDialog: () => void;
+  agreeNavDialogAction: (preAction?: () => void) => void;
+  navCheck: (
+    condition: boolean,
+    navDestination: string,
+    navFunc: () => void
+  ) => void;
 }
 
-const PopupContext = createContext<PopupType | undefined>(undefined);
+const NavDialogContext = createContext<NavDialogType | undefined>(undefined);
 
-export const PopupProvider: React.FC<any> = ({ children }) => {
+export const NavDialogProvider: React.FC<any> = ({ children }) => {
   // not sure what type
   const HOME = "home";
   const LOGOUT = "logout";
+
   const headerButtonPressed = useRef<string | undefined>();
-  const [NavPopUp, setNavPopUp] = useState<boolean>(false);
+  const [navDialog, setNavDialog] = useState<boolean>(false);
+  const triggerNavDialog = () => setNavDialog(true); // beautify naming
+  const clearNavDialog = () => setNavDialog(false); // beautify naming
 
-  const triggerPopup = () => setNavPopUp(true); // beautify naming
-  const clearPopup = () => setNavPopUp(false); // beautify naming
-
-  const handleAgreeNavPopUp = (action?: () => void) => {
+  const agreeNavDialogAction = (preAction?: () => void) => {
     console.log("clicked yes, navigate");
-    if (action) { action(); } 
-    clearPopup();
+    if (preAction) {
+      preAction();
+    }
+    clearNavDialog();
     if (headerButtonPressed.current === HOME) {
       toHome();
     } else if (headerButtonPressed.current === LOGOUT) {
@@ -36,24 +42,36 @@ export const PopupProvider: React.FC<any> = ({ children }) => {
     }
   };
 
-  function pressNav(condition: boolean, navLocation: string, navFunc: () => void) {
-    if (condition) { // recordingStatus !== INACTIVE for recording
-      headerButtonPressed.current = navLocation;
-      triggerPopup();
+  function navCheck(
+    condition: boolean,
+    navDestination: string,
+    navFunc: () => void
+  ) {
+    if (condition) {
+      headerButtonPressed.current = navDestination;
+      triggerNavDialog();
     } else navFunc();
   }
-  
+
   return (
-    <PopupContext.Provider value={{ NavPopUp, triggerPopup, clearPopup, handleAgreeNavPopUp, pressNav }}>
+    <NavDialogContext.Provider
+      value={{
+        navDialog,
+        triggerNavDialog,
+        clearNavDialog,
+        agreeNavDialogAction,
+        navCheck
+      }}
+    >
       {children}
-    </PopupContext.Provider>
+    </NavDialogContext.Provider>
   );
 };
 
-export const usePopup = () => {
-  const localUserContext = useContext(PopupContext);
-  if (localUserContext === undefined) {
+export const useNavDialog = () => {
+  const localContext = useContext(NavDialogContext);
+  if (localContext === undefined) {
     throw new Error("useContext must be inside a Provider");
   }
-  return localUserContext; // return useContext(PopupContext)
+  return localContext;
 };
