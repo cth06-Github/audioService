@@ -1,4 +1,5 @@
 "use client";
+import React from 'react'
 import Header from "../../(components)/header";
 import { useState, useEffect, useRef } from "react";
 import styles from "../styles.module.css";
@@ -10,10 +11,15 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { dummyTranscription } from "@/app/mock-data";
 import TranscriptBox from "@/app/(components)/transcript-box";
 import { logout, toHome } from "@/app/lib-authen";
-import { SectionPopUpProps } from "@/app/(components)/(dialogs)/pop-up-section";
-import usePageVisibility from "./visibilityHook";
+import { SectionPopUpProps } from "@/app/(components)/(dialog)/dialog-all";
+import usePageVisibility from "./visibility-hook";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+
+import { usePopup } from '../dialog(nav)-logic'
+// import { NavigatePopUp } from "@/app/(components)/(dialogs)/pop-up-type";
+// import { PopupProvider } from './pop-up-context'
+//import { Popup, PopupTrigger } from './pop-up-compTest'
 
 interface AudioProps {
   downloadType: string;
@@ -43,8 +49,9 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const [finalTranscribedText, setFinalTranscribedText] = useState<string>("");
 
   const [micPopUp, setMicPopUp] = useState<boolean>(false);
-  const [NavPopUp, setNavPopUp] = useState<boolean>(false);
-  const headerButtonPressed = useRef<string | undefined>();
+  // const [NavPopUp, setNavPopUp] = useState<boolean>(false);
+  //const headerButtonPressed = useRef<string | undefined>();
+  const { NavPopUp, clearPopup, handleAgreeNavPopUp, pressNav } = usePopup() // triggerPopUp() not used
 
   const isVisible = usePageVisibility();
   useEffect(() => {
@@ -119,7 +126,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const handleClosePopUp = () => {
     // should separate into different handlers?
     setMicPopUp(false);
-    setNavPopUp(false);
+    clearPopup();
   };
 
   const handleAgreeMicPopUp = async () => {
@@ -136,6 +143,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   };
 
   // hmm can we combine such thta it's in the logout and home button that contains this info on which server action to choose (CS2030 style)
+  /*
   const handleAgreeNavPopUp = () => {
     console.log("clicked yes, navigate");
     stopRecording();
@@ -154,10 +162,13 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       headerButtonPressed.current = navLocation;
       setNavPopUp(true);
     } else navFunc();
-  }
+  }*/
 
-  const pressHome = () => pressNav(HOME, toHome)
-  const pressLogout = () => pressNav(LOGOUT, logout)
+  // const handleAgreeNavTest = handleAgreeNavPopUp(stopRecording) DOWN BELOW
+
+
+  const pressHome = () => pressNav(recordingStatus !== INACTIVE, HOME, toHome)
+  const pressLogout = () => pressNav(recordingStatus !== INACTIVE, LOGOUT, logout)
 
   // Time
   const startTiming = () => {
@@ -376,6 +387,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     }
     setFinalTranscribedText("");
   };
+  const handleAgreeNavTest = () => handleAgreeNavPopUp(stopRecording)
 
   return (
     <>
@@ -468,13 +480,13 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
           transcript={finalTranscribedText}
           deleteFunc={deleteTranscript}
         />
-
         <SectionPopUpProps
           actionItems={["Recording", "recorded audio"]}
           state={[micPopUp, NavPopUp]}
           onClose={handleClosePopUp}
-          onAgree={[handleAgreeMicPopUp, handleAgreeNavPopUp]}
+          onAgree={[handleAgreeMicPopUp, handleAgreeNavTest]}
         />
+
       </div>
     </>
   );

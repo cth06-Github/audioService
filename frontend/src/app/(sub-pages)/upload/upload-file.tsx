@@ -8,7 +8,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { dummyTranscription } from "@/app/mock-data";
 import TranscriptBox from "@/app/(components)/transcript-box";
 import { Delete } from "@/app/(components)/button-common";
-import { SectionPopUpProps } from "@/app/(components)/(dialogs)/pop-up-section";
+import { SectionPopUpProps } from "@/app/(components)/(dialog)/dialog-all";
 import { logout, toHome } from "@/app/lib-authen";
 import Header from "@/app/(components)/header";
 

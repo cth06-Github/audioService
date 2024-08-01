@@ -7,11 +7,11 @@ export const database = [
   },
   {
     username: "Fidel Hand Lala1",
-    password: "USA",
+    password: "ABCDEFG",
   },
   {
-    username: "Bessie Hickle Toma",
-    password: "ABCDEFG",
+    username: "admin",
+    password: "admin",
   },
   {
     username: "Adella Wunsch SamiCon",

@@ -1,8 +1,4 @@
 /* Headers-related components */
-.menu, .menuOpen {
-    display: none;
-}
-
 .centerHead {
     width: 50vw;
 }
@@ -15,8 +11,16 @@
     width: 25vw;
 }
 
+.rightHead {
+    align-items: center;
+}
+
 .home {
     display: flex;
+}
+
+.menu, .menuOpen {
+    display: none;
 }
 
 .home, .menu {
@@ -29,14 +33,6 @@
 
 .home span {
     margin-left: 5vw;
-}
-
-.logout {
-    justify-content: center;
-}
-
-.rightHead {
-    align-items: center;
 }
 
 .home button {
@@ -53,7 +49,11 @@
     opacity: 1; /*alternative to background-color change, if not, separate*/
 }
 
-/*Trancribe Box Component*/
+.logout {
+    justify-content: center;
+}
+
+/*Trancript Box Component*/
 .transcribe, .transcribeBox {
     width: 80vw; /*otherwise the width of div vbox is very small*/ 
     align-items: flex-start;
@@ -71,8 +71,6 @@
     /*background-color: rgba(255, 255, 255, 0.2);*/
   }
 
-  /*Pop-up Component*/
-
   /* Mobile */
   @media (max-width: 600px) {
   .centerHead p {
@@ -80,8 +78,11 @@
     }
   }
 
-
 @media (max-width: 800px) { /*768px*/
+    .home, .logout {
+        display: none; 
+    }
+
     .menu {
         display: flex;
         flex-direction: row;
@@ -100,7 +101,6 @@
         z-index: 20;
         margin-right: 2px;
     }
-
     
     .menuOpen {
         transition: width 0.5s;
@@ -168,17 +168,10 @@
         50% { opacity: 0; }
         100% { opacity: 1; }
       }
-
-
-    .home, .logout {
-        display: none; 
-    }
-
   }
 
   @media (prefers-color-scheme: dark) {
     .menuOpen {
-    
         background: linear-gradient( 
     145deg,
     rgb(0, 0, 0),
@@ -188,7 +181,6 @@
     rgb(86, 149, 200),
     rgb(6, 105, 186)
   );
-
     }
   
     .loginButton button {

@@ -1,4 +1,4 @@
-import { NavigatePopUp, ClearPopUp } from "./pop-up-type";
+import { NavigatePopUp, ClearPopUp } from "./dialog-type";
 
 interface SectionPopUpProps {
   actionItems: string[];

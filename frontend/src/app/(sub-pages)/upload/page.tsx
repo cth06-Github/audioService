@@ -1,4 +1,4 @@
-import UploadFile from "./uploadfile.tsx";
+import UploadFile from "./upload-file.tsx";
 import { getUsername } from "../../lib-authen.ts";
 
 export default async function UploadPage() {

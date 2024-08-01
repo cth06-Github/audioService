@@ -1,4 +1,4 @@
-import BasePopUp from "./pop-up-base";
+import BasePopUp from "./dialog-base";
 
 interface NavigatePopUpProps {
   actionItems: string[]; // is objects better because got names? is 2 valid in here?
@@ -41,5 +41,3 @@ export const ClearPopUp: React.FC<ClearPopUpProps>  = (props): JSX.Element => {
     </BasePopUp>
   );
 }
-
-//"Existing Transcribed Text will be cleared before proceeding to record."
