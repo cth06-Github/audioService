@@ -91,4 +91,3 @@ export async function toHome() {
   console.log("run");
   redirect("/home");
 }
-

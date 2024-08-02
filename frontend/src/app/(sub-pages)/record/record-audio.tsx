@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 import { useNavDialog } from '../dialog(nav)-logic'
+//import { useMic } from '@/app/microphone';
 
 interface AudioProps {
   downloadType: string;
@@ -35,7 +36,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const PAUSE: number = 2; // recording paused
   const mimeTypeUsed: string = "audio/webm";
 
-  
+  //const { mediaRecorder } = useMic(); 
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null); // store microphone connection
   const [recordingStatus, setRecordingStatus] = useState<number>(INACTIVE);
@@ -43,7 +44,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const [audio, setAudio] = useState<string>("");
   const [transcribedText, setTranscribedText] = useState<string>("");
 
-  const HOME = "home";
+  const HOME = "home"; // TO COMMENT IT BACK
   const LOGOUT = "logout";
   const { navDialog, clearNavDialog, agreeNavDialogAction, navCheck } = useNavDialog() // triggerNavDialog not used
   const [micDialog, setMicDialog] = useState<boolean>(false);
@@ -107,7 +108,10 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     };
   });
 
-  
+console.log("the state, the state!")
+if (mediaRecorder.current) {
+  console.log(mediaRecorder.current.state)
+}
 
   /*
   useEffect(() => {
@@ -187,6 +191,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     saveAudio();
   };
 
+  
   const micCheck = async () => {
     if (recordingStatus === ACTIVE) {
       // pause shouldn't be part of the possible cases
@@ -241,7 +246,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     return localStream;
   }
 
-  
+
   const startRecording = () => {
     console.log(mediaRecorder.current);
     if (!mediaRecorder.current) {
@@ -347,9 +352,9 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   // Dialog functions and handlers
   const pressHome = () => {
     console.log("PHS1101")
-    router.push("/home")
+    //router.push("/home")
     //history.pushState({}, '', '/home'); // added
-    //navCheck(recordingStatus !== INACTIVE, HOME, toHome)
+    navCheck(recordingStatus !== INACTIVE, HOME, () => router.push("/home"))
   }
   const pressLogout = () => navCheck(recordingStatus !== INACTIVE, LOGOUT, logout)
   const handleAgreeNavDialog = () => agreeNavDialogAction(stopRecording)

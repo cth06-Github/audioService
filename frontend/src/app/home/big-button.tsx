@@ -10,7 +10,7 @@ interface ButtonProps {
 
 const BigButton: React.FC<ButtonProps> = (props): JSX.Element => {
   return (
-    <Link className={styles.serviceButton} href={props.routing}>
+    <Link className={styles.serviceButton} href={props.routing} prefetch={false}>
       <span>{props.name}</span>
       <p>{props.description}</p>
     </Link>

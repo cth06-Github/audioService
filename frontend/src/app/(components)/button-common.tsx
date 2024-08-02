@@ -21,7 +21,7 @@ export const Logout: React.FC<onClickFunc>  = ({
 }
 // use client this page
 export const HomeButton: React.FC<onClickFunc>  = ({
-  onClickFunc = () => { console.log("huh"); toHome()},
+  onClickFunc = () => { console.log("huhHome")},
 }: onClickFunc): JSX.Element => {
   // consider displaying it as a back button instead
   //const router = useRouter();

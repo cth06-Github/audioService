@@ -1,13 +1,25 @@
+//"use client";
 import styles from "./styles.module.css";
 import Header from "../(components)/header";
 import BigButton from "./big-button";
 import MicIcon from "@mui/icons-material/Mic";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { getUsername } from "../lib-authen.ts";
+//import { useMic } from "../microphone.tsx";
 
 export default async function HomePage() {
   const value = await getUsername(); // decrypt value of cookie to get username
-
+  
+ 
+  //const { mediaRecorder } = useMic(); // can only be in client mode
+/*
+  console.log("supp");
+  if (mediaRecorder.current) {
+    if (mediaRecorder.current.state === "recording") { // according to MediaRecorder API
+      mediaRecorder.current.stop();
+    }
+  }
+*/
   return (
     <div style = {{minHeight: "100vh", justifyContent: "flex-start"}}>
       <Header
@@ -29,5 +41,6 @@ export default async function HomePage() {
         />
       </div>
     </div>
+
   );
 }

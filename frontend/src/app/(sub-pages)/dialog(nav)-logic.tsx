@@ -2,6 +2,7 @@
 
 import React, { createContext, useState, useContext, useRef } from "react";
 import { logout, toHome } from "@/app/lib-authen";
+import { useRouter } from "next/navigation";
 
 interface NavDialogType {
   navDialog: boolean;
@@ -19,6 +20,7 @@ const NavDialogContext = createContext<NavDialogType | undefined>(undefined);
 
 export const NavDialogProvider: React.FC<any> = ({ children }) => {
   // not sure what type
+  const router = useRouter();
   const HOME = "home";
   const LOGOUT = "logout";
 
@@ -34,7 +36,7 @@ export const NavDialogProvider: React.FC<any> = ({ children }) => {
     }
     clearNavDialog();
     if (headerButtonPressed.current === HOME) {
-      toHome();
+      router.push("/home");
     } else if (headerButtonPressed.current === LOGOUT) {
       logout();
     } else {

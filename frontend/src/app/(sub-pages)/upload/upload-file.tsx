@@ -11,7 +11,8 @@ import { Delete } from "@/app/(components)/button-common";
 import { SectionPopUpProps } from "@/app/(components)/(dialog)/dialog-all";
 import { logout, toHome } from "@/app/lib-authen";
 import Header from "@/app/(components)/header";
-import { useNavDialog } from '../dialog(nav)-logic'
+import { useNavDialog } from '../dialog(nav)-logic';
+import { useRouter } from "next/navigation";
 
 interface UploadProps {
   username: string;
@@ -118,8 +119,9 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
     hasTranscribedTextfrmPopUp.current = false;
   };
 
+  const router = useRouter();
   const handleAgreeNavDialog =  () => agreeNavDialogAction()
-  const pressHome = () => navCheck(!transcribedText && isFileSending, HOME, toHome)
+  const pressHome = () => navCheck(!transcribedText && isFileSending, HOME, () => router.push("/home"))
   const pressLogout = () => navCheck(!transcribedText && isFileSending, LOGOUT, logout)
 
   return (
