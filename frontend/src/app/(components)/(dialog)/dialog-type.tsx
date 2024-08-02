@@ -14,8 +14,8 @@ export const NavigatePopUp: React.FC<NavigatePopUpProps>  = (props): JSX.Element
           isOpen={props.isOpen}
           onClose={props.onClose}
           onAgree={props.onAgree}
-          buttonAgreeName="Ok"
-          buttonDisagreeName="Stay on Page"
+          buttonAgreeName="Leave"
+          buttonDisagreeName="Stay"
       >
       </BasePopUp>
     );

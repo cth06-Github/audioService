@@ -21,13 +21,13 @@ export const Logout: React.FC<onClickFunc>  = ({
 }
 // use client this page
 export const HomeButton: React.FC<onClickFunc>  = ({
-  onClickFunc = () => { console.log("huhHome")},
+  onClickFunc
 }: onClickFunc): JSX.Element => {
   // consider displaying it as a back button instead
-  //const router = useRouter();
-  return ( 
-// a bit hard if the routing for the button is just like this might want to do other function. So pass function may be better
-    <button onClick = {onClickFunc} style ={{padding: "4px"}}>
+  const router = useRouter();
+  const toHome = () => {console.log("hmm"); router.push("/home")}; 
+  return (
+    <button onClick = {onClickFunc ? onClickFunc : toHome} style ={{padding: "4px"}}>
       <HomeRoundedIcon style={{ fontSize: "40px" }} />
     </button>
   );

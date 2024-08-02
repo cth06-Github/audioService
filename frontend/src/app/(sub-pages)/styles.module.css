@@ -117,6 +117,7 @@
 .uploadButton {
   margin-bottom: 2px;
   width: 8rem;
+  border: none; /*to remove the border box*/
 }
 
 .uploadButton label {
