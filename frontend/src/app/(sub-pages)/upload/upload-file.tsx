@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/app/(components)/header";
 import TranscriptBox from "@/app/(components)/transcript-box";
@@ -107,12 +107,12 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
     navCheck(!transcribedText && isFileSending, HOME, () =>
       router.push("/home")
     );
-  }
-//navCheck(condition: boolean, navDestination: string, navFunc: () => void)
+  };
+  //navCheck(condition: boolean, navDestination: string, navFunc: () => void)
   const handlePressLogout = () => {
     console.log("Pressed Logout!");
     navCheck(!transcribedText && isFileSending, LOGOUT, logout);
-  }
+  };
 
   const handleAgreeNavDialog = () => agreeNavDialogAction();
 
@@ -143,8 +143,29 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
     return frontPart + "..." + backPart;
   };
 
+  const [mobileMatch, setMobileMatch] = useState<boolean>(false);
+  useEffect(() => {
+    // unable to detect browser on mobile but desktop view && in landscape
+    if (!props.isMobileUAparse) {
+      const maxTouchPoints = navigator.maxTouchPoints;
+      const isOrienPortrait = window.matchMedia("(orientation: portrait)");
+      if (maxTouchPoints > 0) {
+        console.log(
+          "maxTouchPoints: " + maxTouchPoints + " likely touchscreen"
+        );
+        if (isOrienPortrait.matches) {
+          setMobileMatch(true);
+          console.log("likely mobile");
+        }
+      }
+    }
+  });
+
   // console.log()
-  console.log("Browser detected as mobile via UAparser: " + props.isMobileUAparse);
+  console.log(
+    "Browser detected as mobile via UAparser: " + props.isMobileUAparse
+  );
+  console.log("Browser detected as mobile via useEffect: " + mobileMatch);
 
   return (
     <>
@@ -161,7 +182,8 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
           <hgroup>
             <h2>Select file</h2>
 
-            {props.isMobileUAparse /*indicates if browser is on mobile*/ ? (
+            {props.isMobileUAparse ||
+            mobileMatch /*indicates if browser is on mobile*/ ? (
               <>
                 <p>or create new audio file</p>
                 <p>
@@ -244,7 +266,10 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
                 >
                   Confirm
                 </button>
-                <button className={styles.serviceFilesEndReselect} type="button">
+                <button
+                  className={styles.serviceFilesEndReselect}
+                  type="button"
+                >
                   <label htmlFor="getAudio">Reselect</label>
                 </button>
               </div>

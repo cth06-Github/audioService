@@ -20,3 +20,5 @@ export const isMobileDevice = async () => {
 
   return device.type === "mobile"; // device.type is undefined if browser is not mobile
 };
+
+
