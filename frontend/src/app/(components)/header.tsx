@@ -1,20 +1,19 @@
 "use client"; // must for interactivitiy (onClick)
-import { Logout, HomeButton } from "./button-common";
-import styles from "./styles.module.css";
+import { useState } from "react";
+import { HomeButton, Logout } from "./buttons-common";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
+import styles from "./styles.module.css";
 
 interface HeaderProps {
-  heading: string; 
+  heading: string;
   description: string;
-  hasHome: boolean;
+  hasHome: boolean; // allows toggling of home button (enabled/disabled)
   user: string;
-  onClickFuncHome?: () => void; // hmm is it repeat?
+  onClickFuncHome?: () => void;
   onClickFuncLogout?: () => void;
 }
 
-// toggle not to have the home button
 export const Header: React.FC<HeaderProps> = ({
   heading,
   description,
@@ -30,12 +29,12 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <div style={{ alignItems: "flex-end", justifyContent: "flex-start" }}>
-      <div className={styles.top}>
+    <>
+      <div>
         <header>
           <div className={styles.leftHead}>
             <span className={styles.menu}>
-              <button onClick={handleToggleMenu}>
+              <button onClick={handleToggleMenu} type="button">
                 <MenuIcon></MenuIcon>
               </button>
               {menu && (
@@ -70,17 +69,18 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </header>
       </div>
-     
-      <div className={`${styles.menuOpen} menuOpenAlt`}>
+
+      <div className={`${styles.menuOpen} menuOpenSlide`}>
         <style jsx>
-          {`.menuOpenAlt {
-          width: ${menu ? "90vw" : "0px"}; 
-          padding: ${menu ? "120px 10vw" : "0px"};
-          box-shadow: ${menu && "0px 0px 5px 10vw rgba(0, 0, 0, 0.5)"}
-          }`
-          }
+          {`
+            .menuOpenSlide {
+              width: ${menu ? "90vw" : "0px"};
+              padding: ${menu ? "120px 10vw" : "0px"};
+              box-shadow: ${menu && "0px 0px 5px 10vw rgba(0, 0, 0, 0.5)"};
+            }
+          `}
         </style>
-        
+
         {menu && (
           <div>
             <ul>{hasHome && <HomeButton onClickFunc={onClickFuncHome} />}</ul>
@@ -90,9 +90,9 @@ export const Header: React.FC<HeaderProps> = ({
               </span>
             </ul>
           </div>
-      )}
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

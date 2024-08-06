@@ -31,7 +31,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/bin-folder/useRecord.js", "../bin-folder/test.ts", "../bin-folder/route.ts", "src/app/(context)/authcontext.tsx", "../bin-folder/usercontext.tsx", "../bin-folder/timer.tsx", "../bin-folder/pop-up-compTest.tsx"  ],
+, "src/app/bin-folder/useRecord.js", "../bin-folder/test.ts", "../bin-folder/route.ts", "src/app/(context)/authcontext.tsx", "../bin-folder/usercontext.tsx", "../bin-folder/timer.tsx", "../bin-folder/pop-up-compTest.tsx", "../bin-folder/navigation-events.ts"  ],
   "exclude": [
     "node_modules"
   ]

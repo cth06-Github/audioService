@@ -1,23 +1,20 @@
 "use client";
-import React from 'react'
-import Header from "../../(components)/header";
+
 import { useState, useEffect, useRef } from "react";
-import styles from "../styles.module.css";
+import { useRouter } from "next/navigation";
+import Header from "@/app/(components)/header";
+import TranscriptBox from "@/app/(components)/transcript-box";
+import { SectionDialog } from "@/app/(components)/(dialog)/dialog-all";
+import { useNavDialog } from "../dialog(nav)-logic";
+import usePageVisibility from "./visibility-hook";
+import { logout } from "@/app/lib-authen";
+import { dummyTranscription } from "@/app/mock-data";
 import MicIcon from "@mui/icons-material/Mic";
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import DownloadIcon from "@mui/icons-material/Download";
-import { dummyTranscription } from "@/app/mock-data";
-import TranscriptBox from "@/app/(components)/transcript-box";
-import { logout, toHome } from "@/app/lib-authen";
-import { SectionPopUpProps } from "@/app/(components)/(dialog)/dialog-all";
-import usePageVisibility from "./visibility-hook";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
-
-import { useNavDialog } from '../dialog(nav)-logic'
-//import { useMic } from '@/app/microphone';
+import styles from "../styles.module.css";
 
 interface AudioProps {
   downloadType: string;
@@ -25,60 +22,52 @@ interface AudioProps {
 }
 
 const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
-  // Time
+  // Timing Variables Initialisation
   const [time, setTime] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const startTimeRef = useRef(0);
 
-  // Recording
+  // Recording Variables Initialisation
   const INACTIVE: number = 0; // no recording taking place
   const ACTIVE: number = 1; // recording in progress
   const PAUSE: number = 2; // recording paused
   const mimeTypeUsed: string = "audio/webm";
 
-  //const { mediaRecorder } = useMic(); 
-  const mediaRecorder = useRef<MediaRecorder | null>(null);
-  const [stream, setStream] = useState<MediaStream | null>(null); // store microphone connection
+  const mediaRecorder = useRef<MediaRecorder | null>(null); // store microphone connection
+  const [stream, setStream] = useState<MediaStream | null>(null);
   const [recordingStatus, setRecordingStatus] = useState<number>(INACTIVE);
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]); // array to store parts of the generated recording
   const [audio, setAudio] = useState<string>("");
   const [transcribedText, setTranscribedText] = useState<string>("");
 
-  const HOME = "home"; // TO COMMENT IT BACK
+  // Navigation Variables Initialisation
+  const HOME = "home";
   const LOGOUT = "logout";
-  const { navDialog, clearNavDialog, agreeNavDialogAction, navCheck } = useNavDialog() // triggerNavDialog not used
+  const { navDialog, clearNavDialog, agreeNavDialogAction, navCheck } =
+    useNavDialog(); // triggerNavDialog not used
   const [micDialog, setMicDialog] = useState<boolean>(false);
   const triggerMicDialog = () => setMicDialog(true); // beautify naming
   const clearMicDialog = () => setMicDialog(false); // beautify naming
 
-  const isVisible = usePageVisibility();
+  const isVisible: boolean | null = usePageVisibility(); // checks if user is directly on the webpage
+
+  // Stop recording if user is not on the record page
   useEffect(() => {
-    console.log("status" + isVisible);
-    if (isVisible) {
-      console.log("Visible, on the page");
-    } else if (isVisible === null) {
-      console.log("probs on the page...albeit can be false");
-    } else {
-      if (recordingStatus !== INACTIVE) {
-        alert("Recording will be stopped."); //don't think pop up will work
-        stopRecording();
-        console.log("hidden 24680 was recording");
-      } else {
-        console.log("hidden 12345 never record");
-      }
+    console.log("isVisible status: " + isVisible);
+    if (isVisible === false && recordingStatus !== INACTIVE) {
+      handlePressStop();
+      alert("Recording has stopped and was saved when you leave the page.");
     }
   }, [isVisible]);
 
+  // Stop recording if user refreshes page or press back/forward button (only in specific circumstances)
   useEffect(() => {
-    // refresh...not for back button. As in back & forward yes IF PAGE ACCESSED THROUGH pure link, not router.push()
     function beforeUnload(e: BeforeUnloadEvent) {
+      console.log("BeforeUnloadEvent BUE fired."); // BUE is fired when browser back/forward button is pressed, ONLY IF page was accessed via URL(not app buttons). BUE fired on refresh too.
       if (recordingStatus !== INACTIVE) {
-        //setNavPopUp(true);
-        e.preventDefault(); // but the notification isn't suitable
+        e.preventDefault(); // browser built-in dialog may not be suitable
         stopRecording();
-        console.log("pending is true");
       }
-      console.log("well");
     }
 
     window.addEventListener("beforeunload", beforeUnload);
@@ -88,72 +77,31 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     };
   });
 
-
-  
-  const router = useRouter();
-  useEffect(() => {
-    const handlePopState = (event: any) => {
-      // what event type is this?
-      console.log("Back button pressed");
-      console.log(
-        `location: ${document.location}, state: ${JSON.stringify(event.state)}`,
-      );
-    };
-    // Listen for popstate events
-    window.addEventListener("popstate", handlePopState);
-
-    // Cleanup the event listener on unmount
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  });
-
-console.log("the state, the state!")
-if (mediaRecorder.current) {
-  console.log(mediaRecorder.current.state)
-}
-
-  /*
-  useEffect(() => {
-    // DOES NOT WORK
-    function hashChange() {
-      console.log("history detected");
-    }
-    console.log("did we ");
-    window.addEventListener("hashchange", hashChange);
-
-    return () => {
-      window.removeEventListener("hashchange", hashChange);
-    };
-  });
-*/
-
-  // Time
+  // Timing Helper functions
   const startTiming = () => {
-    // Date.now(): miliseoncds elapsed since epoch (1 Jan 1970, UTC 0000h)
+    // Date.now(): miliseconds elapsed since epoch (1 Jan 1970, UTC 0000h)
     startTimeRef.current = Date.now() - 10; // Reference Time when timing started. Assumes 10 ms lag in code runtime
     intervalRef.current = setInterval(() => {
       if (
         !mediaRecorder.current ||
-        mediaRecorder.current.stream.active == false
+        mediaRecorder.current.stream.active == false // microphone access denied
       ) {
         pauseTiming();
         alert(
-          "Recording has stopped or paused as microphone access is blocked. Please check permission settings and restart recording"
+          "Recording has stopped or paused as microphone access is blocked. Please check microphone permission settings and restart recording"
         );
-      } 
-      else {
-        setTime(Math.floor((Date.now() - startTimeRef.current) / 1000) + time);
-      } // divide by 1000 for ms to second
-    }, 1000); // Math.floor(): round down
+      } else {
+        setTime(Math.floor((Date.now() - startTimeRef.current) / 1000) + time); // divide by 1000 to convert ms to second
+      }
+    }, 1000);
   };
 
   const pauseTiming = () => {
-    clearInterval(intervalRef.current); // stops the function excution defined in setInterval(): setTime()
+    clearInterval(intervalRef.current); // stops the function excution defined in setInterval()
   };
 
   const stopTiming = () => {
-    clearInterval(intervalRef.current);
+    clearInterval(intervalRef.current); // stops the function excution defined in setInterval()
     setTime(0);
   };
 
@@ -165,18 +113,17 @@ if (mediaRecorder.current) {
       minutes.toString().padStart(2, "0") +
       ":" +
       seconds.toString().padStart(2, "0");
-    return hours > 0
+    return hours > 0 // returns hh:mm:ss if duration is >=1h, otherwise mm:ss format
       ? hours.toString().padStart(2, "0") + ":" + timeInMinSec
       : timeInMinSec;
   };
 
-  // Recording
-  const pressMic = async () => {
-    const checkpoint1 = await micCheck(); // must await here, otherwise returns promise execution not finish // CATACH ERROR NEEDED halfwat?
-    console.log("what checkpint");
-    console.log(checkpoint1);
+  // Recording functions & variables
+  const fontSizeButton = "9vh"; // defined for start, stop, play recording buttons
 
-    if (!checkpoint1) {
+  const handlePressMic = async () => {
+    const isMicConnected = await micCheck(); // ensure micCheck execution completion before code continues
+    if (!isMicConnected) {
       return;
     }
     if (!transcribedText) {
@@ -186,12 +133,11 @@ if (mediaRecorder.current) {
     }
   };
 
-  const pressStop = () => {
+  const handlePressStop = () => {
     stopRecording();
     saveAudio();
   };
 
-  
   const micCheck = async () => {
     if (recordingStatus === ACTIVE) {
       // pause shouldn't be part of the possible cases
@@ -199,99 +145,98 @@ if (mediaRecorder.current) {
       return false;
     }
 
-    // Ask for Permission
+    // Check if mic is set up (with permission access enabled)
     let localStream: MediaStream | null = stream;
     if (
       !mediaRecorder.current ||
-      mediaRecorder.current.stream.active == false
+      mediaRecorder.current.stream.active == false // microphone access denied
     ) {
-      localStream = await getPermission(localStream);
-      console.log("local stream after waiting");
-      console.log(localStream);
+      localStream = await getMicAccess(localStream); //seek microphone access permission via API
     }
 
     if (!localStream) {
       return false;
-    } // don't bother executing the rest of the code which aims to start the mic
+    }
 
     const streamToUse: MediaStream = localStream;
     const media = new MediaRecorder(streamToUse, { mimeType: mimeTypeUsed }); //creates a new MediaRecorder object that will record a specified MediaStream
     mediaRecorder.current = media;
-
     return true;
   };
 
-  async function getPermission(localStream: MediaStream | null) {
+  async function getMicAccess(localStream: MediaStream | null) {
     if ("MediaRecorder" in window) {
-      // window object. Check if browser supports MediaRecorder. If yes, we access this MediaRecorder API (to eventually access microphone)
+      // check if browser supports MediaRecorder. If yes, we access MediaRecorder API (to eventually access microphone)
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
+          // getUserMedia works only in secure mode (e.g HTTPS) on mobile
           audio: true,
           video: false,
         }); // returns a promise that resolves successfully if the user permits access to the media.
-        setStream(mediaStream); // stream state variable = microphone obtained?
+        setStream(mediaStream);
         localStream = mediaStream;
-        //hasPermissionAsked = true;
       } catch (err: any) {
-        // executed if user block the microphone 
+        // executed if user block microphone
         alert(
+          // open dialog with message
           err.message +
             "\nTo record, localhost requires access to microphone. Please allow access."
-        ); // display text in a dialog box that pops up on the screen
-        localStream = null; // to update the current stream "globally"
+        );
+        localStream = null; // indicates microphone access denied
       }
     } else {
       alert("The MediaRecorder API is not supported in your browser.");
+      localStream = null; // indicates microphone access denied
     }
     return localStream;
   }
 
-
   const startRecording = () => {
     console.log(mediaRecorder.current);
     if (!mediaRecorder.current) {
-      throw "Error";
+      throw new Error("mediaRecorder.current is null. Mic not found");
     }
 
-    mediaRecorder.current.start(1000); //every 1s, .ondataavailale Event is fired
+    mediaRecorder.current.start(1000); // start recording, .ondataavailale Event is fired every 1s
     setRecordingStatus(ACTIVE);
     startTiming();
 
     let localAudioChunks: any[] = [];
 
     mediaRecorder.current.ondataavailable = (event: any) => {
-      console.log("ondataavailable run");
+      console.log("ondataavailable event fired");
       if (typeof event.data === "undefined") return;
       if (event.data.size === 0) return;
-      localAudioChunks.push(event.data); // to replace code to send to backend; real-time send back or finish recording then send back?
-      console.log("TTT ");
+      localAudioChunks.push(event.data); // simulate code for sending audio to backend in real-time (streaming)
+      console.log("event data blob sent");
       console.log(event.data);
-      console.log(localAudioChunks);
+
+      // simulate value retured by backend service and then the entire thing set to a transcript
       setTranscribedText(stringify(localAudioChunks));
     };
     setAudioChunks(localAudioChunks);
   };
 
-      // Simulation purpose //
-      function stringify(audioChunks: any[]) {
-        let toReturn: string = "";
-        for (let i = 0; i < audioChunks.length; i++) {
-          toReturn += `Blob${i} `;
-        }
-        return toReturn;
-      }
+  // Simulation of transcription process //
+  function stringify(audioChunks: any[]) {
+    let toReturn: string = "";
+    for (let i = 0; i < audioChunks.length; i++) {
+      toReturn += `Blob${i} `;
+    }
+    return toReturn;
+  }
 
   const pauseRecording = () => {
     if (
       !mediaRecorder.current ||
-      mediaRecorder.current.stream.active == false
+      mediaRecorder.current.stream.active == false // microphone access denied
     ) {
       alert(
         "Fail to pause as microphone access is blocked. Parts of recording may be missing"
       );
       return;
     }
-    mediaRecorder.current.pause();
+    mediaRecorder.current.pause(); // pause recording
     setRecordingStatus(PAUSE);
     pauseTiming();
   };
@@ -299,12 +244,12 @@ if (mediaRecorder.current) {
   const contRecording = () => {
     if (
       !mediaRecorder.current ||
-      mediaRecorder.current.stream.active == false
+      mediaRecorder.current.stream.active == false // microphone access denied
     ) {
       alert("Please allow microphone access before continuing");
       return;
     }
-    mediaRecorder.current.resume(); 
+    mediaRecorder.current.resume(); // continue recording
     setRecordingStatus(ACTIVE);
     startTiming();
   };
@@ -318,65 +263,71 @@ if (mediaRecorder.current) {
         "Microphone access was blocked at some point. Parts of recording may be missing."
       );
     }
-    mediaRecorder.current.stop();
+    mediaRecorder.current.stop(); // stop recording
     setRecordingStatus(INACTIVE);
     stopTiming();
   };
 
   const saveAudio = () => {
     if (!mediaRecorder.current) {
-      throw "Error null strange";
+      throw new Error("mediaRecorder.current is null. Audio cannot be saved");
     }
     mediaRecorder.current.onstop = () => {
-      console.log("recording stop");
-      console.log(audioChunks);
       const audioBlob = new Blob(audioChunks, { type: props.downloadType });
       const audioUrl = URL.createObjectURL(audioBlob);
       setAudio(audioUrl);
       setAudioChunks([]);
-      setTranscribedText(transcribedText + dummyTranscription);
+      setTranscribedText(transcribedText + dummyTranscription); // simulate dummyTranscription as a value also returned by backend service
     };
   };
 
-  const deleteTranscript = () => {
+  // Text-related function
+  const handleDeleteTranscript = () => {
     if (recordingStatus !== INACTIVE) {
       alert(
         "Recording in progress. Please stop recording before deleting transcription"
-      ); // when the alert is shown, recording STILL continues in the background.
+      ); // when the alert is shown (and before it gets closed), recording STILL continues in the background.
       return;
     }
     setTranscribedText("");
   };
-  
 
-  // Dialog functions and handlers
-  const pressHome = () => {
-    console.log("PHS1101")
-    //router.push("/home")
-    //history.pushState({}, '', '/home'); // added
-    navCheck(recordingStatus !== INACTIVE, HOME, () => router.push("/home"))
-  }
-  const pressLogout = () => navCheck(recordingStatus !== INACTIVE, LOGOUT, logout)
-  const handleAgreeNavDialog = () => agreeNavDialogAction(stopRecording)
-
-  const handleClosePopUp = () => {
-    // should separate into different handlers?
-    clearMicDialog();
-    clearNavDialog();
+  // Dialog functions
+  const router = useRouter();
+  const handlePressHome = () => {
+    console.log("Pressed Home!");
+    navCheck(recordingStatus !== INACTIVE, HOME, () => router.push("/home"));
+  };
+  const pressLogout = () => {
+    console.log("Pressed Logout!");
+    navCheck(recordingStatus !== INACTIVE, LOGOUT, logout);
   };
 
-  const handleAgreeMicPopUp = async () => {
-    const checkpoint1 = await micCheck(); 
-    if (!checkpoint1) {
-      clearMicDialog(); // don't want it to even appear after it was set as true previously.
-      return; 
+  const handleAgreeNavDialog = () => agreeNavDialogAction(stopRecording); // input parameter is the functions to execute before dialog is cleared
+
+  const handleAgreeMicDialog = async () => {
+    const isMicConnected = await micCheck();
+    if (!isMicConnected) {
+      clearMicDialog();
+      return;
     } else {
-      console.log("clicked yes, clear text");
       setTranscribedText("");
       clearMicDialog();
       startRecording();
     }
   };
+
+  const handleCloseDialog = () => {
+    clearMicDialog();
+    clearNavDialog();
+  };
+
+  // console.log
+  if (mediaRecorder.current) {
+    console.log(
+      "mediaRecorder recording state: " + mediaRecorder.current.state
+    );
+  }
 
   return (
     <>
@@ -385,27 +336,35 @@ if (mediaRecorder.current) {
         description="Real-time Transcription"
         hasHome={true}
         user={props.username}
-        onClickFuncHome={pressHome}
+        onClickFuncHome={handlePressHome}
         onClickFuncLogout={pressLogout}
       />
 
       <div className={styles.serviceRecord}>
         <div className={styles.serviceRecordContent}>
-          {recordingStatus !== INACTIVE ? ( // recording or pause status
+          {recordingStatus === INACTIVE ? (
+            <div className={styles.serviceRecordMic}>
+              <button onClick={handlePressMic}>
+                <MicIcon
+                  style={{
+                    fontSize: "2.5rem",
+                    alignItems: "center",
+                    color: "black",
+                  }}
+                />
+              </button>
+            </div>
+          ) : (
             <div className={styles.serviceRecordPlay}>
               <div
                 style={{
                   flexDirection: "row",
                 }}
               >
-                <button
-                  onClick={pressStop}
-                  type="button"
-                  style={{ margin: "0px 2px" }}
-                >
+                <button onClick={handlePressStop} type="button">
                   <StopCircleOutlinedIcon
                     style={{
-                      fontSize: "9vh",
+                      fontSize: fontSizeButton, // var defined above
                       color: `${
                         recordingStatus === ACTIVE ? "red" : "inherit"
                       }`,
@@ -416,35 +375,17 @@ if (mediaRecorder.current) {
               </div>
 
               {recordingStatus === ACTIVE ? (
-                <button
-                  onClick={pauseRecording}
-                  type="button"
-                  style={{ margin: "0px 1px" }}
-                >
-                  <PauseCircleOutlineIcon style={{ fontSize: "9vh" }} />
+                <button onClick={pauseRecording} type="button">
+                  <PauseCircleOutlineIcon
+                    style={{ fontSize: fontSizeButton }}
+                  />
                 </button>
               ) : (
                 /*pause status*/
-                <button
-                  onClick={contRecording}
-                  type="button"
-                  style={{ margin: "0px 1px" }}
-                >
-                  <PlayCircleOutlineIcon style={{ fontSize: "9vh" }} />
+                <button onClick={contRecording} type="button">
+                  <PlayCircleOutlineIcon style={{ fontSize: fontSizeButton }} />
                 </button>
               )}
-            </div>
-          ) : (
-            <div className={styles.serviceRecordMic}>
-              <button onClick={pressMic}>
-                <MicIcon
-                  style={{
-                    fontSize: "2.5rem",
-                    alignItems: "center",
-                    color: "black",
-                  }}
-                />
-              </button>
             </div>
           )}
 
@@ -467,15 +408,14 @@ if (mediaRecorder.current) {
         </div>
         <TranscriptBox
           transcript={transcribedText}
-          deleteFunc={deleteTranscript}
+          deleteFunc={handleDeleteTranscript}
         />
-        <SectionPopUpProps
+        <SectionDialog
           actionItems={["Recording", "recorded audio"]}
           state={[micDialog, navDialog]}
-          onClose={handleClosePopUp}
-          onAgree={[handleAgreeMicPopUp, handleAgreeNavDialog]}
+          onClose={handleCloseDialog}
+          onAgree={[handleAgreeMicDialog, handleAgreeNavDialog]}
         />
-
       </div>
     </>
   );

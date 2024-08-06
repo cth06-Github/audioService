@@ -1,3 +1,74 @@
+// 6 Aug code-dump // 
+
+// lib-device.ts
+/*
+'use server'
+
+import { headers } from 'next/headers';
+import { UAParser } from 'ua-parser-js';
+
+export const isMobileDevice = async () => { // by default, server actions are async I think
+  if (typeof process === 'undefined') {
+    throw new Error('[Server method] you are importing a server-only module outside of server')
+  }
+
+  const { get } = headers();
+  const ua = get('user-agent');
+  const parserObj = new UAParser(ua || '');
+
+  const device = parserObj.getDevice(); // unfortunately cannot be used according to package.
+  //const result = parserObj.getResult();
+  //const regex =  new RegExp("Mobi|Android", "i"); // /Mobi/|Android/i; // seems like you can't use direct regex
+  console.log(device);
+  //console.log(result);
+
+  //console.log("regex")
+  //console.log(regex.test(result.ua))
+  
+
+  return device.type === 'mobile' //|| regex.test(result.ua)
+}*/
+
+// lib-authen.ts
+/*
+// Save the session in a cookie, .set(name, value, options)
+cookies().set("session", session, {
+  expires: expireTime,
+  httpOnly: true,
+  secure: true, // mobile browser will not work if localhost is not on HTTPS and secure is true
+  // https://stackoverflow.com/questions/72204984/cookies-not-storing-on-mobile-browsers-but-working-on-desktop
+});*/
+
+/*
+async function encrypt(payload: any) {
+  // payload: part of transmitted data that is the actual intended message.
+  return await new SignJWT(payload) // payload is JWTPayload type...
+    .setProtectedHeader({ alg: "HS256" }) // Sets the JWS Protected Header on the SignJWT object.
+    .setIssuedAt() // "iat" (issued at) claim: time JWT was issued
+    .setExpirationTime("24 hours from now") // expiration time on or after which the JWT MUST NOT be accepted for processing.
+    .sign(key); // input key must be Uint8Array | KeyObject type; return Promise<string>
+}*/
+
+// page.tsx in /home folder 
+ // IF YOU WANT MICROPHONE AS CONTEXT...issue also is that home page is server component so if you want to use context, there is a need to convert it to client component also (not done)
+  //const { mediaRecorder } = useMic(); // can only be in client mode
+/*
+  console.log("supp");
+  if (mediaRecorder.current) {
+    if (mediaRecorder.current.state === "recording") { // according to MediaRecorder API
+      mediaRecorder.current.stop();
+    }
+  }
+*/
+
+//interface NavigateDialogProps {
+  //actionItems: [string, string];  //CONSIDER OBJECTS? INSTEAD OF ARRAYS/TUPLES
+
+  /*
+  const pressMic = async () => {
+    const checkpoint1 = await micCheck(); // must await here, otherwise returns promise execution not finish // CATACH ERROR NEEDED halfwat?
+
+
 // must write ? to make it possible for the prop to be optional
 
 /*import Link for BigButton*/

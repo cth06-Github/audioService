@@ -1,28 +1,28 @@
-import { NavigatePopUp, ClearPopUp } from "./dialog-type";
+import { NavigateDialog, ClearDialog } from "./dialog-type";
 
-interface SectionPopUpProps {
-  actionItems: string[];
-  state: boolean[];
+interface SectionDialogProps {
+  actionItems: [string, string];
+  state: [boolean, boolean];
   onClose: () => void;
-  onAgree: (() => void)[]; // can define fixed number?
+  onAgree: [(() => void), (() => void)]; // can define fixed number?
 }
 
-export const SectionPopUpProps: React.FC<SectionPopUpProps> = (
+export const SectionDialog: React.FC<SectionDialogProps> = (
   props
 ): JSX.Element => {
   return (
     <>
       {props.state[0] && (
-        <ClearPopUp
+        <ClearDialog
           isOpen={props.state[0]}
           onClose={props.onClose}
           onAgree={props.onAgree[0]}
           needInput={true}
-        ></ClearPopUp>
+        ></ClearDialog>
       )}
 
       {props.state[1] && (
-        <NavigatePopUp
+        <NavigateDialog
           actionItems={props.actionItems}
           isOpen={props.state[1]}
           onClose={props.onClose}

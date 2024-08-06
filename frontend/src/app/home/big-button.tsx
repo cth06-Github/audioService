@@ -1,6 +1,6 @@
 "use client";
-import styles from "./styles.module.css";
 import Link from "next/link";
+import styles from "./styles.module.css";
 
 interface ButtonProps {
   name: any;
@@ -10,12 +10,13 @@ interface ButtonProps {
 
 const BigButton: React.FC<ButtonProps> = (props): JSX.Element => {
   return (
-    <Link className={styles.serviceButton} href={props.routing}>
-      <span>{props.name}</span>
-      <p>{props.description}</p>
-    </Link>
+    <button className={styles.serviceButton} type="button">
+      <Link href={props.routing}>
+        <span>{props.name}</span>
+        <p>{props.description}</p>
+      </Link>
+    </button>
   );
 };
 
 export default BigButton;
-// () => router.push(props.routing)

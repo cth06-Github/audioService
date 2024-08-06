@@ -17,17 +17,23 @@
   border-color: var(--component-foreground);
 }
 
+.serviceFiles p, .serviceFiles small {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
 .serviceRecordContent {
   display: flex;
   height: 8rem;
   width: 100%;
-  justify-content: space-between; /*mic in div go up */  
+  justify-content: space-between; /*mic in div go up */
 }
 
 .serviceFilesContent {
   height: 100%;
   width: 100%;
-  justify-content: start; /*mic in div go up */
+  justify-content: start;
   align-items: center;
 }
 
@@ -39,19 +45,18 @@
   padding: 5px 0px;
   height: auto;
   width: 100%;
-  justify-content: center; /*y-direction for upload, x-direction for record*/
 }
 
 .serviceRecordMic,
 .serviceRecordPlay {
   padding: 0px;
   height: auto;
-  max-width: 250px; 
+  max-width: 250px;
   flex-direction: row;
 }
 
 .serviceRecordPlay {
-  justify-content: space-between; /*align in x-direction for record*/
+  justify-content: space-between; /*align in x-direction*/
 }
 
 .serviceRecordMic button,
@@ -59,8 +64,8 @@
   padding: 10px;
   display: flex;
   flex-direction: row;
-  align-items: center; 
-  justify-content: center; 
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
 }
 
@@ -75,126 +80,126 @@
 }
 
 .serviceRecordPlay button {
+  margin: 0px 1px;
   height: 8vh;
-  width: 8vh; /*aspect ratio to be 1/1*/
+  aspect-ratio: 1/1;
   border: none;
 }
 
 .serviceRecordMic button:hover {
   transform: scale(1.05);
+  filter: brightness(100%); /*overwrite default button style*/
+}
+
+.serviceRecordMic button:active {
+  filter: brightness(90%); /*overwrite default button style*/
 }
 
 .serviceRecordAudio {
   height: 50%;
-  align-items: center;
-  justify-content: center;
   flex-direction: row;
 }
 
 .serviceRecordAudio audio {
- display:block;
+  display: block;
   height: 100%;
 }
 
 .serviceRecordAudio button {
-  background-color: transparent; /*not none*/
   padding: 0px;
+  background-color: transparent; /*not none*/
   border: none;
 }
 
-
-.uploadButton,
-.serviceFilesEnd button,
-.serviceFilesEnd label {
-  align-items: center; 
+.uploadButton, /*button tag*/
+.serviceFilesEnd button {
+  align-items: center;
   color: var(--component-foreground);
   font-size: 16px;
   text-align: center;
   font-weight: bold;
-  cursor: pointer;
 }
 
-.uploadButton {
-  margin-bottom: 2px;
+.serviceFilesEnd button {
+  margin-bottom: 10px;
+  width: 8rem;
+  max-width: 200px;
+  height: auto;
+  border: none;
+  background-color: #c1e9f5;
+  color: var(--component-foreground);
+}
+
+.serviceFilesEnd button,
+.serviceFilesEnd label {
+  border-radius: 10px;
+}
+
+.serviceFilesEndConfirm, /*serviceFilesEnd button tag for confirm*/
+.serviceFilesEndReselect /*serviceFilesEnd button tag for reselect*/ label {
+  display: block; /*for width to take effect on the label tag*/
+  padding: 10px;
+}
+
+.uploadButton /*button tag*/ {
+  margin-bottom: 4px;
   width: 8rem;
   border: none; /*to remove the border box*/
+  background-color: transparent;
 }
 
 .uploadButton label {
   padding: 10px;
   height: 100%;
   width: 100%;
-  display: flex; 
+  display: flex;
   flex-direction: row;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   cursor: pointer;
-  background-color: #e0e0e0; 
+  background-color: #e0e0e0;
   box-shadow: 0px 1px 1px 2px rgb(114, 114, 114);
   border-radius: 5px;
   border: 1px solid;
 }
 
-.serviceFilesEnd button,
-.serviceFilesEnd label {
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  width: 8rem; 
-  max-width: 200px;
-  border: none;
-  background-color: #c1e9f5;
-  color: var(--component-foreground);
-  height:auto;
-}
-
-
-.serviceRecordMic button:active,
-.serviceRecordAudio button:active,
-.serviceRecordAudio a:hover,
-.serviceFiles button:active, 
-.uploadButton label:active
-.serviceFilesUpload button:active
-.serviceFilesUpload button:hover {
+.serviceRecordAudio a:hover {
   opacity: 0.5;
 }
 
 .serviceRecordAudio a {
-  opacity: 1; /*alternative to background-color change, if not, separate*/
+  opacity: 1;
 }
 
-.uploadButton:hover, .uploadButton label:hover {
+.uploadButton:hover,
+.uploadButton label:hover {
   transform: translateY(1.5px);
   box-shadow: 0px 0px 0px 0px var(--component-background);
   cursor: pointer;
 }
 
-.serviceFilesEnd button:hover,
 .serviceFilesEnd label:hover {
-  background-color: #9fdef1;
   cursor: pointer;
 }
 
-
 /* Mobile */
-@media (max-width: 600px) { /*768px*/
-  .serviceRecordContent{
+@media (max-width: 600px) {
+  .serviceRecordContent {
     transform: scale(0.8);
   }
-  
+
   .serviceRecordPlay {
     max-width: 220px;
   }
 
   .serviceRecordAudio audio {
-     height: 60%;
-     transform: scale(0.9)
+    height: 60%;
+    transform: scale(0.9);
   }
 
   .serviceFiles {
     max-width: 90vw;
   }
-
 }
 
 @media (prefers-color-scheme: dark) {
@@ -202,9 +207,9 @@
     background-color: #666666;
     box-shadow: 0px 1px 1px 2px rgb(219, 216, 216);
   }
-  
+
   .serviceFilesEnd button,
   .serviceFilesEnd label {
-    background-color:#03b9da;
+    background-color: #03b9da;
   }
 }

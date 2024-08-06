@@ -5,7 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-interface PopUpProps {
+interface DialogProps {
     title: string;
     description: string;
     isOpen: boolean;
@@ -15,7 +15,7 @@ interface PopUpProps {
     buttonDisagreeName: string;
 }
 
-const BasePopUp: React.FC<PopUpProps> = (props): JSX.Element => {
+const BaseDialog: React.FC<DialogProps> = (props): JSX.Element => {
   return (
     <>
       <Dialog
@@ -40,7 +40,5 @@ const BasePopUp: React.FC<PopUpProps> = (props): JSX.Element => {
     </>
   );
 }
-export default BasePopUp;
-// consider if Button need customisation. If
-
+export default BaseDialog;
 

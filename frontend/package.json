@@ -2,8 +2,8 @@
   "name": "transcript-web",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
+  "scripts": { 
+    "dev": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -13,10 +13,12 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
+    "@types/ua-parser-js": "^0.7.39",
     "jose": "^5.5.0",
     "next": "14.2.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "ua-parser-js": "^1.0.38"
   },
   "devDependencies": {
     "@types/node": "20.14.8",
@@ -27,5 +29,3 @@
     "typescript": "^5.5.2"
   }
 }
-
-

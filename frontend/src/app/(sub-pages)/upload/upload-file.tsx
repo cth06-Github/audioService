@@ -1,203 +1,227 @@
 "use client";
 
 import { useState, useRef } from "react";
-import styles from "../styles.module.css";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import CircularProgress from "@mui/material/CircularProgress";
-import { dummyTranscription } from "@/app/mock-data";
-import TranscriptBox from "@/app/(components)/transcript-box";
-import { Delete } from "@/app/(components)/button-common";
-import { SectionPopUpProps } from "@/app/(components)/(dialog)/dialog-all";
-import { logout, toHome } from "@/app/lib-authen";
-import Header from "@/app/(components)/header";
-import { useNavDialog } from '../dialog(nav)-logic';
 import { useRouter } from "next/navigation";
+import Header from "@/app/(components)/header";
+import TranscriptBox from "@/app/(components)/transcript-box";
+import { SectionDialog } from "@/app/(components)/(dialog)/dialog-all";
+import { useNavDialog } from "../dialog(nav)-logic";
+import { logout } from "@/app/lib-authen";
+import { dummyTranscription } from "@/app/mock-data";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { DeleteButton } from "@/app/(components)/buttons-common";
+import CircularProgress from "@mui/material/CircularProgress";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import styles from "../styles.module.css";
 
 interface UploadProps {
   username: string;
+  isMobileUAparse: boolean;
 }
 
 const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
-  const [selectedFile, chooseFile] = useState<File | null>(null); // good to use null?
-  const [isFileSending, setSentStatus] = useState<boolean>(false); 
-  const [isTranscribeDone, setTranscribeDone] = useState<boolean>(false); 
+  // Initialisation
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isFileSending, setSentStatus] = useState<boolean>(false);
+  const [isTranscribeDone, setTranscribeDone] = useState<boolean>(false);
   const [transcribedText, setTranscribedText] = useState<string>("");
   const [transcribedFile, setTranscribedFile] = useState<string>("");
-  const [showComplete, setComplete] = useState<boolean>(false);
+  const [showComplete, setComplete] = useState<boolean>(false); // toggle showing completed logo
 
-  
   const HOME = "home";
   const LOGOUT = "logout";
-  const { navDialog, clearNavDialog, agreeNavDialogAction, navCheck } = useNavDialog() // triggerNavDialog not used
+  const { navDialog, clearNavDialog, agreeNavDialogAction, navCheck } =
+    useNavDialog(); // triggerNavDialog not used
   const [uploadDialog, setUploadDialog] = useState<boolean>(false);
   const triggerUploadDialog = () => setUploadDialog(true); // beautify naming
   const clearUploadDialog = () => setUploadDialog(false); // beautify naming
-
-  const hasTranscribedTextfrmPopUp = useRef<boolean>(false); // only used for pop-up indication
+  const isUploadDialogClicked = useRef<boolean>(false);
   const fileInput = useRef<any>(null);
 
+  // Event handlers: Relating to files & transcript
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setComplete(false); // completion logo
-    console.log(event.target.files);
+    setComplete(false);
     if (!event.target.files) {
       return;
     }
-    chooseFile(event.target.files[0]);
+    setSelectedFile(event.target.files[0]);
   };
 
-  const deleteFile = () => {
-    const input = document.getElementById("getAudio") as HTMLInputElement; // type assertion. if there is error, probably the id value of the input tag is written wrongly
+  const handleDeleteFile = () => {
+    const input = document.getElementById("getAudio") as HTMLInputElement; // type assertion. "getAudio": input tag id value
     input.value = ""; // input.files will become FileList {length: 0}
-    chooseFile(null);
-    console.log(input.files);
+    setSelectedFile(null);
   };
 
-  const deleteTranscript = () => {
+  const handleDeleteTranscript = () => {
     setTranscribedText("");
     setTranscribedFile("");
   };
 
-  const uploadFunction = async () => {
-    setTranscribeDone(false); // always clear the transcribe done status prior to sending to backend [Will imm. update?]
-    setTranscribedFile("");
-
-    // insert backend code (future). For now://
-    console.log("Send file to backend for transcription");
-    setSentStatus(true); // when done sending to backend
-    const input = document.getElementById("getAudio") as HTMLInputElement; // type assertion.
-    input.value = "";
-
-    console.log("Backend Transcription in progress");
-    setTimeout(() => {
-      let backStage = dummyTranscription; // backstage will receive the value return by the backend service?
-      setTranscribedText(backStage);
-      setTranscribeDone(true);
-      if (!selectedFile) {
-        throw "Error: selected file is null";
-      }
-      setTranscribedFile(selectedFile.name);
-      chooseFile(null);
-      setSentStatus(false);
-      setComplete(true);
-      setTimeout(() => {
-        setComplete(false);
-      }, 4000); // 4 seconds
-    }, 5000); // 5 seconds
-  };
-
-  const truncateName = (fileName: string, charLength: number) => {
-    const length: number = fileName.length;
-    if (fileName.length < charLength) {
-      return fileName;
-    }
-    const frontPart = fileName.substring(0, charLength - 8); // 30 characters
-    const backPart = fileName.substring(length - 8, length); // 8 characters
-    return frontPart + "..." + backPart;
-  };
-
-  const pressUpload = () => {
+  const handlePressUpload = () => {
     console.log("pressUpload");
     if (transcribedText) {
       triggerUploadDialog();
     }
   };
 
-  const handleCloseDialog = () => { // should separate into different handlers?
-    clearUploadDialog();
-    clearNavDialog();
+  const handleSendFile = async () => {
+    setTranscribeDone(false); // reset transcribe done status before sending file
+
+    // Send file to backend
+    console.log("Send file to backend for transcription"); // insert backend code in the future
+    setSentStatus(true); // when file has been completely sent to backend
+
+    // Clear input.files array
+    const input = document.getElementById("getAudio") as HTMLInputElement; // type assertion. "getAudio": input tag id value
+    input.value = ""; // input.files will become FileList {length: 0}
+
+    console.log("Backend Transcription in progress");
+    setTimeout(() => {
+      // code to execute after some time, simulate waiting for backend processes to complete
+      let valueFromBackend = dummyTranscription; // receive the value return by the backend service
+      setTranscribedText(valueFromBackend);
+      setTranscribeDone(true);
+
+      if (!selectedFile) {
+        // this error shouldn't happen
+        throw new Error(
+          "Error: selected file is null. File was not selected successfully prior."
+        );
+      }
+      setTranscribedFile(selectedFile.name);
+      setSelectedFile(null); // clear selected file as file has been transcribed successfully
+      setSentStatus(false); // reset sentStatus as file has been transcribed successfully
+      setComplete(true);
+      setTimeout(() => {
+        // show the completed logo sign for a few seconds only
+        setComplete(false);
+      }, 4000); // 4 seconds
+    }, 5000); // 5 seconds
   };
 
+  // Event handlers: Relating to Navigation & Dialogs
+  const router = useRouter();
+  const handlePressHome = () => {
+    console.log("Pressed Home!");
+    navCheck(!transcribedText && isFileSending, HOME, () =>
+      router.push("/home")
+    );
+  }
+//navCheck(condition: boolean, navDestination: string, navFunc: () => void)
+  const handlePressLogout = () => {
+    console.log("Pressed Logout!");
+    navCheck(!transcribedText && isFileSending, LOGOUT, logout);
+  }
+
+  const handleAgreeNavDialog = () => agreeNavDialogAction();
+
   const handleAgreeUploadDialog = () => {
-    hasTranscribedTextfrmPopUp.current = true;
-    deleteTranscript();
+    isUploadDialogClicked.current = true;
+    handleDeleteTranscript();
     if (!fileInput.current) {
       throw new Error("Input tag not detected");
     }
     fileInput.current.click();
     clearUploadDialog();
-    hasTranscribedTextfrmPopUp.current = false;
+    isUploadDialogClicked.current = false;
   };
 
-  const router = useRouter();
-  const handleAgreeNavDialog =  () => agreeNavDialogAction()
-  const pressHome = () => navCheck(!transcribedText && isFileSending, HOME, () => router.push("/home"))
-  const pressLogout = () => navCheck(!transcribedText && isFileSending, LOGOUT, logout)
+  const handleCloseDialog = () => {
+    clearUploadDialog();
+    clearNavDialog();
+  };
+
+  // Helper Function
+  const truncateName = (fileName: string, charLength: number) => {
+    const length: number = fileName.length;
+    if (fileName.length < charLength) {
+      return fileName;
+    }
+    const frontPart = fileName.substring(0, charLength - 8);
+    const backPart = fileName.substring(length - 8, length); // 8 characters
+    return frontPart + "..." + backPart;
+  };
+
+  // console.log()
+  console.log("Browser detected as mobile via UAparser: " + props.isMobileUAparse);
 
   return (
     <>
       <Header
         heading="Upload"
-        description="Transcribe existing audio"
+        description="Transcribe audio files"
         hasHome={true}
         user={props.username}
-        onClickFuncHome={pressHome}
-        onClickFuncLogout={pressLogout}
+        onClickFuncHome={handlePressHome}
+        onClickFuncLogout={handlePressLogout}
       />
       <div>
         <div className={styles.serviceFiles}>
           <hgroup>
-            <h2>Select files</h2>
-            <p style={{ textAlign: "center" }}>Choose 1 file only</p>
+            <h2>Select file</h2>
+
+            {props.isMobileUAparse /*indicates if browser is on mobile*/ ? (
+              <>
+                <p>or create new audio file</p>
+                <p>
+                  <small>(if permission is enabled)</small>
+                </p>
+              </>
+            ) : (
+              <p>Choose 1 file only</p>
+            )}
           </hgroup>
           <div className={styles.serviceFilesContent}>
             <div className={styles.serviceFilesUpload}>
-              <button className={styles.uploadButton} onClick={pressUpload}>
+              <button
+                className={styles.uploadButton}
+                type="button"
+                onClick={handlePressUpload}
+              >
                 <label htmlFor="getAudio">
                   <FileUploadIcon style={{ fontSize: 30 }} />
                   Audio
                 </label>
-
                 <input
                   ref={fileInput}
                   id="getAudio"
                   type="file"
-                  accept="audio/*, .mp4"
+                  accept="audio/*"
                   onChange={handleFileChange}
-                  onClick={
-                    (event) => {
-                      if (
-                        !(
-                          !transcribedText ||
-                          (transcribedText &&
-                            hasTranscribedTextfrmPopUp.current)
-                        )
+                  onClick={(event) => {
+                    if (
+                      !(
+                        !transcribedText ||
+                        (transcribedText && isUploadDialogClicked.current)
                       )
-                        event.preventDefault();
-                    } 
-                  }
+                    )
+                      event.preventDefault();
+                  }}
                   style={{ display: "none" }}
                 />
               </button>
               <div className="fileDescribe">
                 <style jsx>{`
                   .fileDescribe {
-                    padding: 3px;
-                    height: ${!showComplete ? "2rem" : "0px"};
                     flex-direction: row;
                     align-items: ${selectedFile && !isFileSending
                       ? "center"
                       : "flex-start"};
+                    padding: 3px;
+                    height: ${!showComplete ? "2rem" : "0px"};
                   }
                 `}</style>
 
                 {selectedFile ? (
                   <>
-                    <p style={{ textAlign: "center" }}>
-                      <small
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          textAlign: "center",
-                        }}
-                      >
-                        {truncateName(selectedFile.name, 20)}
-                      </small>
+                    <p>
+                      <small>{truncateName(selectedFile.name, 20)}</small>
                     </p>
 
                     {!isFileSending && (
                       <span>
-                        <Delete onClick={deleteFile} />
+                        <DeleteButton onClick={handleDeleteFile} />
                       </span>
                     )}
                   </>
@@ -213,8 +237,16 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
 
             {selectedFile && !isFileSending && (
               <div className={styles.serviceFilesEnd}>
-                <button onClick={uploadFunction}>Confirm</button>
-                <label htmlFor="getAudio">Reselect</label>
+                <button
+                  className={styles.serviceFilesEndConfirm}
+                  type="button"
+                  onClick={handleSendFile}
+                >
+                  Confirm
+                </button>
+                <button className={styles.serviceFilesEndReselect} type="button">
+                  <label htmlFor="getAudio">Reselect</label>
+                </button>
               </div>
             )}
             {(isFileSending || isTranscribeDone) && (
@@ -222,9 +254,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
                 {!isTranscribeDone ? (
                   <p
                     style={{
-                      display: "flex",
                       flexDirection: "column",
-                      alignItems: "center",
                     }}
                   >
                     <span>
@@ -234,7 +264,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
                   </p>
                 ) : (
                   showComplete && (
-                    <p style={{ display: "flex", alignItems: "center" }}>
+                    <p>
                       <CheckCircleOutlineIcon style={{ color: "#00F01C" }} />
                       Complete!
                     </p>
@@ -249,9 +279,9 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
       <TranscriptBox
         transcript={transcribedText}
         withInfo={truncateName(transcribedFile, 25)}
-        deleteFunc={deleteTranscript}
+        deleteFunc={handleDeleteTranscript}
       />
-      <SectionPopUpProps
+      <SectionDialog
         actionItems={["Transcribing", "uploaded files"]}
         state={[uploadDialog, navDialog]}
         onClose={handleCloseDialog}

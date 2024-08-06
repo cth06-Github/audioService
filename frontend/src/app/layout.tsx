@@ -1,8 +1,6 @@
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
-import { Suspense } from "react"; // to check what is suspense
-import { NavigationEvents } from "./(components)/navigation-events";
-//import { MicProvider } from "./microphone";
+import { Suspense } from "react";
 import LoadingPage from "./(components)/loading-page";
 
 const openSans = Open_Sans({ subsets: ["latin"] });
@@ -10,14 +8,10 @@ const openSans = Open_Sans({ subsets: ["latin"] });
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  return ( // hopefully the mic provider works
+  return (
     <html lang="en">
       <body className={openSans.className}>
-       
-        {children}
-        <Suspense fallback={<LoadingPage/>}>
-          <NavigationEvents />
-        </Suspense>
+        <Suspense fallback={<LoadingPage />}>{children}</Suspense>
       </body>
     </html>
   );

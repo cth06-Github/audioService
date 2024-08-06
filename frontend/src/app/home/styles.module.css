@@ -1,17 +1,18 @@
-.servicePart {
+.serviceGroup {
   transform: translate(0px, 3rem);
-  padding: 5px 20px;
-  width: 85vw;
-  height: fit-content;
   flex-direction: row;
   align-items: flex-start;
   justify-content: center;
+  padding: 5px 20px;
+  width: 85vw;
+  height: fit-content;
 }
 
-.serviceButton { /*Link component*/
+.serviceButton {
+  /*button tag in big-button.tsx*/
   display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   margin: 0rem 5rem;
   padding: 5px 20px;
@@ -35,25 +36,19 @@
 .serviceButton p {
   font-size: 1.3rem;
   margin-bottom: 0.5rem;
-}
-
-.serviceButton:hover {
-  opacity: 0.5;
-}
-
-.serviceButton:active {
-  opacity: 1; 
+  text-align: center;
 }
 
 /* Mobile */
-@media (max-width: 600px) { 
-  .serviceBox{
+@media (max-width: 600px) {
+  .serviceGroup {
     transform: translate(0px);
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
   }
-  .serviceButton{
+
+  .serviceButton {
     width: 10rem;
     aspect-ratio: 1 / 1;
     margin: 1rem;
@@ -62,7 +57,6 @@
   .serviceButton p {
     font-size: 1.1rem;
   }
-
 }
 
 @media (prefers-color-scheme: dark) {
@@ -74,7 +68,7 @@
       rgba(6, 105, 186, 0.2),
       rgba(6, 105, 186, 0.5),
       rgba(6, 105, 186),
-      rgb(6, 105, 186) 
+      rgb(6, 105, 186)
     );
     border-color: var(--component-foreground);
   }

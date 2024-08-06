@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState, useContext, useRef } from "react";
-import { logout, toHome } from "@/app/lib-authen";
+import { logout } from "@/app/lib-authen";
 import { useRouter } from "next/navigation";
 
 interface NavDialogType {

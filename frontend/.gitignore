@@ -21,6 +21,10 @@
 *.pem
 /bin-folder
 
+# security
+*.key
+*.crt
+
 # debug
 npm-debug.log*
 yarn-debug.log*
@@ -35,3 +39,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/certificates

@@ -36,7 +36,7 @@
   font-size: 1.1rem;
 }
 
-.loginButton { 
+.loginButton { /*button tag*/
   margin: 15px 0px; /*top right bottom left; a b a b */
   padding: 10px;
   width: 100%; 
@@ -46,7 +46,7 @@
   color: var(--component-foreground); 
   font-size: 1.2rem;
   text-align: center;
-  cursor: pointer; /*from cursor arrow to cursor finger*/
+  cursor: pointer;
 }
 
 

@@ -7,6 +7,7 @@
   --component-foreground: rgb(0, 0, 0);
   --component-background: rgb(255, 255, 255);
   --default-font-size: 3vh;
+  --brightness-change: 90%; 
 }
 
 div,
@@ -18,7 +19,7 @@ hgroup {
   font-size: var(--default-font-size);
 }
 
-hgroup { /*only used in Upload*/
+hgroup { /*only used in Upload page*/
   margin-bottom: 0.2rem;
   height: auto;
   justify-content: start;
@@ -27,11 +28,10 @@ hgroup { /*only used in Upload*/
 header {
   display: flex;
   flex-direction: row;
+  margin: 1rem 0rem;
   height: fit-content;
   text-align: center;
-  margin: 1rem 0rem;
 }
-
 
 h1 {
   font-size: 2.5rem;
@@ -48,7 +48,15 @@ p {
 }
 
 button {
-  cursor: pointer;
+  cursor: pointer; /*from cursor arrow to cursor finger*/
+}
+
+button:hover {
+  filter: brightness(var(--brightness-change));
+}
+
+button:active {
+  filter: brightness(100%);
 }
 
 /* Mobile */
@@ -100,10 +108,11 @@ a {
   }
 
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 41, 36, 35;
-    --background-end-rgb: 0, 0, 0;
+    --foreground-rgb: rgb(255, 255, 255);
+    --background-start-rgb: rgb(41, 36, 35);
+    --background-end-rgb: rgb(0, 0, 0);
     --component-foreground: rgb(255, 255, 255);
     --component-background: rgb(0, 0, 0);
+    --brightness-change: 125%; 
   }
 }

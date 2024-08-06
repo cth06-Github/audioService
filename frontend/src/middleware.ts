@@ -19,8 +19,7 @@ export async function middleware(request: NextRequest) {
         // session cookies with no value
         throw new Error(); // goes to catch
       }
-
-   } catch {
+    } catch {
       // should be JWT Invalid error.
       // detect session cookies with invalid value
       return new Response("Error 401: Unauthorized Access", { status: 401 });
