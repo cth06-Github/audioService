@@ -51,7 +51,7 @@ async function cookieSetter(user: object) {
   cookies().set("session", session, {
     expires: expireTime,
     httpOnly: true,
-    secure: true, // secure=true cookies does not work in browsers on mobile browser without HTTPS
+    secure: true, // secure=true cookies does not work in browsers on mobile browser run without HTTPS
   });
 }
 

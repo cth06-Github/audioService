@@ -23,21 +23,60 @@ Considering how the app checks whether users are logged in (paragraph 1), it may
 
 Indication of poor decryption by having errors being thrown informs the app that users are unauthorized (for more info, see code in `/frontend/src/middleware.ts`), preventing access <br>
 
-Creating a session cookie with a value that correspond to a valid JWT is has low chance of success especially when the key used for JWT should not be known, thus the risk of hackers accessing the system would be considerably low. **One outstanding issue is that the key/secretKey used is coded directly in `/frontend/src/app/lib-authen.ts` instead of utilising other management strategies**  <br>
+Creating a session cookie with a value that correspond to a valid JWT has low chance of success especially when the key used for JWT should not be known, thus the risk of hackers accessing the system would be considerably low. **One outstanding issue is that the key/secretKey used is coded directly in `/frontend/src/app/lib-authen.ts` instead of utilising other management strategies to cover the secret key.**  <br>
 
 ### Authorisation
- `/frontend/src/middleware.ts`contains the logic to show an error status of 401 unauthorised access is users who are not logged in access `/home`, `/record` and `/upload` pages. Logged in Users who attempts to go to `/login` page will be redirected to `/home` page.
+ `/frontend/src/middleware.ts`contains the logic to show an error status of 401 unauthorised access is users who are not logged in access `/home`, `/record` and `/upload` pages. Logged-in users who attempts to go to `/login` page will be redirected to `/home` page.
 
 
-## Notes on Recording
-MediaRecorder API is used to connect to the device’s microphone. This recording is unable to record system audio (i.e. audio played from the devices itself), it only records sounds from the surroundings. <br>
+## Recording at /record page
+### API used to acceess Microphone
+**MediaRecorder** interface of the MediaStream Recording API is used to connect to the device’s microphone. The recording functionality coded in here is unable to record system audio (i.e. audio played from the devices itself), it only records sounds from the surroundings. <br>
+
+### Importance of HTTPS
+In order for the recorder function to work on **mobile** browsers, the app must be hosted in secure context, e.g. HTTPS. `navigator.mediaDevices.getUserMedia() is undefined` error message will occur if done otherwise. <br>
+
+### Back Button issue
+| One of the design features of the `/record` page is:<br>
+At `/record` page, if users 
+1. click on the browser’s back/forward button, OR
+2. refresh the page OR
+3. click on the Home or logout button in `/record` page 
+while actively recording on the /record page (i.e. `recordingStatus !== INACTIVE`), <br> 
+
+a dialog will be shown with 2 buttons (for e.g., “stay on page” and “ok”) to either remain on page or leave/reload the page. 
+
+If users agree to leave the page, `stopRecording()` will be executed so that the microphone connected will stop recording. This is to prevent a case where the microphone continues to record while users are at other pages (`/home`, `/upload`, `/logout`) | 
+
 
 Users are supposed to stay on the recording page in order to record. If users are to leave the page, the recording will be terminated. However, if users press **the back button** on their browsers, the current codebase is unable to detect it and terminate the recording. This is a "bug" that require looking into. <br>
 
-getUserMedia() undefined, must HTTPS if want to try on mobile devices.<br>
+<u>Detailed Explanation on the issue</u>
 
-## Notes on Uploading 
+
+
+
+## Uploading at /upload page
 talk about the different mobile interfaces (and the UA Parser)
+
+
+## Miscellaneous
+### Use of h tags
+h1: main heading of the page. They are
+* "Transcription Service” in `/login` page
+*	“Welcome!” in `/home` page
+*	“Record” in `/record` page
+*	“Upload” in `/upload` page
+The descriptions below these headings, if applicable, are wrapped in p tags. 
+<br>
+
+h2: sub-heading. Examples of sub-headings used in the pages are:
+* “Transcribed Text” in /record && /upload page
+* “Login” in /login page
+* “Select files” in /upload page
+
+h3: used for the account username shown in the side menu (only displayed when the screen max width is < 800px)
+
 
 ## Issues && Areas for Improvement
 ### Summary
