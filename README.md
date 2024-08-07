@@ -4,6 +4,7 @@
 Created with React framework **NextJS**, using **Typescript**. **App Router** is used for routing. <br>
 **Material UI** library is utilised for the icons and design of various components used. <br>
 **jose** is utilised as part of the authentication logic by supporting the creation and verification of JSON Web Tokens (JWT). <br>
+MediaRecorder interface of the MediaStream Recording API is used to access device/browsers's microphone and enable recording functionality.<br>
 
 Polyglot allows users to obtain transcribed text from speech or audio by:
 *  **Recording audio** live which will be sent to the backend service for transcription real-time [audio streaming]. Transcribed Text will be displayed real-time.
@@ -42,11 +43,13 @@ To host the web app on HTTP, please edit the code in `/frontend/package.json`to
 Running the web app as a docker container should be possible as well. Run the docker command at root of the repository (rather than at `/frontend`). 
 
 
-## Technical Details & outstanding issues
+## Technical Details & Outstanding Issues
 Details and explanation about the concept and logic behind certain code, including any outstanding issues identified but not fully resolved are detailed in **`Documentation_Final_8Aug.docx` which can be found in the root of this repository**. Information includes: 
 1.	Authentication & Authorisation (including the use of  `jose` package and `middleware.ts`)
 2.	Unable to detect when users clicked on the back button 
 3.	Limitations about detecting whether devices are mobile or desktop (and why it may be important)
+
+`/frontend/src/app/(code-not-used)/microphone.tsx`...
 
 ## Useful link of packages
 * Material UI: https://mui.com/material-ui/getting-started/ 
