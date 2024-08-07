@@ -1,3 +1,4 @@
+// Attempts to solve the back button issue for recording // 
 "use client";
 import { createContext, useContext, useState, useRef, useEffect } from "react";
 

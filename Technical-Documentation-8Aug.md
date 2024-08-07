@@ -1,6 +1,7 @@
-# Technical Documentation
-Please read `README.md` at the root of this repository before viewing this.
-
+# Technical Documentation (Important ones only)
+Please read `README.md` at the root of this repository before viewing this. This technical documentatin
+_Last updated: 8 Aug 2024_
+_Writen by: Chua Tse Hui (Intern) -- only those written before 8 Aug (inclusive)_ 
 
 ## Logging in: Authentication & Authorisation
 Only users who login successfully can access `/home`, `/record` and `/upload` pages. The set of valid username and passwords, which are hard coded for demonstration purposes, are found in `/frontend/src/app/mock-data.ts` . 
@@ -28,6 +29,9 @@ Creating a session cookie with a value that correspond to a valid JWT has low ch
 ### Authorisation
  `/frontend/src/middleware.ts`contains the logic to show an error status of 401 unauthorised access is users who are not logged in access `/home`, `/record` and `/upload` pages. Logged-in users who attempts to go to `/login` page will be redirected to `/home` page.
 
+### Other libraries?
+(sufficiently) Popular Authentication libraries such as NextAuth and OAuth are possible choices which were not chosen. Admittedly, the reason for that was I did not think of that at that point in time. 
+
 
 ## Recording at /record page
 ### API used to acceess Microphone
@@ -49,16 +53,81 @@ dialog will be shown with 2 buttons (for e.g., “stay on page” and “ok”) 
 
 If users agree to leave the page, `stopRecording()` will be executed so that the microphone connected will stop recording. This is to prevent a case where the microphone continues to record while users are at other pages (`/home`, `/upload`, `/logout`) 
 ***
-
-Users are supposed to stay on the recording page in order to record. If users are to leave the page, the recording will be terminated. However, if users press **the back button** on their browsers, the current codebase is unable to detect it and terminate the recording. This is a "bug" that require looking into. <br>
-
-<u>Detailed Explanation on the issue</u>
+This functionality has been implemented successfully except for scenario 1 -- pressing of browser's button. Currently, `stopRecording()` _may or may not_ be executed when the browser's back button is pressed, depending on the situation. The following describes the the situation: <br>
 
 
+* **`stopRecording()` will be executed** : if users access `/record` page by **keying in the URL address** in the browser search bar, and then click back.
+    * `stopRecording()` written in the `beforeUnload(e: BeforeUnloadEvent)` function which is written in the `useEffect` was executed. This `useEffect` hook allows window to keep listening for BeforeUnloadEvent listens for 
+    * this means that BeforeUnloadEvent was triggered when browser's back buton is pressed, Only if `/record` page was accessed via URL. Hence (next bullet point):   
+* **`stopRecording()` fails** : if users access `/record` page by **clicking the app button** (Record button in `/home` page), and then click browser's back button.
+    * given this phenomenon, BeforeUnloadEvent (https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event) may not have been fired.
+
+
+A possible reason is how navigation works in NextJS -- it's client-side navigation, but it is:
+> a mixture of SPA (Single Page Appplication) style navigation and traditional navigation.
+Or maybe, it can be said as
+> By default, Next.js pre-renders every page. This means that Next.js generates HTML for each page in advance, instead of having it all done by client-side JavaScript. Pre-rendering can result in better performance and SEO 
+
+When users access the `/record` page via URL link, the console in the inspect element tool gets refreshed. When users access the `/record` page via the buttons in the app from `/home` page, the console in the inspect element tool does NOT get refreshed. It's thus inferred that a request to the server has been made to regenerate the HTML page when `/record` page is accessed via URL link, thus clicking the browser's back button may result in unloading the html page (just a wild guess). In contrast to accessing the `/record` page via the app button, there seems to have no request made to server and it is a matter of utilising Javascript to dynamically render the parts that is changed (the idea behind client-side routing). Thus when clicking the browser's back button, BeforeUnloadEvent could not be listened for.
+
+References that I got my information from:
+* General overview between server side vs client side routing: https://www.telerik.com/blogs/server-side-routing-vs-client-side-routing
+* Understanding NextJS routing (app router): https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#how-routing-and-navigation-works
+* 1st paragraph mentioned about pre-rendering of page: https://nextjs.org/docs/pages/building-your-application/rendering
+* supplementary info: https://stackoverflow.com/questions/64644248/next-js-client-side-navigation-vs-changes-in-html
+
+I thought if listening for PopState event (which is meant to be fired when "the active history entry changes while the user navigates the session history") may be a solution, since when users press the browser's back button, the user is navigating through the session history stack, one step back. However, I wasn't able to do it successfully. PopState event does not seemed to be fired.<br> 
+
+In this link: https://github.com/vercel/next.js/discussions/41934#discussioncomment-8996669, it mentioned that  
+> It’s worth mentioning there’s no browser behavior to prevent popstate (back or forward navigations), so there isn’t a way to add that to the router.
+
+Suggesting that routing in app router cannot listen for events, limiting the possibility of a solution to detect the back button. Listening for events in routing was available in page router. Reverting the code base to page router comes with certain considerations:
+* NextJS seems to suggest that page router is meant to be of the past and that people should use app router. (however, online says that page router are still getting new updates). Page router still exists to help with older apps using it. Thus in terms of looking ahead, it may be better to stick with app router
+* it's possible to use both page and app router. But utilising both routing methods does not sound seamleass: https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#7-routing-between-pages-and-app
+
+Potentially, one can use the `use-router-with-events` package to allow the router in app router to manipulate with events. https://www.npmjs.com/package/use-router-with-events . This method has not been tried, which one may consider. <br>
+
+It was also thought whether it is possible to do this instead: When users enter `/home` page, the code checks whether the microphone is still currently connected and has started recording. If it is still recording, stop the recorder. As microphone access is only coded in `/record` page, for `/home` page to access the microphone, the microphone Ref stored need to exist not just in `/record`, leading to the use of `useContext`. This method was attempted but failed, nonetheless the code for it can be found in `/frontend/src/app/(code-not-used)/microphone.tsx` under Attempt 2 part.
 
 
 ## Uploading at /upload page
-talk about the different mobile interfaces (and the UA Parser)
+### Determining mobile vs desktop
+If the web app is accessed via computer / desktop, upon pressing the upload button, only the file picker is shown which users can choose audio files for uploading. <br>
+But if the app is accessed via **mobile device**, upon pressing the upload button, **BOTH the file picker and voice recorder options** are shown (see picture below) which users can choose to either select an existing audio file via the file picker for uploading or to create an audio file on the spot through voice recording. The voice recorder option is shown only if users enable permission settings for the web app to access microphone / voice recorder option  <br>
+
+![alt text](image-3.png)
+
+Online research suggests that it is not possible to disable the voice recorder option. The behaviour of file upload is due to the `<input type = "file">` tag. The tag in `/frontend/src/app/(sub-pages)/upload/upload-file.tsx` has the `accept` attribute to be `accept="audio/*"`. While it is possible to disable the voice recorder option on mobile devices by changing the `accept` attribute to `accept="application/octet-stream"` , the corresponding file type restricted for user selection will be inaccurate thus this solution was not explored. <br>
+
+Given that voice recorder and file picker options were given, it is necesary to explain the potential difference between `/record` and `/upload` pages. For `/record` page, it is believed that as recording take place, the already collected audio data will be sent to the backend for transcription without having to wait for all audio data to be collectedd (i.e. recording has stopped) before it can be sent to the backend. This contrasts `/upload` page voice recorder option which users will have to record for the entire duration, and have the entire audio file to be selected before it is sent to the backend. <br>
+
+Given that desktop / computer devices show only the file picker option while the mobile device shows both option, in terms of user design interface, it is necessary that the frontend design is to be slightly different.
+
+![alt text](image-4.png)
+
+
+To detect whether the device is mobile or computer, `UAParser.js` package (https://github.com/faisalman/ua-parser-js) is utilised which helps to elicit userAgent information in a more readable and clean manner as opposed to seiving out information from executing `navigator.userAgent` directly. The logic for detecting mobile or desktop through this library is written in `/frontend/src/app/lib-device.ts`. <br>
+
+However, users who access the app on browsers on mobile phones, yet with the desktop view activated will not be detected that the browsers are on mobile phones. To mitigate this, `useEffect` hook in `/frontend/src/app/(sub-pages)/upload/upload-file.tsx` was written to further check whether the browser is on a touchscreen. Details as shown:
+
+![alt text](image-1.png)
+
+Flowchart: How `UAParser.js` and the `useEffect` hook work together
+![alt text](image-2.png)
+
+
+Browser on Desktop (touchscreen, landscape) should be detected correctly as the UAparser should be able to detect the userAgent as something from Desktop…at least not mobile (e.g. Windows).
+Browser on Mobile (Desktop view, portrait) would be detected as a Desktop instead of mobile via UAparser. But from the `useEffect` hook, the code would notice that Mobile `navigator.maxTouchPoints > 0`, and thus later on deduce that it is Browser on Mobile. <br>
+
+However, this means that Browser on Desktop (Touchscreen portrait) will be categorised correctly as Desktop at first. But because how the inference is that undefined types returned from `UAParser.js` could mean both Desktop Browser or Mobile Browser with Desktop view, `useEffect` logic is meant to further categorise it. Based on the logic in `useEffect`, Browser on Desktop (touchscreen and portrait) fulfil the criteria and will be classified as Mobile.
+
+**Assumption made:**
+* All and Only touchscreen devices have `navigator.maxTouchPoints > 0`
+* No one uses Desktop touchscreen in portrait mode
+
+While `window.matchMedia(query)` could be used to check for the screen size and thus determine if it is mobile or desktop, the limitation is that the screen dimension registered for mobile with desktop view will be changed to model after desktop view, thus such a solution isn’t the most viable.<br>
+Hence currently, browser on mobile with desktop view in landscape will not be able to be detected as mobile. This should be alright as mobile phones should more often than not used in portrait mode.<br>
+All these logic may only be sensible only if we consider desktop laptop vs mobile phones, without considering medium sized devices like tablets and ipads.
 
 
 ## Miscellaneous
@@ -77,13 +146,3 @@ h2: sub-heading. Examples of sub-headings used in the pages are:
 * “Select files” in /upload page
 
 h3: used for the account username shown in the side menu (only displayed when the screen max width is < 800px)
-
-
-## Issues && Areas for Improvement
-### Summary
-•	* Strengthening Authentication (maybe it could be better, given JWT). It is of note that Authentication libraries like NextAuth and OAuth aren't used
-•	* Press key down functionality
-•	* Recording next button issue
-•	* Code base: repetition && secret key
-
-### Details

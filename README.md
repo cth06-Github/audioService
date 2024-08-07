@@ -58,6 +58,6 @@ Details and explanation about the concept and logic behind certain code, includi
 ## Useful link of packages
 * Material UI: https://mui.com/material-ui/getting-started/ 
 * jose: https://www.npmjs.com/package/jose 
-* UAparser: `<insert link>`
+* UAParser.js: https://github.com/faisalman/ua-parser-js
 --- 
 _Last updated: 8 Aug 2024_
