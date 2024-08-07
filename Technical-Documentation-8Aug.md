@@ -37,8 +37,8 @@ Creating a session cookie with a value that correspond to a valid JWT has low ch
 In order for the recorder function to work on **mobile** browsers, the app must be hosted in secure context, e.g. HTTPS. `navigator.mediaDevices.getUserMedia() is undefined` error message will occur if done otherwise. <br>
 
 ### Back Button issue
+<b>One of the Design feature of the `/record` page is:</b>
 ***
-One of the design features of the `/record` page is:<br>
 At `/record` page, if users 
 1. click on the browser’s back/forward button, OR
 2. refresh the page OR
