@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/app/(components)/header";
 import TranscriptBox from "@/app/(components)/transcript-box";
@@ -48,34 +48,6 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const [micDialog, setMicDialog] = useState<boolean>(false);
   const triggerMicDialog = () => setMicDialog(true); // beautify naming
   const clearMicDialog = () => setMicDialog(false); // beautify naming
-
-  const isVisible: boolean | null = usePageVisibility(); // checks if user is directly on the webpage
-
-  // Stop recording if user is not on the record page
-  useEffect(() => {
-    console.log("isVisible status: " + isVisible);
-    if (isVisible === false && recordingStatus !== INACTIVE) {
-      handlePressStop();
-      alert("Recording has stopped and was saved when you leave the page.");
-    }
-  }, [isVisible]);
-
-  // Stop recording if user refreshes page or press back/forward button (only in specific circumstances)
-  useEffect(() => {
-    function beforeUnload(e: BeforeUnloadEvent) {
-      console.log("BeforeUnloadEvent BUE fired."); // BUE is fired when browser back/forward button is pressed, ONLY IF page was accessed via URL(not app buttons). BUE fired on refresh too.
-      if (recordingStatus !== INACTIVE) {
-        e.preventDefault(); // browser built-in dialog may not be suitable
-        stopRecording();
-      }
-    }
-
-    window.addEventListener("beforeunload", beforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", beforeUnload);
-    };
-  });
 
   // Timing Helper functions
   const startTiming = () => {
@@ -131,11 +103,6 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     } else {
       triggerMicDialog();
     }
-  };
-
-  const handlePressStop = () => {
-    stopRecording();
-    saveAudio();
   };
 
   const micCheck = async () => {
@@ -254,7 +221,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     startTiming();
   };
 
-  const stopRecording = () => {
+  const stopRecording = useCallback(() => {
     if (!mediaRecorder.current) {
       return;
     }
@@ -266,9 +233,9 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     mediaRecorder.current.stop(); // stop recording
     setRecordingStatus(INACTIVE);
     stopTiming();
-  };
+  },[]);
 
-  const saveAudio = () => {
+  const saveAudio = useCallback(() => {
     if (!mediaRecorder.current) {
       throw new Error("mediaRecorder.current is null. Audio cannot be saved");
     }
@@ -279,7 +246,12 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
       setAudioChunks([]);
       setTranscribedText(transcribedText + dummyTranscription); // simulate dummyTranscription as a value also returned by backend service
     };
-  };
+  }, [audioChunks, props.downloadType, transcribedText]);
+
+  const handlePressStop = useCallback(() => {
+    stopRecording();
+    saveAudio();
+  }, [stopRecording, saveAudio])
 
   // Text-related function
   const handleDeleteTranscript = () => {
@@ -298,7 +270,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     console.log("Pressed Home!");
     navCheck(recordingStatus !== INACTIVE, HOME, () => router.push("/home"));
   };
-  const pressLogout = () => {
+  const handlePressLogout = () => {
     console.log("Pressed Logout!");
     navCheck(recordingStatus !== INACTIVE, LOGOUT, logout);
   };
@@ -322,13 +294,41 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     clearNavDialog();
   };
 
-  // console.log
-  if (mediaRecorder.current) {
-    console.log(
-      "mediaRecorder recording state: " + mediaRecorder.current.state
-    );
-  }
+  // Check to ensure that recording is stopped when /record page is exited
+  const isVisible: boolean | null = usePageVisibility(); // checks if user is directly on the webpage
 
+  // Stop recording if user is not on the record page
+  useEffect(() => {
+    console.log("isVisible status: " + isVisible);
+    if (isVisible === false && recordingStatus !== INACTIVE) {
+      handlePressStop();
+      alert("Recording has stopped and was saved when you leave the page.");
+    }
+  }, [isVisible, handlePressStop, recordingStatus]);
+
+  // Stop recording if user refreshes page or press back/forward button (only in specific circumstances)
+  useEffect(() => {
+    function beforeUnload(e: BeforeUnloadEvent) {
+      console.log("BeforeUnloadEvent BUE fired."); // BUE is fired when browser back/forward button is pressed, ONLY IF page was accessed via URL(not app buttons). BUE fired on refresh too.
+      if (recordingStatus !== INACTIVE) {
+        e.preventDefault(); // browser built-in dialog may not be suitable
+        stopRecording();
+      }
+    }
+
+    window.addEventListener("beforeunload", beforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", beforeUnload);
+    };
+  });
+
+    // console.log
+    if (mediaRecorder.current) {
+      console.log(
+        "mediaRecorder recording state: " + mediaRecorder.current.state
+      );
+    }
   return (
     <>
       <Header
@@ -337,7 +337,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
         hasHome={true}
         user={props.username}
         onClickFuncHome={handlePressHome}
-        onClickFuncLogout={pressLogout}
+        onClickFuncLogout={handlePressLogout}
       />
 
       <div className={styles.serviceRecord}>

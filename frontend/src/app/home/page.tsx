@@ -7,9 +7,9 @@ import { getUsername } from "../lib-authen.ts";
 
 export default async function HomePage() {
   const value = await getUsername(); // decrypt value of cookie to get username
-  
+
   return (
-    <div style = {{minHeight: "100vh", justifyContent: "flex-start"}}>
+    <div style={{ minHeight: "100vh", justifyContent: "flex-start" }}>
       <Header
         heading="Welcome!"
         description="Transcribe"
@@ -18,12 +18,42 @@ export default async function HomePage() {
       />
       <div className={styles.serviceGroup}>
         <BigButton
-          name={<MicIcon sx={{fontSize: { xs: 90, sm: 100, md: 150, lg: 200 } }} />}
+          name={
+            <MicIcon
+              sx={{
+                fontSize: {
+                  mobileTablet: 100,
+                  tinyTablet: 50,
+                  bigTablet: 60,
+                  computerSmall: 110,
+                  computerMid: 150,
+                  computerBig: 200,
+                  biggerScreen: 240,
+                  monitor: 250,
+                },
+              }}
+            />
+          }
           description="Record on the go"
           routing="/record"
         />
         <BigButton
-          name={<FileUploadIcon sx={{fontSize: { xs: 90, sm: 100, md: 150, lg: 200 } }} />}
+          name={
+            <FileUploadIcon
+              sx={{
+                fontSize: {
+                  mobileTablet: 100, // mobileTablet css styling changes thus can be larger
+                  tinyTablet: 50,
+                  bigTablet: 60,
+                  computerSmall: 110,
+                  computerMid: 150,
+                  computerBig: 200,
+                  biggerScreen: 240,
+                  monitor: 250,
+                },
+              }}
+            />
+          }
           description="Upload audio"
           routing="/upload"
         />

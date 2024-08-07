@@ -159,7 +159,7 @@ const UploadFile: React.FC<UploadProps> = (props): JSX.Element => {
         }
       }
     }
-  });
+  }, [props.isMobileUAparse]); // only can be checked 
 
   // console.log()
   console.log(

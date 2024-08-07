@@ -8,14 +8,18 @@
   height: fit-content;
 }
 
-.serviceButton {
-  /*button tag in big-button.tsx*/
+.serviceButton,
+.serviceButton a {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.serviceButton {
+  /*button tag in big-button.tsx*/
   margin: 0rem 5rem;
-  padding: 5px 20px;
+  padding: 0px;
   width: 32vw;
   max-width: 30rem;
   aspect-ratio: 4 / 3;
@@ -33,14 +37,26 @@
   border-color: var(--component-foreground);
 }
 
+.serviceButton a {
+  padding: 5px 20px;
+  width: 100%; /*fill the entire serviceButton width*/
+  height: 100%; /*fill the entire serviceButton height*/
+}
+
 .serviceButton p {
   font-size: 1.3rem;
   margin-bottom: 0.5rem;
   text-align: center;
 }
 
-/* Mobile */
-@media (max-width: 600px) {
+/* Mobile or big Tablet*/
+@media (max-width: 900px) {
+  .serviceButton p {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 800px) {
   .serviceGroup {
     transform: translate(0px);
     flex-direction: column;
@@ -49,13 +65,9 @@
   }
 
   .serviceButton {
-    width: 10rem;
+    width: 12rem;
     aspect-ratio: 1 / 1;
     margin: 1rem;
-  }
-
-  .serviceButton p {
-    font-size: 1.1rem;
   }
 }
 
