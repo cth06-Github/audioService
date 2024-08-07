@@ -4,7 +4,7 @@ _Last updated: 8 Aug 2024_<br>
 _Writen by: Chua Tse Hui (Intern) -- only those written before 8 Aug (inclusive)_ 
 
 ## Logging in: Authentication & Authorisation
-Only users who login successfully can access `/home`, `/record` and `/upload` pages. The set of valid username and passwords, which are hard coded for demonstration purposes, are found in [`/frontend/src/app/mock-data.ts`] (../frontend/src/app/mock-data.ts) . 
+Only users who login successfully can access `/home`, `/record` and `/upload` pages. The set of valid username and passwords, which are hard coded for demonstration purposes, are found in [`/frontend/src/app/mock-data.ts`] (../frontend/src/app/mock-data.ts). 
 
 ### Authentication
 **Cookie-based** Authentication is used. This means that if a user is authenticated, a session cookie will be generated. Checking for 
@@ -25,12 +25,12 @@ Considering how the app checks whether users are logged in (paragraph 1), it may
 
 ![JWSInvalid error screenshot](i-JWSInvalid.png)
 
-Indication of poor decryption by having errors being thrown informs the app that users are unauthorized (for more info, see code in [`/frontend/src/middleware.ts`](`/frontend/src/middleware.ts`)), preventing access <br>
+Indication of poor decryption by having errors being thrown informs the app that users are unauthorized (for more info, see code in [`/frontend/src/middleware.ts`](`../frontend/src/middleware.ts`)), preventing access <br>
 
-Creating a session cookie with a value that correspond to a valid JWT has low chance of success especially when the key used for JWT should not be known, thus the risk of hackers accessing the system would be considerably low. **One outstanding issue is that the key/secretKey used is coded directly in [`/frontend/src/app/lib-authen.ts`] (/frontend/src/app/lib-authen.ts) instead of utilising other management strategies to cover the secret key.**  <br>
+Creating a session cookie with a value that correspond to a valid JWT has low chance of success especially when the key used for JWT should not be known, thus the risk of hackers accessing the system would be considerably low. **One outstanding issue is that the key/secretKey used is coded directly in [`/frontend/src/app/lib-authen.ts`] (../frontend/src/app/lib-authen.ts) instead of utilising other management strategies to cover the secret key.**  <br>
 
 ### Authorisation
- [`/frontend/src/middleware.ts`](`/frontend/src/middleware.ts`) contains the logic to show an error status of 401 unauthorised access is users who are not logged in access `/home`, `/record` and `/upload` pages. Logged-in users who attempts to go to `/login` page will be redirected to `/home` page.
+ [`/frontend/src/middleware.ts`](`../frontend/src/middleware.ts`) contains the logic to show an error status of 401 unauthorised access is users who are not logged in access `/home`, `/record` and `/upload` pages. Logged-in users who attempts to go to `/login` page will be redirected to `/home` page.
 
 ### Other libraries?
 (sufficiently) Popular Authentication libraries such as NextAuth and OAuth are possible choices which were not chosen. Admittedly, the reason for that was I did not think of that at that point in time. 
@@ -60,7 +60,7 @@ This functionality has been implemented successfully except for scenario 1 -- pr
 
 
 * **`stopRecording()` will be executed** : if users access `/record` page by **keying in the URL address** in the browser search bar, and then click back.
-    * `stopRecording()` written in the `beforeUnload(e: BeforeUnloadEvent)` function which is written in the `useEffect` hook was executed (Code found in [`frontend/src/app/(sub-pages)/record/record-audio.tsx] (frontend/src/app/(sub-pages)/record/record-audio.tsx)). This `useEffect` hook allows window to keep listening for BeforeUnloadEvent listens for 
+    * `stopRecording()` written in the `beforeUnload(e: BeforeUnloadEvent)` function which is written in the `useEffect` hook was executed (Code found in [`frontend/src/app/(sub-pages)/record/record-audio.tsx] (../frontend/src/app/(sub-pages)/record/record-audio.tsx)). This `useEffect` hook allows window to keep listening for BeforeUnloadEvent listens for 
     * this means that BeforeUnloadEvent was triggered when browser's back buton is pressed, Only if `/record` page was accessed via URL. Hence (next bullet point):   
 * **`stopRecording()` fails** : if users access `/record` page by **clicking the app button** (Record button in `/home` page), and then click browser's back button.
     * given this phenomenon, [BeforeUnloadEvent] (https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event) may not have been fired.
@@ -90,7 +90,7 @@ suggesting that routing in app router cannot listen for events, limiting the pos
 
 Potentially, one can use the [`use-router-with-events`] (https://www.npmjs.com/package/use-router-with-events) package to allow the router in app router to manipulate with events. This method has not been tried, which one may consider. <br>
 
-It was also thought whether it is possible to do this instead: When users enter `/home` page, the code checks whether the microphone is still currently connected and has started recording. If it is still recording, stop the recorder. As microphone access is only coded in `/record` page, for `/home` page to access the microphone, the microphone Ref stored need to exist not just in `/record`, leading to the use of `useContext`. This method was attempted but failed, nonetheless the code for it can be found in [`frontend/src/app/(code-not-used)/microphone.tsx`](frontend/src/app/(code-not-used)/microphone.tsx) under Attempt 2 part.
+It was also thought whether it is possible to do this instead: When users enter `/home` page, the code checks whether the microphone is still currently connected and has started recording. If it is still recording, stop the recorder. As microphone access is only coded in `/record` page, for `/home` page to access the microphone, the microphone Ref stored need to exist not just in `/record`, leading to the use of `useContext`. This method was attempted but failed, nonetheless the code for it can be found in [`frontend/src/app/(code-not-used)/microphone.tsx`](../frontend/src/app/(code-not-used)/microphone.tsx) under Attempt 2 part.
 
 
 ## Uploading at /upload page
@@ -100,7 +100,7 @@ But if the app is accessed via **mobile device**, upon pressing the upload butto
 
 ![2 options given for mobile device](i-2options.png)
 
-Online research suggests that it is not possible to disable the voice recorder option. The behaviour of file upload is due to the `<input type = "file">` tag. The tag in [`frontend/src/app/(sub-pages)/upload/upload-file.tsx`](frontend/src/app/(sub-pages)/upload/upload-file.tsx ) has the `accept` attribute to be `accept="audio/*"`. While it is possible to disable the voice recorder option on mobile devices by changing the `accept` attribute to `accept="application/octet-stream"`, the corresponding file type restricted for user selection will be inaccurate thus this solution was not explored. <br>
+Online research suggests that it is not possible to disable the voice recorder option. The behaviour of file upload is due to the `<input type = "file">` tag. The tag in [`frontend/src/app/(sub-pages)/upload/upload-file.tsx`](../frontend/src/app/(sub-pages)/upload/upload-file.tsx ) has the `accept` attribute to be `accept="audio/*"`. While it is possible to disable the voice recorder option on mobile devices by changing the `accept` attribute to `accept="application/octet-stream"`, the corresponding file type restricted for user selection will be inaccurate thus this solution was not explored. <br>
 
 Given that voice recorder and file picker options were given, it is necesary to explain the potential difference between `/record` and `/upload` pages. For `/record` page, it is believed that as recording take place, the already collected audio data will be sent to the backend for transcription without having to wait for all audio data to be collectedd (i.e. recording has stopped) before it can be sent to the backend. This contrasts `/upload` page voice recorder option which users will have to record for the entire duration, and have the entire audio file to be selected before it is sent to the backend. <br>
 
@@ -109,9 +109,9 @@ Given that desktop / computer devices show only the file picker option while the
 ![Different designs for different device type](i-MobileDesktop.png)
 
 
-To detect whether the device is mobile or computer, [`UAParser.js`] package (https://github.com/faisalman/ua-parser-js) is utilised which helps to elicit userAgent information in a more readable and clean manner as opposed to seiving out information from executing `navigator.userAgent` directly. The logic for detecting mobile or desktop through this library is written in [`frontend/src/app/lib-device.ts`](frontend/src/app/lib-device.ts). <br>
+To detect whether the device is mobile or computer, [`UAParser.js`] package (https://github.com/faisalman/ua-parser-js) is utilised which helps to elicit userAgent information in a more readable and clean manner as opposed to seiving out information from executing `navigator.userAgent` directly. The logic for detecting mobile or desktop through this library is written in [`frontend/src/app/lib-device.ts`](../frontend/src/app/lib-device.ts). <br>
 
-However, users who access the app on browsers on mobile phones, yet with the desktop view activated will not be detected that the browsers are on mobile phones. To mitigate this, `useEffect` hook in [`frontend/src/app/(sub-pages)/upload/upload-file.tsx`](frontend/src/app/(sub-pages)/upload/upload-file.tsx) was written to further check whether the browser is on a touchscreen. Details as shown:
+However, users who access the app on browsers on mobile phones, yet with the desktop view activated will not be detected that the browsers are on mobile phones. To mitigate this, `useEffect` hook in [`frontend/src/app/(sub-pages)/upload/upload-file.tsx`](../frontend/src/app/(sub-pages)/upload/upload-file.tsx) was written to further check whether the browser is on a touchscreen. Details as shown:
 
 ![UAParser.js & useEffect Table of Device type detection](i-UAParser-Table.png)
 
