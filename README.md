@@ -10,7 +10,7 @@ Polyglot allows users to obtain transcribed text from speech or audio by:
 *  **Recording audio** live which will be sent to the backend service for transcription real-time [audio streaming]. Transcribed Text will be displayed real-time.
 *  **Uploading audio** files (existing files or created in the app itself, depending if browser is on mobile or desktop) which will be sent to the backend service for transcription. Transcribed Text will be displayed after processing
 <br>
-As the backend service is not yet set-up, simulation functions are created to simulate the functionality of the web application.
+As the backend service is not yet set-up, simulation functions are created to demonstrate/simulate the functionality of the web application.
 <br>
 
 ## User flow
@@ -44,7 +44,7 @@ Running the web app as a docker container should be possible as well. Run the do
 
 
 ## Technical Details & Outstanding Issues
-Details and explanation about the concept and logic behind certain code, including any outstanding issues identified but not fully resolved are detailed in **`Documentation_Final_8Aug.docx` which can be found in the root of this repository**. Information includes: 
+Details and explanation about the concept and logic behind certain code, including any outstanding issues identified but not fully resolved are detailed in **`Technical-Documentation-8Aug.md` which is located at the root of this repository**. Information includes: 
 1.	Authentication & Authorisation (including the use of  `jose` package and `middleware.ts`)
 2.	Unable to detect when users clicked on the back button 
 3.	Limitations about detecting whether devices are mobile or desktop (and why it may be important)
@@ -54,6 +54,6 @@ Details and explanation about the concept and logic behind certain code, includi
 ## Useful link of packages
 * Material UI: https://mui.com/material-ui/getting-started/ 
 * jose: https://www.npmjs.com/package/jose 
-
+* UAparser: `<insert link>`
 --- 
 _Last updated: 8 Aug 2024_

@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 // Generating key for JWT, code to be put elsewhere in future
 const secretKey = "secret";
 const key = new TextEncoder().encode(secretKey); // returns Uint8Array object
+// key must be in Uint8Array | KeyObject type to be used for JWT generation
 
 // Authentication Status code
 const INVALID = 0;
