@@ -17,7 +17,11 @@ The generation of JWT is assisted by the jose package used. Links to the informa
 
 JWT based on the username information is generated through `SignJWT(payload)` constructor. The hashing algorithm of the token can be defined as well, which HS256 algorithm is chosen herein. Both JWT token and the session cookie are set to be valid only for 24h. This means that **users will only be considered logged in for at most 24h OR when the user clicks logout, whichever is earlier**. <br> 
 
-Considering how the app checks whether users are logged in (paragraph 1), it may be said that users who wish to hack the system could falsify a session cookie by creating and storing a session cookie via the inspect element tool. However, before pages requiring authorization are loaded, the value stored in the session cookie will be attempted to be decrypted. If the values are not in the format of a valid JWT, an Error (specifically, JWT Invalid error) **if got time insert picture** will be thrown and be caught (via try-catch block). Indication of poor decryption by having errors being thrown informs the app that users are unauthorized (for more info, see code in `/frontend/src/middleware.ts`), preventing access <br>
+Considering how the app checks whether users are logged in (paragraph 1), it may be said that users who wish to hack the system could falsify a session cookie by creating and storing a session cookie via the inspect element tool. However, before pages requiring authorization are loaded, the value stored in the session cookie will be attempted to be decrypted. If the value is not in the format of a valid JWT, a JWS Invalid error is thrown and caught via try-catch block. 
+
+![alt text](image.png)
+
+Indication of poor decryption by having errors being thrown informs the app that users are unauthorized (for more info, see code in `/frontend/src/middleware.ts`), preventing access <br>
 
 Creating a session cookie with a value that correspond to a valid JWT is has low chance of success especially when the key used for JWT should not be known, thus the risk of hackers accessing the system would be considerably low. **One outstanding issue is that the key/secretKey used is coded directly in `/frontend/src/app/lib-authen.ts` instead of utilising other management strategies**  <br>
 

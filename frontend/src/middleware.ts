@@ -17,11 +17,11 @@ export async function middleware(request: NextRequest) {
       const session = await getSession();
       if (!session) {
         // session cookies with no value
-        throw new Error(); // goes to catch
+        throw new Error("session cookies with empty value"); // goes to catch
       }
     } catch {
-      // should be JWT Invalid error.
       // detect session cookies with invalid value
+      // cookies with invalid value will result in JWS Invalid error: Invalid Compact JWS error
       return new Response("Error 401: Unauthorized Access", { status: 401 });
     }
   }
