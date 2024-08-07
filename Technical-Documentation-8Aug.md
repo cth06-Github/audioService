@@ -37,7 +37,7 @@ Creating a session cookie with a value that correspond to a valid JWT has low ch
 In order for the recorder function to work on **mobile** browsers, the app must be hosted in secure context, e.g. HTTPS. `navigator.mediaDevices.getUserMedia() is undefined` error message will occur if done otherwise. <br>
 
 ### Back Button issue
-<table>
+
 One of the design features of the `/record` page is:<br>
 At `/record` page, if users 
 1. click on the browser’s back/forward button, OR
@@ -47,8 +47,9 @@ while actively recording on the /record page (i.e. `recordingStatus !== INACTIVE
 
 dialog will be shown with 2 buttons (for e.g., “stay on page” and “ok”) to either remain on page or leave/reload the page. 
 
-If users agree to leave the page, `stopRecording()` will be executed so that the microphone connected will stop recording. This is to prevent a case where the microphone continues to record while users are at other pages (`/home`, `/upload`, `/logout`) | 
-</table>
+If users agree to leave the page, `stopRecording()` will be executed so that the microphone connected will stop recording. This is to prevent a case where the microphone continues to record while users are at other pages (`/home`, `/upload`, `/logout`) 
+
+| cell | 
 
 Users are supposed to stay on the recording page in order to record. If users are to leave the page, the recording will be terminated. However, if users press **the back button** on their browsers, the current codebase is unable to detect it and terminate the recording. This is a "bug" that require looking into. <br>
 
