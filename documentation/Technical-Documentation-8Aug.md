@@ -1,10 +1,10 @@
 # Technical Documentation (Important ones only)
-Please read [`README.md`] (/README.md)  before viewing this. <br>
+Please read [`README.md`] (../README.md) before viewing this. <br>
 _Last updated: 8 Aug 2024_<br>
 _Writen by: Chua Tse Hui (Intern) -- only those written before 8 Aug (inclusive)_ 
 
 ## Logging in: Authentication & Authorisation
-Only users who login successfully can access `/home`, `/record` and `/upload` pages. The set of valid username and passwords, which are hard coded for demonstration purposes, are found in [`/frontend/src/app/mock-data.ts`] (/frontend/src/app/mock-data.ts) . 
+Only users who login successfully can access `/home`, `/record` and `/upload` pages. The set of valid username and passwords, which are hard coded for demonstration purposes, are found in [`/frontend/src/app/mock-data.ts`] (../frontend/src/app/mock-data.ts) . 
 
 ### Authentication
 **Cookie-based** Authentication is used. This means that if a user is authenticated, a session cookie will be generated. Checking for 
@@ -12,7 +12,7 @@ Only users who login successfully can access `/home`, `/record` and `/upload` pa
 * (2) successfully decrypted 
 indicates whether the users of the app are logged in. <br>
 
-Code relating to authentication logic are mainly found in [`/frontend/src/app/lib-authen.ts`] (/frontend/src/app/lib-authen.ts). After user’s login credentials are verified, a JSON Web Token (JWT) containing the username information is generated, and assigned to a **session cookie**. <br>  
+Code relating to authentication logic are mainly found in [`/frontend/src/app/lib-authen.ts`] (../frontend/src/app/lib-authen.ts). After user’s login credentials are verified, a JSON Web Token (JWT) containing the username information is generated, and assigned to a **session cookie**. <br>  
 
 The generation of JWT is assisted by the jose package used. Links to the information about the package & functions used in the code:
 * About jose: https://github.com/panva/jose 
