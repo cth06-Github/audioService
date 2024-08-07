@@ -33,7 +33,7 @@ In the first few lines of `/frontend/package.json`file,
 ```
 dev script defined in here is `next dev --experimental-https`. This means the app is hosted on localhost via HTTP**S**, using self-signed certificate which will be generated locally when run.
 
-**It is important to host the app on HTTPS (secure mode) if one wants to test the app on <u>Mobile</u> browser.** Without HTTPS, two potential issues arise when on **Mobile** browser:
+**It is important to host the app on HTTPS (secure mode) if one wants to test the app on Mobile browser.** Without HTTPS, two potential issues arise when on **Mobile** browser:
 *  when users go to `/record` page (and maybe `/upload` page) from `/home` page by clicking the buttons in the app, session cookie set from authentication would strangely disappear, resulting in unauthorized access being detected
 * if the above did not happen and went to `/record` page, upon pressing the record button `navigator.mediaDevices.getUserMedia() is undefined` error message will occur. This function can only be used in secure context such as HTTPS
 
