@@ -3,8 +3,8 @@ _Last updated: 8 Aug 2024_
 ---
 
 ## Overview
-Created with React framework **NextJS**, using **Typescript**. **App Router** is used for routing. <br>
-**Material UI** library is utilised for the icons and design of various components used. <br>
+Created with React framework **NextJS**, using **TypeScript**. **App Router** is used for routing. <br>
+[**Material UI**] (https://mui.com/material-ui/getting-started/) library is utilised for the icons and design of various components used. <br>
 **jose** is utilised as part of the authentication logic by supporting the creation and verification of JSON Web Tokens (JWT). <br>
 MediaRecorder interface of the MediaStream Recording API is used to access device/browsers's microphone and enable recording functionality.<br>
 
@@ -50,8 +50,8 @@ Running the web app as a docker container should be possible as well. Run the do
 
 
 ## Technical Details & Outstanding Issues
-Details and explanation about the concept and logic behind certain code, including any outstanding issues identified but not fully resolved are detailed in **[`documentation/Technical-Documentation-8Aug.md`](documentation/Technical-Documentation-8Aug.md) which is located at the root of this repository**. Information includes: 
-1.	Authentication & Authorisation (including the use of [`jose`](https://www.npmjs.com/package/jose) package and `middleware.ts`(frontend/src/middleware.ts))
+Details and explanation about the concept and logic behind certain code, including any outstanding issues identified but not fully resolved are detailed in **[`documentation/Technical-Documentation-8Aug.md`](documentation/Technical-Documentation-8Aug.md)**. Information includes: 
+1.	Authentication & Authorisation (including the use of [`jose`](https://www.npmjs.com/package/jose) package and [`middleware.ts`](frontend/src/middleware.ts))
 2.	Unable to detect when users clicked on the back button 
 3.	Limitations about detecting whether devices are mobile or desktop (and why it may be important)
 
