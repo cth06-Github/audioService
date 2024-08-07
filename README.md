@@ -20,7 +20,7 @@ Hence, the risk of hackers accessing the system should be low. However, it’s s
 ## Notes on Recording
 MediaRecorder API is used to connect to the device’s microphone. This recording is unable to record system audio (i.e. audio played from the devices itself), it only records sounds from the surroundings.
 
-Users are supposed to stay on the recording page in order to record. If users are to leave the page, the recording will be terminated. However, if users press <b>the back button</b> on their browsers, the current codebase is unable to detect it and terminate the recording. This is a "bug" that require looking into.
+Users are supposed to stay on the recording page in order to record. If users are to leave the page, the recording will be terminated. However, if users press **the back button** on their browsers, the current codebase is unable to detect it and terminate the recording. This is a "bug" that require looking into.
 
 ## Issues && Areas for Improvement
 ### Summary
@@ -34,3 +34,7 @@ Users are supposed to stay on the recording page in order to record. If users ar
 ## Other remarks
 <ul>Backend service is not set-up yet. Thus some functions are for simulation purposes</ul>
 ^hmm I should write in project description.
+
+---
+***
+_Last updated: 7 Aug 2024_

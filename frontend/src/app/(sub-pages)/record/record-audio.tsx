@@ -233,7 +233,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     mediaRecorder.current.stop(); // stop recording
     setRecordingStatus(INACTIVE);
     stopTiming();
-  },[]);
+  }, []);
 
   const saveAudio = useCallback(() => {
     if (!mediaRecorder.current) {
@@ -251,7 +251,7 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
   const handlePressStop = useCallback(() => {
     stopRecording();
     saveAudio();
-  }, [stopRecording, saveAudio])
+  }, [stopRecording, saveAudio]);
 
   // Text-related function
   const handleDeleteTranscript = () => {
@@ -323,12 +323,12 @@ const AudioRecorder: React.FC<AudioProps> = (props): JSX.Element => {
     };
   });
 
-    // console.log
-    if (mediaRecorder.current) {
-      console.log(
-        "mediaRecorder recording state: " + mediaRecorder.current.state
-      );
-    }
+  // console.log
+  if (mediaRecorder.current) {
+    console.log(
+      "mediaRecorder recording state: " + mediaRecorder.current.state
+    );
+  }
   return (
     <>
       <Header
