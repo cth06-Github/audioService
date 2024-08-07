@@ -1,6 +1,6 @@
 # Technical Documentation (Important ones only)
-Please read `README.md` at the root of this repository before viewing this. This technical documentatin
-_Last updated: 8 Aug 2024_
+Please read `README.md` at the root of this repository before viewing this. <br>
+_Last updated: 8 Aug 2024_<br>
 _Writen by: Chua Tse Hui (Intern) -- only those written before 8 Aug (inclusive)_ 
 
 ## Logging in: Authentication & Authorisation
@@ -20,7 +20,7 @@ JWT based on the username information is generated through `SignJWT(payload)` co
 
 Considering how the app checks whether users are logged in (paragraph 1), it may be said that users who wish to hack the system could falsify a session cookie by creating and storing a session cookie via the inspect element tool. However, before pages requiring authorization are loaded, the value stored in the session cookie will be attempted to be decrypted. If the value is not in the format of a valid JWT, a JWS Invalid error is thrown and caught via try-catch block. 
 
-![alt text](image.png)
+![JWSInvalid error screenshot](i-JWSInvalid.png)
 
 Indication of poor decryption by having errors being thrown informs the app that users are unauthorized (for more info, see code in `/frontend/src/middleware.ts`), preventing access <br>
 
@@ -95,7 +95,7 @@ It was also thought whether it is possible to do this instead: When users enter 
 If the web app is accessed via computer / desktop, upon pressing the upload button, only the file picker is shown which users can choose audio files for uploading. <br>
 But if the app is accessed via **mobile device**, upon pressing the upload button, **BOTH the file picker and voice recorder options** are shown (see picture below) which users can choose to either select an existing audio file via the file picker for uploading or to create an audio file on the spot through voice recording. The voice recorder option is shown only if users enable permission settings for the web app to access microphone / voice recorder option  <br>
 
-![alt text](image-3.png)
+![2 options given for mobile device](i-2options.png)
 
 Online research suggests that it is not possible to disable the voice recorder option. The behaviour of file upload is due to the `<input type = "file">` tag. The tag in `/frontend/src/app/(sub-pages)/upload/upload-file.tsx` has the `accept` attribute to be `accept="audio/*"`. While it is possible to disable the voice recorder option on mobile devices by changing the `accept` attribute to `accept="application/octet-stream"` , the corresponding file type restricted for user selection will be inaccurate thus this solution was not explored. <br>
 
@@ -103,17 +103,17 @@ Given that voice recorder and file picker options were given, it is necesary to 
 
 Given that desktop / computer devices show only the file picker option while the mobile device shows both option, in terms of user design interface, it is necessary that the frontend design is to be slightly different.
 
-![alt text](image-4.png)
+![Different designs for different device type](i-MobileDesktop.png)
 
 
 To detect whether the device is mobile or computer, `UAParser.js` package (https://github.com/faisalman/ua-parser-js) is utilised which helps to elicit userAgent information in a more readable and clean manner as opposed to seiving out information from executing `navigator.userAgent` directly. The logic for detecting mobile or desktop through this library is written in `/frontend/src/app/lib-device.ts`. <br>
 
 However, users who access the app on browsers on mobile phones, yet with the desktop view activated will not be detected that the browsers are on mobile phones. To mitigate this, `useEffect` hook in `/frontend/src/app/(sub-pages)/upload/upload-file.tsx` was written to further check whether the browser is on a touchscreen. Details as shown:
 
-![alt text](image-1.png)
+![UAParser.js & useEffect Table of Device type detection](i-UAParser-Table.png)
 
 Flowchart: How `UAParser.js` and the `useEffect` hook work together
-![alt text](image-2.png)
+![UAParser.js & useEffect Flowchart](i-UAParser-Flowchart.png)
 
 
 Browser on Desktop (touchscreen, landscape) should be detected correctly as the UAparser should be able to detect the userAgent as something from Desktop…at least not mobile (e.g. Windows).
@@ -141,8 +141,8 @@ The descriptions below these headings, if applicable, are wrapped in p tags.
 <br>
 
 h2: sub-heading. Examples of sub-headings used in the pages are:
-* “Transcribed Text” in /record && /upload page
-* “Login” in /login page
-* “Select files” in /upload page
+* “Transcribed Text” in `/record` && `/upload` page
+* “Login” in `/login` page
+* “Select files” in `/upload` page
 
 h3: used for the account username shown in the side menu (only displayed when the screen max width is < 800px)

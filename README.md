@@ -1,4 +1,6 @@
 # Polyglot Web Application (Frontend)
+_Last updated: 8 Aug 2024_
+---
 
 ## Overview
 Created with React framework **NextJS**, using **Typescript**. **App Router** is used for routing. <br>
@@ -23,7 +25,7 @@ cd frontend
 npm install    # run only if the relevant node_modules are not installed
 npm run dev
 ```
-In the first few lines of `/frontend/package.json`file,   
+In the first few lines of [`frontend/package.json`](frontend/package.json) file,   
 
 ```
 "scripts": { 
@@ -37,7 +39,7 @@ dev script defined in here is `next dev --experimental-https`. This means the ap
 *  when users go to `/record` page (and maybe `/upload` page) from `/home` page by clicking the buttons in the app, session cookie set from authentication would strangely disappear, resulting in unauthorized access being detected
 * if the above did not happen and went to `/record` page, upon pressing the record button `navigator.mediaDevices.getUserMedia() is undefined` error message will occur. This function can only be used in secure context such as HTTPS
 
-However, if one wishes to still host the web app on HTTP, please edit the code in `/frontend/package.json`to
+However, if one wishes to still host the web app on HTTP, please edit the code in [`frontend/package.json`](frontend/package.json) to
 ```
 "scripts": { 
     "dev": "next dev",
@@ -48,16 +50,13 @@ Running the web app as a docker container should be possible as well. Run the do
 
 
 ## Technical Details & Outstanding Issues
-Details and explanation about the concept and logic behind certain code, including any outstanding issues identified but not fully resolved are detailed in **`Technical-Documentation-8Aug.md` which is located at the root of this repository**. Information includes: 
-1.	Authentication & Authorisation (including the use of  `jose` package and `middleware.ts`)
+Details and explanation about the concept and logic behind certain code, including any outstanding issues identified but not fully resolved are detailed in **[`documentation/Technical-Documentation-8Aug.md`](documentation/Technical-Documentation-8Aug.md) which is located at the root of this repository**. Information includes: 
+1.	Authentication & Authorisation (including the use of [`jose`](https://www.npmjs.com/package/jose) package and `middleware.ts`(frontend/src/middleware.ts))
 2.	Unable to detect when users clicked on the back button 
 3.	Limitations about detecting whether devices are mobile or desktop (and why it may be important)
-
-`/frontend/src/app/(code-not-used)/microphone.tsx`...
 
 ## Useful link of packages
 * Material UI: https://mui.com/material-ui/getting-started/ 
 * jose: https://www.npmjs.com/package/jose 
-* UAParser.js: https://github.com/faisalman/ua-parser-js
---- 
-_Last updated: 8 Aug 2024_
+* UAParser.js: https://github.com/faisalman/ua-parser-js 
+
