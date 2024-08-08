@@ -10,8 +10,7 @@ MediaRecorder interface of the MediaStream Recording API is used to access devic
 
 Polyglot allows users to obtain transcribed text from speech or audio by:
 *  **Recording audio** live which will be sent to the backend service for transcription real-time [audio streaming]. Transcribed Text will be displayed real-time.
-*  **Uploading audio** files (existing files or created in the app itself, depending if browser is on mobile or desktop) which will be sent to the backend service for transcription. Transcribed Text will be displayed after processing
-<br>
+*  **Uploading audio** files (existing files or created in the app itself, depending if browser is on mobile or desktop) which will be sent to the backend service for transcription. Transcribed Text will be displayed after processing <br>
 As the backend service is not yet set-up, simulation functions are created to demonstrate/simulate the functionality of the web application.
 <br>
 
