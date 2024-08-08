@@ -1,5 +1,5 @@
 # Technical Documentation (Important ones only)
-Please read [`README.md`] (../README.md) before viewing this. <br>
+Please read [`README.md`](../README.md) before viewing this. <br>
 _Last updated: 8 Aug 2024_<br>
 _Writen by: Chua Tse Hui (Intern) -- only those written before 8 Aug (inclusive)_ 
 
@@ -152,5 +152,5 @@ h2: sub-heading. Examples of sub-headings used in the pages are:
 
 h3: used for the account username shown in the side menu (only displayed when the screen max width is < 800px) 
 
-## Responsive Design
+### Responsive Design
 No additional library was used to specifically enable responsive design. Plain CSS @media queries were used.
