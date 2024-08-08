@@ -26,7 +26,7 @@ Considering how the app checks whether users are logged in (paragraph 1 of Authe
 
 ![JWSInvalid error screenshot](i-JWSInvalid.png)
 
-Indication of poor decryption by having errors being thrown and handled informs the app that users are unauthorized (for more info, see code in [`/frontend/src/middleware.ts`](`../frontend/src/middleware.ts`)), preventing access. <br>
+Indication of poor decryption by having errors being thrown and handled informs the app that users are unauthorized (for more info, see code in [`frontend/src/middleware.ts`](`../frontend/src/middleware.ts`)), preventing access. <br>
 
 Creating a session cookie with a value that correspond to a valid JWT has low chance of success especially when the key used for JWT should not be known, thus the risk of hackers accessing the system would be considerably low. **One outstanding issue is that the key/secretKey used is coded directly in [`frontend/src/app/lib-authen.ts`](../frontend/src/app/lib-authen.ts) instead of utilising other management strategies to cover the secret key.**  <br>
 
@@ -112,13 +112,13 @@ Given that desktop / computer devices show only the file picker option while mob
 ![Different designs for different device type](i-MobileDesktop.png)
 
 
-To detect whether the device is mobile or computer, [`UAParser.js`package](https://github.com/faisalman/ua-parser-js) is utilised which helps to elicit userAgent information in a more readable and clean manner as opposed to seiving out information from executing `navigator.userAgent` directly. The code logic for detecting mobile or desktop through this library is written in [`frontend/src/app/lib-device.ts`](../frontend/src/app/lib-device.ts). <br>
+To detect whether the device is mobile or computer, [`UAParser.js`](https://github.com/faisalman/ua-parser-js) package is utilised which helps to elicit userAgent information in a more readable and clean manner as opposed to seiving out information from executing `navigator.userAgent` directly. The code logic for detecting mobile or desktop through this library is written in [`frontend/src/app/lib-device.ts`](../frontend/src/app/lib-device.ts). <br>
 
 However, users who access the app on browsers on mobile phones but with the desktop view activated will not be detected that they are accessing the app on a browser on mobile device. To mitigate this, `useEffect` hook in [`frontend/src/app/(sub-pages)/upload/upload-file.tsx`](../frontend/src/app/(sub-pages)/upload/upload-file.tsx) was written to further check whether the browser is on a touchscreen. Some schematic details are shown on how they might work together:
 
 ![UAParser.js & useEffect Table of Device type detection](i-UAParser-Table.png)
 
-Flowchart: How `UAParser.js` and the `useEffect` hook work together
+**Flowchart: How `UAParser.js` and the `useEffect` hook work together**
 ![UAParser.js & useEffect Flowchart](i-UAParser-Flowchart.png)
 
 
@@ -136,7 +136,7 @@ Based on the logic coded in the `useEffect` hook, browser on mobile with desktop
 
 While `window.matchMedia(query)` could be used to check for the screen size and thus determine if it is mobile or desktop, the limitation is that the screen dimension registered for mobile with desktop view will be changed to model after desktop view, thus the screen dimensions do exceed mobile typical screen dimensions. Such a solution will not be viable.<br>
 
-All these logic and inference as to which browsers will be detected correctly may only be reliable claims only if we consider desktop / computer vs mobile phones, with no consideration for medium sized devices like tablets and iPads. It is not tested how `UAParser.js` detect browsers on other devices that are not considered mobile (which tend to be of smaller size than tablets/iPads).
+All these logic and inference as to which browsers will be detected correctly may only be reliable claims only if we consider desktop / computer vs mobile phones, with no consideration for medium sized devices like tablets and iPads. It is not tested how `UAParser.js` detect browsers on other devices that are not considered mobile (mobile tend to be considered of smaller size than tablets/iPads).
 
 
 ## Miscellaneous
