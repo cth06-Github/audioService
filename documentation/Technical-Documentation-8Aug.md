@@ -4,7 +4,7 @@ _Last updated: 8 Aug 2024_<br>
 _Writen by: Chua Tse Hui (Intern) -- only those written before 8 Aug (inclusive)_ 
 
 ## Logging in: Authentication & Authorisation
-Only users who login successfully can access `/home`, `/record` and `/upload` pages. The set of valid username and passwords, which are hard coded for demonstration purposes, are found in [`/frontend/src/app/mock-data.ts`] (../frontend/src/app/mock-data.ts). 
+Only users who login successfully can access `/home`, `/record` and `/upload` pages. The set of valid username and passwords, which are hard coded for demonstration purposes, are found in [`/frontend/src/app/mock-data.ts`](../frontend/src/app/mock-data.ts). 
 
 ### Authentication
 **Cookie-based** Authentication is used. This means that if a user is authenticated, a session cookie will be generated. Checking for 
@@ -12,7 +12,7 @@ Only users who login successfully can access `/home`, `/record` and `/upload` pa
 * (2) successfully decrypted 
 indicates whether the users of the app are logged in. <br>
 
-Code relating to authentication logic are mainly found in [`/frontend/src/app/lib-authen.ts`] (../frontend/src/app/lib-authen.ts). After user’s login credentials are verified, a JSON Web Token (JWT) containing the username information is generated, and assigned to a **session cookie**. <br>  
+Code relating to authentication logic are mainly found in [`/frontend/src/app/lib-authen.ts`](../frontend/src/app/lib-authen.ts). After user’s login credentials are verified, a JSON Web Token (JWT) containing the username information is generated, and assigned to a **session cookie**. <br>  
 
 The generation of JWT is assisted by the jose package used. Links to the information about the package & functions used in the code:
 * About jose: https://github.com/panva/jose 
@@ -27,10 +27,10 @@ Considering how the app checks whether users are logged in (paragraph 1), it may
 
 Indication of poor decryption by having errors being thrown informs the app that users are unauthorized (for more info, see code in [`/frontend/src/middleware.ts`](`../frontend/src/middleware.ts`)), preventing access <br>
 
-Creating a session cookie with a value that correspond to a valid JWT has low chance of success especially when the key used for JWT should not be known, thus the risk of hackers accessing the system would be considerably low. **One outstanding issue is that the key/secretKey used is coded directly in [`/frontend/src/app/lib-authen.ts`] (../frontend/src/app/lib-authen.ts) instead of utilising other management strategies to cover the secret key.**  <br>
+Creating a session cookie with a value that correspond to a valid JWT has low chance of success especially when the key used for JWT should not be known, thus the risk of hackers accessing the system would be considerably low. **One outstanding issue is that the key/secretKey used is coded directly in [`/frontend/src/app/lib-authen.ts`](../frontend/src/app/lib-authen.ts) instead of utilising other management strategies to cover the secret key.**  <br>
 
 ### Authorisation
- [`/frontend/src/middleware.ts`](`../frontend/src/middleware.ts`) contains the logic to show an error status of 401 unauthorised access is users who are not logged in access `/home`, `/record` and `/upload` pages. Logged-in users who attempts to go to `/login` page will be redirected to `/home` page.
+ [`/frontend/src/middleware.ts`](../frontend/src/middleware.ts) contains the logic to show an error status of 401 unauthorised access is users who are not logged in access `/home`, `/record` and `/upload` pages. Logged-in users who attempts to go to `/login` page will be redirected to `/home` page.
 
 ### Other libraries?
 (sufficiently) Popular Authentication libraries such as NextAuth and OAuth are possible choices which were not chosen. Admittedly, the reason for that was I did not think of that at that point in time. 
@@ -60,10 +60,10 @@ This functionality has been implemented successfully except for scenario 1 -- pr
 
 
 * **`stopRecording()` will be executed** : if users access `/record` page by **keying in the URL address** in the browser search bar, and then click back.
-    * `stopRecording()` written in the `beforeUnload(e: BeforeUnloadEvent)` function which is written in the `useEffect` hook was executed (Code found in [`frontend/src/app/(sub-pages)/record/record-audio.tsx] (../frontend/src/app/(sub-pages)/record/record-audio.tsx)). This `useEffect` hook allows window to keep listening for BeforeUnloadEvent listens for 
+    * `stopRecording()` written in the `beforeUnload(e: BeforeUnloadEvent)` function which is written in the `useEffect` hook was executed (Code found in [`frontend/src/app/(sub-pages)/record/record-audio.tsx](../frontend/src/app/(sub-pages)/record/record-audio.tsx)). This `useEffect` hook allows window to keep listening for BeforeUnloadEvent listens for 
     * this means that BeforeUnloadEvent was triggered when browser's back buton is pressed, Only if `/record` page was accessed via URL. Hence (next bullet point):   
 * **`stopRecording()` fails** : if users access `/record` page by **clicking the app button** (Record button in `/home` page), and then click browser's back button.
-    * given this phenomenon, [BeforeUnloadEvent] (https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event) may not have been fired.
+    * given this phenomenon, [BeforeUnloadEvent](https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event) may not have been fired.
 
 
 A possible reason is how navigation works in NextJS -- it's client-side navigation, but it is:
@@ -88,7 +88,7 @@ suggesting that routing in app router cannot listen for events, limiting the pos
 * NextJS seems to suggest that page router is meant to be of the past and that people should use app router. (however, online says that page router are still getting new updates). Page router still exists to help with older apps using it. Thus in terms of looking ahead, it may be better to stick with app router
 * it's possible to use both page and app router. But utilising both routing methods does not sound seamleass: https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#7-routing-between-pages-and-app
 
-Potentially, one can use the [`use-router-with-events`] (https://www.npmjs.com/package/use-router-with-events) package to allow the router in app router to manipulate with events. This method has not been tried, which one may consider. <br>
+Potentially, one can use the [`use-router-with-events`](https://www.npmjs.com/package/use-router-with-events) package to allow the router in app router to manipulate with events. This method has not been tried, which one may consider. <br>
 
 It was also thought whether it is possible to do this instead: When users enter `/home` page, the code checks whether the microphone is still currently connected and has started recording. If it is still recording, stop the recorder. As microphone access is only coded in `/record` page, for `/home` page to access the microphone, the microphone Ref stored need to exist not just in `/record`, leading to the use of `useContext`. This method was attempted but failed, nonetheless the code for it can be found in [`frontend/src/app/(code-not-used)/microphone.tsx`](../frontend/src/app/(code-not-used)/microphone.tsx) under Attempt 2 part.
 
@@ -100,7 +100,7 @@ But if the app is accessed via **mobile device**, upon pressing the upload butto
 
 ![2 options given for mobile device](i-2options.png)
 
-Online research suggests that it is not possible to disable the voice recorder option. The behaviour of file upload is due to the `<input type = "file">` tag. The tag in [`frontend/src/app/(sub-pages)/upload/upload-file.tsx`](../frontend/src/app/(sub-pages)/upload/upload-file.tsx ) has the `accept` attribute to be `accept="audio/*"`. While it is possible to disable the voice recorder option on mobile devices by changing the `accept` attribute to `accept="application/octet-stream"`, the corresponding file type restricted for user selection will be inaccurate thus this solution was not explored. <br>
+Online research suggests that it is not possible to disable the voice recorder option. The behaviour of file upload is due to the `<input type = "file">` tag. The tag in [`frontend/src/app/(sub-pages)/upload/upload-file.tsx`](../frontend/src/app/(sub-pages)/upload/upload-file.tsx) has the `accept` attribute to be `accept="audio/*"`. While it is possible to disable the voice recorder option on mobile devices by changing the `accept` attribute to `accept="application/octet-stream"`, the corresponding file type restricted for user selection will be inaccurate thus this solution was not explored. <br>
 
 Given that voice recorder and file picker options were given, it is necesary to explain the potential difference between `/record` and `/upload` pages. For `/record` page, it is believed that as recording take place, the already collected audio data will be sent to the backend for transcription without having to wait for all audio data to be collectedd (i.e. recording has stopped) before it can be sent to the backend. This contrasts `/upload` page voice recorder option which users will have to record for the entire duration, and have the entire audio file to be selected before it is sent to the backend. <br>
 
@@ -150,4 +150,7 @@ h2: sub-heading. Examples of sub-headings used in the pages are:
 * “Login” in `/login` page
 * “Select files” in `/upload` page
 
-h3: used for the account username shown in the side menu (only displayed when the screen max width is < 800px)
+h3: used for the account username shown in the side menu (only displayed when the screen max width is < 800px) 
+
+## Responsive Design
+No additional library was used to specifically enable responsive design. Plain CSS @media queries were used.
