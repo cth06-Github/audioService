@@ -4,15 +4,16 @@ _Last updated: 8 Aug 2024_<br>
 _Writen by: Chua Tse Hui (Intern) -- only those written before 8 Aug (inclusive)_ 
 
 ## Logging in: Authentication & Authorisation
-Only users who login successfully can access `/home`, `/record` and `/upload` pages. The set of valid username and passwords, which are hard coded for demonstration purposes, are found in [`/frontend/src/app/mock-data.ts`](../frontend/src/app/mock-data.ts). 
+Only users who login successfully can access `/home`, `/record` and `/upload` pages. The set of valid username and passwords, which are hard coded for demonstration purposes, are found in [`frontend/src/app/mock-data.ts`](../frontend/src/app/mock-data.ts). 
 
 ### Authentication
 **Cookie-based** Authentication is used. This means that if a user is authenticated, a session cookie will be generated. Checking for 
 * (1) the presence of a session cookie and whether it can be 
-* (2) successfully decrypted <br>
+* (2) successfully decrypted
+
 indicates whether the users of the app are logged in. <br>
 
-Code relating to authentication logic are mainly found in [`/frontend/src/app/lib-authen.ts`](../frontend/src/app/lib-authen.ts). After user’s login credentials are verified, a JSON Web Token (JWT) containing the username information is generated, and assigned to a **session cookie**. <br>  
+Code relating to authentication logic are mainly found in [`frontend/src/app/lib-authen.ts`](../frontend/src/app/lib-authen.ts). After user’s login credentials are verified, a JSON Web Token (JWT) containing the username information is generated, and assigned to a **session cookie**. <br>  
 
 The generation of JWT is assisted by the jose package used. Links to the information about the package & functions used in the code:
 * About jose: https://github.com/panva/jose 
@@ -27,10 +28,10 @@ Considering how the app checks whether users are logged in (paragraph 1 of Authe
 
 Indication of poor decryption by having errors being thrown and handled informs the app that users are unauthorized (for more info, see code in [`/frontend/src/middleware.ts`](`../frontend/src/middleware.ts`)), preventing access. <br>
 
-Creating a session cookie with a value that correspond to a valid JWT has low chance of success especially when the key used for JWT should not be known, thus the risk of hackers accessing the system would be considerably low. **One outstanding issue is that the key/secretKey used is coded directly in [`/frontend/src/app/lib-authen.ts`](../frontend/src/app/lib-authen.ts) instead of utilising other management strategies to cover the secret key.**  <br>
+Creating a session cookie with a value that correspond to a valid JWT has low chance of success especially when the key used for JWT should not be known, thus the risk of hackers accessing the system would be considerably low. **One outstanding issue is that the key/secretKey used is coded directly in [`frontend/src/app/lib-authen.ts`](../frontend/src/app/lib-authen.ts) instead of utilising other management strategies to cover the secret key.**  <br>
 
 ### Authorisation
- [`/frontend/src/middleware.ts`](../frontend/src/middleware.ts) contains the logic to show an error status of 401 unauthorised access when users who are not logged in attempt to access `/home`, `/record` and `/upload` pages. Logged-in users who attempts to go to `/login` page will be redirected to `/home` page.
+ [`frontend/src/middleware.ts`](../frontend/src/middleware.ts) contains the logic to show an error status of 401 unauthorised access when users who are not logged in attempt to access `/home`, `/record` and `/upload` pages. Logged-in users who attempts to go to `/login` page will be redirected to `/home` page.
 
 ### Other libraries?
 (sufficiently) Popular Authentication libraries such as NextAuth and OAuth are possible choices which were not chosen. Admittedly, the reason for that was I did not think of that at that point in time. 
@@ -73,10 +74,9 @@ Or maybe, it can be said as <br>
 
 > By default, Next.js pre-renders every page. This means that Next.js generates HTML for each page in advance, instead of having it all done by client-side JavaScript. Pre-rendering can result in better performance and SEO (Search Engine Optimisation). 
 
-<br>
-When users access the `/record` page via URL link, the console in the inspect element tool gets refreshed. When users access the `/record` page via the buttons in the app from `/home` page, the console in the inspect element tool does NOT get refreshed. It's thus inferred that a request to the server has been made to regenerate the HTML page when `/record` page is accessed via URL link, thus clicking the browser's back button may result in unloading the html page (just a wild guess). In contrast to accessing the `/record` page via the app button, there seems to have no request made to the server and it is a matter of utilising JavaScript to dynamically render the parts that is changed (the idea behind client-side routing). Thus when clicking the browser's back button, there is no BeforeUnloadEvent to listen for.<br>
+When users access the `/record` page via URL link, the console in the inspect element tool gets refreshed. When users access the `/record` page via the buttons in the app from `/home` page, the console in the inspect element tool does NOT get refreshed. It's thus inferred that a request to the server has been made to regenerate the HTML page when `/record` page is accessed via URL link, thus clicking the browser's back button may result in unloading the html page (just a wild guess). In contrast to accessing the `/record` page via the app button, there seems to have no request made to the server and it is a matter of utilising JavaScript to render the parts that is changed (the idea behind client-side routing). Thus when clicking the browser's back button, there is no BeforeUnloadEvent to listen for. <br>
 
-References that I got my information from:
+References where I got my information from:
 * General overview between server side vs client side routing: https://www.telerik.com/blogs/server-side-routing-vs-client-side-routing
 * Understanding NextJS routing (app router): https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#how-routing-and-navigation-works
 * 1st paragraph in link mentioned about pre-rendering of page: https://nextjs.org/docs/pages/building-your-application/rendering
@@ -112,7 +112,7 @@ Given that desktop / computer devices show only the file picker option while mob
 ![Different designs for different device type](i-MobileDesktop.png)
 
 
-To detect whether the device is mobile or computer, [`UAParser.js` package](https://github.com/faisalman/ua-parser-js) is utilised which helps to elicit userAgent information in a more readable and clean manner as opposed to seiving out information from executing `navigator.userAgent` directly. The code logic for detecting mobile or desktop through this library is written in [`frontend/src/app/lib-device.ts`](../frontend/src/app/lib-device.ts). <br>
+To detect whether the device is mobile or computer, [`UAParser.js`package](https://github.com/faisalman/ua-parser-js) is utilised which helps to elicit userAgent information in a more readable and clean manner as opposed to seiving out information from executing `navigator.userAgent` directly. The code logic for detecting mobile or desktop through this library is written in [`frontend/src/app/lib-device.ts`](../frontend/src/app/lib-device.ts). <br>
 
 However, users who access the app on browsers on mobile phones but with the desktop view activated will not be detected that they are accessing the app on a browser on mobile device. To mitigate this, `useEffect` hook in [`frontend/src/app/(sub-pages)/upload/upload-file.tsx`](../frontend/src/app/(sub-pages)/upload/upload-file.tsx) was written to further check whether the browser is on a touchscreen. Some schematic details are shown on how they might work together:
 

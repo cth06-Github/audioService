@@ -4,15 +4,14 @@ _Last updated: 8 Aug 2024_
 
 ## Overview
 Created with React framework **NextJS**, using **TypeScript**. **App Router** is used for routing. <br>
-[**Material UI**] (https://mui.com/material-ui/getting-started/) library is utilised for the icons and design of various components used. <br>
-**jose** is utilised as part of the authentication logic by supporting the creation and verification of JSON Web Tokens (JWT). <br>
+[**Material UI**](https://mui.com/material-ui/getting-started/) library is utilised for the icons and design of various components used. <br>
+[**jose**](https://www.npmjs.com/package/jose) is utilised as part of the authentication logic by supporting the creation and verification of JSON Web Tokens (JWT). <br>
 MediaRecorder interface of the MediaStream Recording API is used to access device/browsers's microphone and enable recording functionality.<br>
 
 Polyglot allows users to obtain transcribed text from speech or audio by:
 *  **Recording audio** live which will be sent to the backend service for transcription real-time [audio streaming]. Transcribed Text will be displayed real-time.
 *  **Uploading audio** files (existing files or created in the app itself, depending if browser is on mobile or desktop) which will be sent to the backend service for transcription. Transcribed Text will be displayed after processing <br>
 As the backend service is not yet set-up, simulation functions are created to demonstrate/simulate the functionality of the web application.
-<br>
 
 ## User flow
 Users upon logging in at `/login` page would be directed to `/home` page. From `/home` page, users may choose to access `/record` page to record audio live for transcription or access `/upload` page to upload audio files for transcription. Users can return to `/home` from `/record` or `/upload` page; and logout at `/home`, `/record` or `/upload` pages.
