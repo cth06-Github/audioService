@@ -155,7 +155,7 @@ h2: sub-heading. Examples of sub-headings used in the pages are:
 * “Login” in `/login` page
 * “Select files” in `/upload` page
 
-h3: used for the account username shown in the side menu (only displayed when the screen max width is < 800px) 
+h3: used for the account username shown in the side menu (only displayed when the screen max width is <800px) 
 
 ### Responsive Design
 No additional library was used to specifically enable responsive design. Plain CSS @media queries were used.
