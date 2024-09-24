@@ -1,0 +1,182 @@
+/* Header-related components */
+.centerHead {
+  width: 50vw;
+}
+
+.centerHead p /*Heading's description*/ {
+  font-size: 1.7rem;
+}
+
+.leftHead,
+.rightHead {
+  width: 25vw;
+}
+
+.home {
+  display: flex;
+}
+
+.menu,
+.menuOpen {
+  display: none;
+}
+
+.home,
+.menu {
+  width: 100%;
+  padding: 1vw;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.home span {
+  margin-left: 5vw;
+}
+
+.home button {
+  background-color: none;
+  border: 1px solid;
+  border-radius: 50%; /*circle shape*/
+}
+
+/*TextBox Component*/
+.textContainer,
+.textBox {
+  width: 80vw; /*otherwise the width of div vbox is very small*/
+  align-items: flex-start;
+  min-width: 12rem;
+}
+
+.processedTextHeading {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.processedTextHeading h2 {
+  padding: 0px 1vw;
+}
+
+.textBox {
+  height: 35vh;
+  padding: 1vh 1vw;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: 1px dashed;
+  overflow-y: scroll;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .centerHead p {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .home,
+  .logout {
+    display: none;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-left: 10vw;
+  }
+
+  .menu button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+    margin-right: 2px;
+    border: 1px solid;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.09);    
+    z-index: 3; /*top most*/
+  }
+
+  .menuOpen {
+    transition: width 0.5s;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: white;
+    background: linear-gradient( /*(angle, color-stop1, color-stop2...)*/ 
+      145deg,
+      rgb(255, 255, 255),
+      rgb(216, 215, 215),
+      rgb(147, 165, 175),
+      rgb(141, 195, 222),
+      rgb(161, 228, 247),
+      rgb(161, 219, 247)
+    );
+    height: 110vh; /*attempt to cover entire screen*/
+    z-index: 1; 
+    overflow: hidden;
+    padding: 0px 0vw;
+    width: 0vw;
+  }
+
+  .menu h3 /*account username in menu panel*/ { 
+    position: absolute;
+    display: flex;
+    align-items: center; /*add some margin*/
+    padding-left: 2rem;
+    width: 70vw;
+    height: fit-content;
+    z-index: 2;
+    box-shadow: 0px 0px 0px 0vw rgba(0, 0, 0, 0);
+  }
+
+  .menuOpen button {
+    display: flex;
+    border: 1px solid;
+    height: 70px;
+    width: 70vw;
+    background-color: rgba(227, 230, 231, 0.3);
+    text-align: left;
+    padding-left: 10px;
+    z-index: 1;
+    align-items: center;
+  }
+
+  .menu h3,
+  .menuOpen button {
+    animation: fadeIn 0.8s;
+  }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .menuOpen {
+    background: linear-gradient(
+      145deg,
+      rgb(0, 0, 0),
+      rgb(60, 57, 57),
+      rgb(62, 76, 82),
+      rgb(91, 119, 133),
+      rgb(86, 149, 200),
+      rgb(6, 105, 186)
+    );
+  }
+}

@@ -1,0 +1,23 @@
+name: GitHub Actions eslint
+run-name: ${{ github.actor }} is trying out eslint check
+
+on:              # list of trigger events. If branches are not stated, it refers to all branches that trigger the event
+  push:
+  pull_request:
+  
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+    defaults:
+     run:
+      working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/heads/main           # code to be checked is from main branch. To check other branches, rename last part.
+      - name: Show branch trigger
+        run: echo Branch that trigger event - ${{ github.ref }}
+      - name: Installation via npm
+        run: npm install
+      - name: Run eslint
+        run: npm run lint . --ext .js,.jsx,.ts,.tsx 

@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true, /*change from false to true, following default*/
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "bundler", /*from "node" changed to default "bundler"*/
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "allowImportingTsExtensions": true
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+, "src/app/bin-folder/useRecord.js", "../bin-folder/test.ts", "../bin-folder/route.ts", "src/app/(context)/authcontext.tsx", "../bin-folder/usercontext.tsx", "../bin-folder/timer.tsx", "../bin-folder/pop-up-compTest.tsx", "../bin-folder/navigation-events.ts", "../bin-folder/upload-hooks.tsx", "../bin-folder/upload-file-mock.tsx"  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
