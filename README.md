@@ -48,7 +48,6 @@ However, if one wishes to still host the web app on HTTP, please edit the code i
 ```
 Running the web app as a docker container should be possible as well. Run the docker command at root of the repository (rather than at `/frontend`). 
 
-
 ## Technical Details & Outstanding Issues
 Details and explanation about the concept and logic behind certain code, including any outstanding issues identified but not fully resolved are detailed in **[`documentation/Technical-Documentation-8Aug.md`](documentation/Technical-Documentation-8Aug.md)**. Information includes: 
 1.	Authentication & Authorisation (including the use of [`jose`](https://www.npmjs.com/package/jose) package and [`middleware.ts`](frontend/src/middleware.ts))
