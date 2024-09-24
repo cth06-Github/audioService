@@ -57,4 +57,3 @@ Details and explanation about the concept and logic behind certain code, includi
 * Material UI: https://mui.com/material-ui/getting-started/ 
 * jose: https://www.npmjs.com/package/jose 
 * UAParser.js: https://github.com/faisalman/ua-parser-js 
-
