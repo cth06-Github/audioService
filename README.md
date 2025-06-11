@@ -1,5 +1,5 @@
 # Audio Service Web Application (Frontend)
-_Last major change: 8 Aug 2024_ <br>
+_Last major update: 8 Aug 2024_ <br>
 _Last updated: 11 June 2025_
 ---
 
