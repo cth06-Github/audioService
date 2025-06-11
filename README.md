@@ -1,22 +1,24 @@
 # Audio Service Web Application (Frontend)
 _Last major change: 8 Aug 2024_ <br>
-_Last updated: 24 Sep 2024_
+_Last updated: 11 June 2025_
 ---
 
 ## Overview
-Created with React framework **NextJS**, using **TypeScript**. **App Router** is used for routing. <br>
-[**Material UI**](https://mui.com/material-ui/getting-started/) library is utilised for the icons and design of various components used. <br>
-[**jose**](https://www.npmjs.com/package/jose) is utilised as part of the authentication logic by supporting the creation and verification of JSON Web Tokens (JWT). <br>
-MediaRecorder interface of the MediaStream Recording API is used to access device/browsers's microphone and enable recording functionality.<br>
-
-This app allows users to obtain text from speech or audio by:
+This web application allows users to obtain text from speech or audio by:
 *  **Recording audio** live which will be sent to the backend service for processing real-time (audio streaming). The processed text will be displayed real-time.
 *  **Uploading audio** files (existing files or created in the app itself, depending if browser is on mobile or desktop) which will be sent to the backend service for processing. The text will be displayed after processing. <br>
 
 <mark>**As the backend service is not yet set-up, simulation functions are created to simulate the supposed functionality of the web application**.</mark>
 
 ## User flow
-Users upon logging in at `/login` page would be directed to `/home` page. From `/home` page, users may choose to access `/record` page to record audio live or access `/upload` page to upload audio files for processing. Users can return to `/home` from `/record` or `/upload` page; and logout at `/home`, `/record` or `/upload` pages.
+Users upon logging in at `/login` page would be directed to `/home` page. From `/home` page, users may choose to access `/record` page to record audio live or access `/upload` page to upload audio files for processing. Users can return to `/home` from `/record` or `/upload` page; and logout at `/home`, `/record` or `/upload` pages. <br>
+![image](https://github.com/user-attachments/assets/523272d4-61f6-4c29-924e-d69cc6a9fcc8)
+
+## Tech Stack
+Created with React framework **NextJS**, using **TypeScript**. **App Router** is used for routing. <br>
+[**Material UI**](https://mui.com/material-ui/getting-started/) library is utilised for the icons and design of various components used. <br>
+[**jose**](https://www.npmjs.com/package/jose) is utilised as part of the authentication logic by supporting the creation and verification of JSON Web Tokens (JWT). <br>
+MediaRecorder interface of the MediaStream Recording API is used to access device/browsers's microphone and enable recording functionality.<br>
 
 ## Running the Application
 To run the application in development mode (assuming `git clone` the repository is done): 
