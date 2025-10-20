@@ -1,4 +1,4 @@
-# Audio Service Web Application (Frontend)
+# Audio Service Web Application (Frontend Development)
 _Last major update: 8 Aug 2024_ <br>
 _Last updated: 11 June 2025_
 ---
